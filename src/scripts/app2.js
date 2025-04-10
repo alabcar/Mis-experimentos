@@ -13,6 +13,9 @@ let isPlaying = false;
 let time = 0;
 let score = 0;
 
+// Almacenar los puntajes
+let highScores = [];
+
 // Parámetros ajustables
 let params = {
     gravity: 0.5,
@@ -105,7 +108,8 @@ function drawStars() {
     });
 }
 
-// Dibujar el menú de inicio con "¡Vamos, Luca!" y una frase aleatoria
+
+// Dibujar el menú de inicio con "¡Vamos, Luca!", una frase aleatoria y el ranking
 function drawMenu() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -113,9 +117,25 @@ function drawMenu() {
     // Dibujar estrellas de fondo
     drawStars();
 
+    // Estilizar el botón con colores llamativos
+    const button = document.getElementById('startButton');
+    button.style.backgroundColor = '#00ffcc'; // Fondo cian brillante
+    button.style.color = '#000000'; // Texto negro
+    button.style.border = '2px solid #ffffff'; // Borde blanco
+    button.style.fontSize = '24px'; // Tamaño de fuente más grande
+    button.style.padding = '15px 30px'; // Más espacio en el botón
+    button.style.borderRadius = '10px'; // Bordes redondeados
+    button.style.boxShadow = '0px 0px 15px #00ffcc'; // Efecto de brillo
 
+    // Dibujar el ranking de puntos debajo del botón
+    ctx.fillStyle = 'white';
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Ranking de Puntos:', canvas.width / 2, canvas.height / 2 + 50);
 
- 
+    highScores.slice(0, 5).forEach((score, index) => {
+        ctx.fillText(`${index + 1}. ${score} puntos`, canvas.width / 2, canvas.height / 2 + 80 + index * 30);
+    });
 }
 
 // Generar luna o planeta
@@ -230,7 +250,14 @@ function increaseDifficulty() {
     }
 }
 // Reiniciar el juego
+// Reiniciar el juego
 function resetGame() {
+    // Guardar el puntaje actual en el ranking
+    if (score > 0) {
+        highScores.push(score);
+        highScores.sort((a, b) => b - a); // Ordenar de mayor a menor
+    }
+
     player.y = canvas.height / 2;
     player.dy = 0;
     obstacles = [];
@@ -243,7 +270,13 @@ function resetGame() {
     document.getElementById('startButton').style.display = 'block';
     drawMenu();
 }
-
+// Mostrar puntaje
+function drawScore() {
+    ctx.fillStyle = 'white'; // Color del texto
+    ctx.font = '30px Arial'; // Fuente más grande y clara
+    ctx.textAlign = 'center'; // Centrar el texto
+    ctx.fillText(`Puntos: ${score}`, canvas.width / 2, 50); // Mostrar en la parte superior central
+}
 // Animación principal
 function animate() {
     if (!isPlaying) return;
@@ -282,9 +315,7 @@ function animate() {
     increaseDifficulty();
 
     // Mostrar puntaje
-    ctx.fillStyle = 'white';
-    ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${score}`, 10, 30);
+    drawScore();
 
     requestAnimationFrame(animate);
 }
