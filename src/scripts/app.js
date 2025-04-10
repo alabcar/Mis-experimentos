@@ -16,7 +16,7 @@ let params = {
     colorHue: 200,
     colorSaturation: 50,
     colorLightness: 80,
-    playerSize: 20, 
+    playerSize: 20,
 };
 
 // Figuras musicales en la cuadrícula
@@ -52,21 +52,15 @@ function generateShapes() {
     }
 }
 
-// Dibujar un triángulo dinámico
-function drawDynamicTriangle(shape) {
-    const { x, y, size, angle, active } = shape;
+// Dibujar un círculo dinámico
+function drawDynamicCircle(shape) {
+    const { x, y, size, active } = shape;
 
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(angle + time * shape.speed);
 
     ctx.beginPath();
-    for (let i = 0; i < 3; i++) { // Triángulo con 3 lados
-        const theta = (Math.PI * 2 / 3) * i;
-        const px = Math.cos(theta) * size;
-        const py = Math.sin(theta) * size;
-        ctx.lineTo(px, py);
-    }
+    ctx.arc(0, 0, size, 0, Math.PI * 2);
     ctx.closePath();
 
     ctx.fillStyle = active
@@ -94,7 +88,7 @@ function drawShapes() {
             shape.active = false; // Desactivar figura
         }
 
-        drawDynamicTriangle(shape);
+        drawDynamicCircle(shape);
     });
 }
 
