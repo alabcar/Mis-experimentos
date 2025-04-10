@@ -29,7 +29,22 @@ let params = {
 };
 
 // Frases graciosas con rimas sobre Luca
-const funnyPhrases = [
+const funnyPhrases =[
+    "Luca saltó tan alto que ahora vive en Marte.",
+    "El ping-pong no es deporte, es arte moderno.",
+    "Obstáculo 1, Luca 0. Fin.",
+    "Luca quiso volar, pero olvidó las alas.",
+    "El Wi-Fi no llegó al monte y Luca tampoco.",
+    "La luna te miró y dijo: '¿En serio?'",
+    "Luca esquivó todo, menos sus deberes.",
+    "El balón pidió un autógrafo. Luca se negó.",
+    "¿Montaña? Mejor pizza.",
+    "El botón 'ganar' está roto, lo siento.",
+    "El obstáculo dice: 'Gracias por chocar.'",
+    "Luca saltó, y el suelo dijo: 'Hola de nuevo.'",
+    "La gravedad ganó esta vez. Inténtalo luego.",
+    "Luca persiguió un sueño, pero era lunes.",
+    "Tu puntuación: 0, tu esfuerzo: infinito.",
     "Luca en el Balmes siempre brilló, ¡en San Vicente aún más se lució!",
     "Con la pala de ping-pong es un campeón, ¡en voley también causa sensación!",
     "Luca en la ciudad se siente genial, pero en la montaña se pone fatal.",
