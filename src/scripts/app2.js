@@ -102,17 +102,9 @@ function drawMenu() {
     // Dibujar estrellas de fondo
     drawStars();
 
-    // Dibujar "¡Vamos, Luca!" en grande
-    ctx.fillStyle = 'cyan';
-    ctx.font = '80px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('¡Vamos, Luca!', canvas.width / 2, canvas.height / 2 - 50);
 
-    // Dibujar una frase aleatoria
-    const randomPhrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
-    ctx.fillStyle = 'magenta';
-    ctx.font = '20px Arial';
-    ctx.fillText(randomPhrase, canvas.width / 2, canvas.height / 2 + 50);
+
+ 
 }
 
 // Generar luna o planeta
