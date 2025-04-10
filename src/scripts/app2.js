@@ -57,6 +57,17 @@ const funnyPhrases = [
     "Cuando su padre lo lleva a escalar, Luca dice: '¡Prefiero la ciudad para estar!'",
     "En el instituto San Vicente es genial, ¡Luca siempre destaca en lo social!",
     "En el Balmes dejó su legado, ¡en San Vicente sigue siendo admirado!",
+    // Nuevas frases añadidas
+    "Luca con Esther siempre se ríe, ¡aunque a veces la paciencia se le vacía!",
+    "Con su tía María juega sin parar, ¡en voleybol nadie lo puede alcanzar!",
+    "Lalita y Nonno lo ven triunfar, ¡en ping-pong siempre lo quieren animar!",
+    "Luca en la ciudad es un gran urbanita, ¡con Esther y María siempre dinamita!",
+    "Nonno le dice: '¡Eres un campeón!', y Lalita lo anima con gran emoción.",
+    "Con Esther y María siempre hay alegría, ¡Luca brilla como estrella todo el día!",
+    "Lalita le dice: '¡Qué gran jugador!', y Nonno lo aplaude con todo su amor.",
+    "Luca en el voley es un gran titán, ¡con Esther y María siempre en su plan!",
+    "Cuando Lalita lo ve jugar, dice: '¡Luca, nadie te puede parar!'",
+    "Nonno le grita: '¡Eres el mejor!', mientras Luca juega con gran fervor.",
 ];
 
 // Mostrar frase graciosa al perder
