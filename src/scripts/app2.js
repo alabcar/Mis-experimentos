@@ -27,7 +27,6 @@ let params = {
 
 // Frases graciosas con rimas sobre Luca
 const funnyPhrases = [
-
     "Luca en el Balmes siempre brilló, ¡en San Vicente aún más se lució!",
     "Con la pala de ping-pong es un campeón, ¡en voley también causa sensación!",
     "Luca en la ciudad se siente genial, pero en la montaña se pone fatal.",
@@ -45,6 +44,19 @@ const funnyPhrases = [
     "Julia y Alberto lo ven triunfar, ¡en ping-pong y voley no deja de ganar!",
     "Luca en la ciudad es un rey total, ¡en la montaña no lo pasa tan genial!",
     "En ping-pong y voleybol es un crack, ¡nadie puede seguirle el compás!",
+    "Cuando su padre lo lleva a caminar, Luca dice: '¡Prefiero Netflix y descansar!'",
+    "En el instituto San Vicente es brillante, ¡Luca siempre es el más elegante!",
+    "En el Balmes dejó su marca, ¡en San Vicente su talento no se aparca!",
+    "Con la pala de ping-pong es un artista, ¡su saque es digno de un especialista!",
+    "En voleybol Luca es un titán, ¡su equipo siempre lo quiere en el plan!",
+    "Cuando Paco dice: 'Vamos al monte', Luca responde: '¡Mejor un café en el puente!'",
+    "Con los abuelos Paco y Chelo, Luca siempre encuentra un buen duelo (de risas).",
+    "Julia y Alberto lo ven jugar, ¡y siempre lo animan sin parar!",
+    "Luca en la ciudad es un urbanita, ¡en la montaña se pone malita!",
+    "En ping-pong y voleybol es un crack, ¡su estilo siempre deja a todos atrás!",
+    "Cuando su padre lo lleva a escalar, Luca dice: '¡Prefiero la ciudad para estar!'",
+    "En el instituto San Vicente es genial, ¡Luca siempre destaca en lo social!",
+    "En el Balmes dejó su legado, ¡en San Vicente sigue siendo admirado!",
 ];
 
 // Mostrar frase graciosa al perder
@@ -82,7 +94,7 @@ function drawStars() {
     });
 }
 
-// Dibujar el menú de inicio con "LUCA" en pixel art
+// Dibujar el menú de inicio con "¡Vamos, Luca!" y una frase aleatoria
 function drawMenu() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -90,15 +102,17 @@ function drawMenu() {
     // Dibujar estrellas de fondo
     drawStars();
 
-    // Dibujar "LUCA" en pixel art
+    // Dibujar "¡Vamos, Luca!" en grande
     ctx.fillStyle = 'cyan';
-    ctx.font = '100px Arial';
+    ctx.font = '80px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('LUCA', canvas.width / 2, canvas.height / 2 - 50);
+    ctx.fillText('¡Vamos, Luca!', canvas.width / 2, canvas.height / 2 - 50);
 
+    // Dibujar una frase aleatoria
+    const randomPhrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
     ctx.fillStyle = 'magenta';
-    ctx.font = '30px Arial';
-    ctx.fillText('¡Haz clic en el botón para empezar!', canvas.width / 2, canvas.height / 2 + 50);
+    ctx.font = '20px Arial';
+    ctx.fillText(randomPhrase, canvas.width / 2, canvas.height / 2 + 50);
 }
 
 // Generar luna o planeta
