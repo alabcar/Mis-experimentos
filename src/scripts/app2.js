@@ -25,27 +25,26 @@ let params = {
     gapSize: 350, // Más espacio entre obstáculos
 };
 
-// Precargar sonidos
-const backgroundMusic = new Audio('path/to/background-music.mp3'); // Reemplaza con la ruta de tu archivo de música
-backgroundMusic.loop = true;
-
-const impactSound = new Audio('path/to/impact-sound.mp3'); // Reemplaza con la ruta de tu archivo de sonido
-impactSound.volume = 0.5; // Ajustar volumen
-
-// Frases graciosas
+// Frases graciosas con rimas sobre Luca
 const funnyPhrases = [
-    "Luca saltó y se cayó, ¡qué mala suerte le tocó!",
-    "Luca corrió y se tropezó, ¡el suelo lo atrapó!",
-    "Luca brincó con gran destreza, pero falló con torpeza.",
-    "Luca voló como un campeón, pero chocó con un montón.",
-    "Luca gritó: '¡Voy a ganar!', pero el obstáculo lo hizo parar.",
-    "Luca soñó con ser el mejor, pero el suelo le dio un dolor.",
-    "Luca saltó con gran energía, pero falló con mucha alegría.",
-    "Luca corrió como un atleta, pero chocó con una meta.",
-    "Luca brincó con valentía, pero perdió con simpatía.",
-    "Luca voló como un avión, pero cayó sin precaución.",
-    "Luca gritó: '¡Soy invencible!', pero el obstáculo fue terrible.",
-    "Luca soñó con la victoria, pero el suelo cambió su historia.",
+
+    "Luca en el Balmes siempre brilló, ¡en San Vicente aún más se lució!",
+    "Con la pala de ping-pong es un campeón, ¡en voley también causa sensación!",
+    "Luca en la ciudad se siente genial, pero en la montaña se pone fatal.",
+    "Su padre Paco lo quiere llevar al monte, pero Luca prefiere un horizonte.",
+    "Con los abuelos Paco y Chelo, Luca siempre está en el cielo.",
+    "Julia y Alberto lo ven jugar, ¡en ping-pong nadie lo puede parar!",
+    "Luca en el voley es un crack total, ¡su saque es siempre fenomenal!",
+    "Cuando su padre lo lleva a caminar, Luca dice: '¡Prefiero la ciudad para pasear!'",
+    "En el instituto San Vicente es el mejor, ¡en clase y en deportes causa furor!",
+    "Luca en el Balmes dejó su huella, ¡en San Vicente sigue siendo una estrella!",
+    "Con la pala de ping-pong es imbatible, ¡su estilo es único e increíble!",
+    "En voleybol Luca es un as, ¡su equipo siempre lo quiere detrás!",
+    "Cuando Paco dice: 'Vamos al monte', Luca responde: '¡Mejor al horizonte!'",
+    "Con los abuelos Paco y Chelo, Luca siempre encuentra consuelo.",
+    "Julia y Alberto lo ven triunfar, ¡en ping-pong y voley no deja de ganar!",
+    "Luca en la ciudad es un rey total, ¡en la montaña no lo pasa tan genial!",
+    "En ping-pong y voleybol es un crack, ¡nadie puede seguirle el compás!",
 ];
 
 // Mostrar frase graciosa al perder
@@ -81,6 +80,25 @@ function drawStars() {
             star.y = Math.random() * canvas.height;
         }
     });
+}
+
+// Dibujar el menú de inicio con "LUCA" en pixel art
+function drawMenu() {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Dibujar estrellas de fondo
+    drawStars();
+
+    // Dibujar "LUCA" en pixel art
+    ctx.fillStyle = 'cyan';
+    ctx.font = '100px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('LUCA', canvas.width / 2, canvas.height / 2 - 50);
+
+    ctx.fillStyle = 'magenta';
+    ctx.font = '30px Arial';
+    ctx.fillText('¡Haz clic en el botón para empezar!', canvas.width / 2, canvas.height / 2 + 50);
 }
 
 // Generar luna o planeta
@@ -164,7 +182,6 @@ function detectCollisions() {
             player.y - player.size < obstacle.y + obstacle.height
         ) {
             isPlaying = false;
-            impactSound.play(); // Reproducir sonido de impacto
             showRandomPhrase(); // Mostrar frase graciosa
             resetGame();
             break;
@@ -193,6 +210,7 @@ function resetGame() {
     params.gapSize = 350; // Reiniciar tamaño del agujero
     isPlaying = false;
     document.getElementById('startButton').style.display = 'block';
+    drawMenu();
 }
 
 // Animación principal
@@ -251,16 +269,17 @@ canvas.addEventListener('click', () => {
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    drawMenu();
 });
 
 // Iniciar el juego al hacer clic en el botón
 document.getElementById('startButton').addEventListener('click', () => {
     document.getElementById('startButton').style.display = 'none';
     isPlaying = true;
-    backgroundMusic.play(); // Iniciar la música al comenzar el juego
     animate();
 });
 
 // Generar estrellas y luna al inicio
 generateStars();
 generateMoon();
+drawMenu();
