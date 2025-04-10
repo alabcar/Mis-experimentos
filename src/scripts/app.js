@@ -7,7 +7,8 @@ canvas.height = window.innerHeight;
 
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
 let obstacles = [];
-let backgroundLayers = []; // Declaración de las capas de fondo
+let stars = [];
+let moon = null; // Luna o planeta
 let isPlaying = false;
 let time = 0;
 let score = 0;
@@ -23,6 +24,13 @@ let params = {
     colorLightness: 50,
     gapSize: 350, // Más espacio entre obstáculos
 };
+
+// Precargar sonidos
+const backgroundMusic = new Audio('path/to/background-music.mp3'); // Reemplaza con la ruta de tu archivo de música
+backgroundMusic.loop = true;
+
+const impactSound = new Audio('path/to/impact-sound.mp3'); // Reemplaza con la ruta de tu archivo de sonido
+impactSound.volume = 0.5; // Ajustar volumen
 
 // Frases graciosas
 const funnyPhrases = [
@@ -83,39 +91,79 @@ const funnyPhrases = [
     "Albert te ganó, ¡qué derrota tan pagana!",
     "Dani te atrapó, ¡qué jugada tan lejana!",
     "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
 ];
 
-// Añadir música electrónica
-const backgroundMusic = new Audio('path/to/electronic-music.mp3'); // Reemplaza con la ruta de tu archivo de música
-backgroundMusic.loop = true;
+// Mostrar frase graciosa al perder
+function showRandomPhrase() {
+    const randomPhrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
+    alert(randomPhrase);
+}
 
-// Generar capas de fondo
-function generateBackgroundLayers() {
-    for (let i = 0; i < 10; i++) {
-        backgroundLayers.push({
+// Generar estrellas
+function generateStars() {
+    for (let i = 0; i < 300; i++) { // Más estrellas
+        stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            speed: Math.random() * 0.5 + 0.2, // Velocidad de movimiento
-            size: Math.random() * 2 + 1, // Tamaño de las estrellas
+            size: Math.random() * 2 + 1,
+            speed: Math.random() * 0.5 + 0.2,
         });
     }
 }
 
-// Dibujar capas de fondo
-function drawBackgroundLayers() {
-    backgroundLayers.forEach((layer) => {
+// Dibujar estrellas
+function drawStars() {
+    stars.forEach((star) => {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.beginPath();
-        ctx.arc(layer.x, layer.y, layer.size, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Mover las capas
-        layer.x -= layer.speed;
-        if (layer.x < 0) {
-            layer.x = canvas.width;
-            layer.y = Math.random() * canvas.height;
+        // Mover las estrellas
+        star.x -= star.speed;
+        if (star.x < 0) {
+            star.x = canvas.width;
+            star.y = Math.random() * canvas.height;
         }
     });
+}
+
+// Generar luna o planeta
+function generateMoon() {
+    moon = {
+        x: canvas.width,
+        y: Math.random() * (canvas.height / 2),
+        size: Math.random() * 50 + 50,
+        speed: Math.random() * 0.5 + 0.1,
+    };
+}
+
+// Dibujar luna o planeta
+function drawMoon() {
+    if (moon) {
+        ctx.fillStyle = 'rgba(255, 223, 0, 0.2)'; // Amarillo tenue
+        ctx.beginPath();
+        ctx.arc(moon.x, moon.y, moon.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Mover la luna
+        moon.x -= moon.speed;
+        if (moon.x + moon.size < 0) {
+            generateMoon(); // Generar una nueva luna cuando salga de la pantalla
+        }
+    }
 }
 
 // Dibujar el jugador
@@ -173,11 +221,20 @@ function detectCollisions() {
             player.y - player.size < obstacle.y + obstacle.height
         ) {
             isPlaying = false;
-            backgroundMusic.pause(); // Detener la música al perder
-            alert(`Game Over! Your score: ${score}`);
+            impactSound.play(); // Reproducir sonido de impacto
+            showRandomPhrase(); // Mostrar frase graciosa
             resetGame();
             break;
         }
+    }
+}
+
+// Incrementar dificultad
+function increaseDifficulty() {
+    if (time % 500 === 0) { // Cada 500 frames
+        params.obstacleSpeed += 0.5; // Aumentar velocidad de los obstáculos
+        params.obstacleFrequency = Math.max(60, params.obstacleFrequency - 5); // Reducir frecuencia mínima
+        params.gapSize = Math.max(200, params.gapSize - 10); // Reducir tamaño del agujero
     }
 }
 
@@ -188,6 +245,9 @@ function resetGame() {
     obstacles = [];
     time = 0;
     score = 0;
+    params.obstacleSpeed = 4; // Reiniciar velocidad
+    params.obstacleFrequency = 120; // Reiniciar frecuencia
+    params.gapSize = 350; // Reiniciar tamaño del agujero
     isPlaying = false;
     document.getElementById('startButton').style.display = 'block';
 }
@@ -196,11 +256,12 @@ function resetGame() {
 function animate() {
     if (!isPlaying) return;
 
-    ctx.fillStyle = `rgba(0, 0, 0, 0.2)`; // Fondo semitransparente
+    ctx.fillStyle = 'black'; // Fondo negro
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Dibujar y actualizar elementos
-    drawBackgroundLayers();
+    drawStars();
+    drawMoon();
     drawPlayer();
     drawObstacles();
     generateObstacles();
@@ -223,9 +284,10 @@ function animate() {
     // Detectar colisiones
     detectCollisions();
 
-    // Incrementar tiempo y puntaje
+    // Incrementar tiempo, puntaje y dificultad
     time++;
     score++;
+    increaseDifficulty();
 
     // Mostrar puntaje
     ctx.fillStyle = 'white';
@@ -250,21 +312,12 @@ window.addEventListener('resize', () => {
 
 // Iniciar el juego al hacer clic en el botón
 document.getElementById('startButton').addEventListener('click', () => {
-    showRandomPhrase(); // Mostrar frase al inicio
     document.getElementById('startButton').style.display = 'none';
     isPlaying = true;
     backgroundMusic.play(); // Iniciar la música al comenzar el juego
     animate();
 });
 
-// Generar las capas de fondo al inicio
-generateBackgroundLayers();
-
-// Mostrar frase aleatoria
-function showRandomPhrase() {
-    const randomPhrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
-    alert(randomPhrase);
-}
-
-// Llamar a la frase al inicio
-showRandomPhrase();
+// Generar estrellas y luna al inicio
+generateStars();
+generateMoon();
