@@ -127,14 +127,21 @@ function drawMenu() {
     button.style.borderRadius = '10px'; // Bordes redondeados
     button.style.boxShadow = '0px 0px 15px #00ffcc'; // Efecto de brillo
 
+    // Ajustar la posición del botón
+    button.style.position = 'absolute';
+    button.style.top = `${canvas.height / 2 - 50}px`; // Centrar verticalmente
+    button.style.left = '50%';
+    button.style.transform = 'translate(-50%, -50%)';
+
     // Dibujar el ranking de puntos debajo del botón
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Ranking de Puntos:', canvas.width / 2, canvas.height / 2 + 50);
+    const rankingStartY = canvas.height / 2 + 80; // Asegurar que el ranking esté separado del botón
+    ctx.fillText('Ranking de Puntos:', canvas.width / 2, rankingStartY);
 
     highScores.slice(0, 5).forEach((score, index) => {
-        ctx.fillText(`${index + 1}. ${score} puntos`, canvas.width / 2, canvas.height / 2 + 80 + index * 30);
+        ctx.fillText(`${index + 1}. ${score} puntos`, canvas.width / 2, rankingStartY + 30 + index * 30);
     });
 }
 
