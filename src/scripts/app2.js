@@ -208,13 +208,27 @@ function detectCollisions() {
 
 // Incrementar dificultad
 function increaseDifficulty() {
-    if (time % 500 === 0) { // Cada 500 frames
-        params.obstacleSpeed += 0.5; // Aumentar velocidad de los obstáculos
-        params.obstacleFrequency = Math.max(60, params.obstacleFrequency - 5); // Reducir frecuencia mínima
-        params.gapSize = Math.max(200, params.gapSize - 10); // Reducir tamaño del agujero
+    if (time % 300 === 0) { // Cada 300 frames
+        params.obstacleSpeed += 0.6; // Aumentar velocidad de los obstáculos de forma constante
+        params.obstacleFrequency = Math.max(40, params.obstacleFrequency - 7); // Reducir frecuencia mínima más rápido
+        params.gapSize = Math.max(120, params.gapSize - 12); // Reducir tamaño del agujero de forma progresiva
+
+        // Aumentar la velocidad de la luna de manera gradual y realista
+        if (moon) {
+            moon.speed += 0.07; // Incremento más notable para que parezca que acelera
+        }
+    }
+
+    // Aumentar la gravedad ligeramente para hacerlo más desafiante
+    if (time % 800 === 0) { // Cada 800 frames
+        params.gravity = Math.min(2, params.gravity + 0.1); // Limitar la gravedad máxima
+    }
+
+    // Cambiar el color de los obstáculos para dar sensación de progreso
+    if (time % 1000 === 0) { // Cada 1000 frames
+        params.colorHue = (params.colorHue + 50) % 360; // Cambiar el tono del color
     }
 }
-
 // Reiniciar el juego
 function resetGame() {
     player.y = canvas.height / 2;
