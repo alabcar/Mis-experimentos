@@ -7,7 +7,7 @@ canvas.height = window.innerHeight;
 
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
 let obstacles = [];
-let backgroundLayers = [];
+let stars = [];
 let isPlaying = false;
 let time = 0;
 let score = 0;
@@ -21,8 +21,105 @@ let params = {
     colorHue: 200,
     colorSaturation: 70,
     colorLightness: 50,
-    gapSize: 300, // Más espacio entre obstáculos
+    gapSize: 350, // Más espacio entre obstáculos
 };
+
+// Frases graciosas
+const funnyPhrases = [
+    "Albert y Dani te hicieron un daño insano.",
+    "Por culpa de Dani, te quedaste sin mañana.",
+    "Albert te atrapó, ¡qué jugada tan villana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert y Dani, juntos son una amenaza urbana.",
+    "Dani te golpeó, ¡qué caída tan mundana!",
+    "Albert te ganó, ¡qué derrota tan humana!",
+    "Dani te dejó fuera, ¡qué jugada tan pagana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te atrapó, ¡qué derrota tan cercana!",
+    "Albert te venció, ¡qué caída tan lejana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan arcana!",
+    "Dani te atrapó, ¡qué jugada tan profana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+    "Dani te venció, ¡qué derrota tan cercana!",
+    "Albert te atrapó, ¡qué caída tan humana!",
+    "Dani y Albert, ¡te dejaron sin ventana!",
+    "Albert te ganó, ¡qué derrota tan profana!",
+    "Dani te atrapó, ¡qué jugada tan arcana!",
+    "Albert y Dani, ¡te dejaron sin manzana!",
+    "Dani te venció, ¡qué derrota tan temprana!",
+    "Albert te atrapó, ¡qué caída tan villana!",
+    "Dani y Albert, ¡te dejaron sin banana!",
+    "Albert te ganó, ¡qué derrota tan pagana!",
+    "Dani te atrapó, ¡qué jugada tan lejana!",
+    "Albert y Dani, ¡te dejaron sin semana!",
+];
 
 // Añadir música electrónica
 const backgroundMusic = new Audio('path/to/electronic-music.mp3'); // Reemplaza con la ruta de tu archivo de música
@@ -197,3 +294,12 @@ document.getElementById('startButton').addEventListener('click', () => {
 
 // Generar las capas de fondo al inicio
 generateBackgroundLayers();
+
+// Mostrar frase aleatoria
+function showRandomPhrase() {
+    const randomPhrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
+    alert(randomPhrase);
+}
+
+// Llamar a la frase al inicio
+showRandomPhrase();
