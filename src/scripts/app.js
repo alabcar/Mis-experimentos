@@ -20,7 +20,12 @@ let params = {
     colorHue: 200,
     colorSaturation: 50,
     colorLightness: 80,
+    gapSize: 250, // Aumentar el tamaño del agujero
 };
+
+// Añadir música electrónica
+const backgroundMusic = new Audio('path/to/electronic-music.mp3'); // Reemplaza con la ruta de tu archivo de música
+backgroundMusic.loop = true;
 
 // Dibujar el jugador
 function drawPlayer() {
@@ -28,13 +33,25 @@ function drawPlayer() {
     ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.fill();
+    ctx.closePath();
+
+    // Dibujar el nombre "Alberto" en el jugador
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Arial';
+    ctx.fillText('Alberto', player.x - player.size / 2, player.y + 4);
 }
 
 // Dibujar obstáculos
 function drawObstacles() {
-    obstacles.forEach((obstacle) => {
+    obstacles.forEach((obstacle, index) => {
         ctx.fillStyle = `hsl(${(params.colorHue + time * 5) % 360}, ${params.colorSaturation}%, ${params.colorLightness}%)`;
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+        // Dibujar nombres "Dani" y "Albert" en las barras
+        ctx.fillStyle = 'white';
+        ctx.font = '16px Arial';
+        const name = index % 2 === 0 ? 'Dani' : 'Albert';
+        ctx.fillText(name, obstacle.x + 5, obstacle.y + obstacle.height / 2);
     });
 }
 
@@ -42,7 +59,9 @@ function drawObstacles() {
 function generateObstacles() {
     if (time % params.obstacleFrequency === 0) {
         const height = Math.random() * (canvas.height / 2);
-        const gap = 150;
+        const gap = params.gapSize; // Usar el tamaño del agujero ajustado
+
+        // Barras horizontales
         obstacles.push({
             x: canvas.width,
             y: 0,
@@ -55,6 +74,18 @@ function generateObstacles() {
             width: 30,
             height: canvas.height - height - gap,
         });
+
+        // Barras verticales (opcional)
+        if (Math.random() > 0.5) {
+            const verticalHeight = 100;
+            const verticalY = Math.random() * (canvas.height - verticalHeight);
+            obstacles.push({
+                x: canvas.width,
+                y: verticalY,
+                width: 30,
+                height: verticalHeight,
+            });
+        }
     }
 }
 
@@ -76,6 +107,7 @@ function detectCollisions() {
             player.y - player.size < obstacle.y + obstacle.height
         ) {
             isPlaying = false;
+            backgroundMusic.pause(); // Detener la música al perder
             alert(`Game Over! Your score: ${score}`);
             resetGame();
             break;
@@ -153,5 +185,6 @@ window.addEventListener('resize', () => {
 document.getElementById('startButton').addEventListener('click', () => {
     document.getElementById('startButton').style.display = 'none';
     isPlaying = true;
+    backgroundMusic.play(); // Iniciar la música al comenzar el juego
     animate();
 });
