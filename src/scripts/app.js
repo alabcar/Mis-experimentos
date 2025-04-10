@@ -11,11 +11,11 @@ let isPlaying = false;
 
 // Parámetros ajustables
 let params = {
-    depth: 3, // Reducimos la profundidad para simplificar los triángulos
+    depth: 3,
     sizeFactor: 0.6,
     colorHue: 200,
-    colorSaturation: 50, // Saturación baja para colores pastel
-    colorLightness: 80, // Luminosidad alta para colores suaves
+    colorSaturation: 50,
+    colorLightness: 80,
     playerSize: 20,
 };
 
@@ -28,8 +28,8 @@ let rhythmInterval;
 
 // Generar figuras iniciales
 function generateShapes() {
-    const cols = 8;
-    const rows = 8;
+    const cols = Math.max(6, Math.floor(canvas.width / 100)); // Ajustar columnas según el ancho
+    const rows = Math.max(6, Math.floor(canvas.height / 100)); // Ajustar filas según el alto
     const cellWidth = canvas.width / cols;
     const cellHeight = canvas.height / rows;
 
@@ -41,12 +41,12 @@ function generateShapes() {
             shapes.push({
                 x,
                 y,
-                size: cellWidth * params.sizeFactor,
+                size: Math.min(cellWidth, cellHeight) * params.sizeFactor,
                 depth: params.depth,
                 active: false,
-                frequency: 200 + (i + j) * 50, // Frecuencia del sonido
-                angle: Math.random() * Math.PI * 2, // Rotación inicial
-                speed: Math.random() * 0.02 + 0.01, // Velocidad de rotación
+                frequency: 200 + (i + j) * 50,
+                angle: Math.random() * Math.PI * 2,
+                speed: Math.random() * 0.02 + 0.01,
             });
         }
     }
@@ -103,15 +103,15 @@ function playSound(frequency) {
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
 
-    oscillator.type = 'sine'; // Tipo de onda
+    oscillator.type = 'sine';
     oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); // Volumen bajo
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
 
     oscillator.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 
     oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.2); // Duración del sonido
+    oscillator.stop(audioCtx.currentTime + 0.2);
 }
 
 // Reproducir ritmo de fondo
@@ -129,7 +129,7 @@ function playRhythm() {
 
         kick.start();
         kick.stop(audioCtx.currentTime + 0.1);
-    }, 500); // Cada 500ms
+    }, 500);
 }
 
 // Dibujar el jugador
@@ -154,12 +154,19 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// Eventos
+// Eventos para manejar el movimiento en móviles y escritorio
 canvas.addEventListener('mousemove', (event) => {
     mouse.x = event.clientX;
     mouse.y = event.clientY;
 });
 
+canvas.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    mouse.x = touch.clientX;
+    mouse.y = touch.clientY;
+});
+
+// Ajustar el tamaño del canvas al cambiar el tamaño de la ventana
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
