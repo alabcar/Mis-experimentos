@@ -7,7 +7,7 @@ canvas.height = window.innerHeight;
 
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
 let obstacles = [];
-let stars = [];
+let backgroundLayers = []; // Declaración de las capas de fondo
 let isPlaying = false;
 let time = 0;
 let score = 0;
@@ -83,42 +83,6 @@ const funnyPhrases = [
     "Albert te ganó, ¡qué derrota tan pagana!",
     "Dani te atrapó, ¡qué jugada tan lejana!",
     "Albert y Dani, ¡te dejaron sin semana!",
-    "Dani te venció, ¡qué derrota tan cercana!",
-    "Albert te atrapó, ¡qué caída tan humana!",
-    "Dani y Albert, ¡te dejaron sin ventana!",
-    "Albert te ganó, ¡qué derrota tan profana!",
-    "Dani te atrapó, ¡qué jugada tan arcana!",
-    "Albert y Dani, ¡te dejaron sin manzana!",
-    "Dani te venció, ¡qué derrota tan temprana!",
-    "Albert te atrapó, ¡qué caída tan villana!",
-    "Dani y Albert, ¡te dejaron sin banana!",
-    "Albert te ganó, ¡qué derrota tan pagana!",
-    "Dani te atrapó, ¡qué jugada tan lejana!",
-    "Albert y Dani, ¡te dejaron sin semana!",
-    "Dani te venció, ¡qué derrota tan cercana!",
-    "Albert te atrapó, ¡qué caída tan humana!",
-    "Dani y Albert, ¡te dejaron sin ventana!",
-    "Albert te ganó, ¡qué derrota tan profana!",
-    "Dani te atrapó, ¡qué jugada tan arcana!",
-    "Albert y Dani, ¡te dejaron sin manzana!",
-    "Dani te venció, ¡qué derrota tan temprana!",
-    "Albert te atrapó, ¡qué caída tan villana!",
-    "Dani y Albert, ¡te dejaron sin banana!",
-    "Albert te ganó, ¡qué derrota tan pagana!",
-    "Dani te atrapó, ¡qué jugada tan lejana!",
-    "Albert y Dani, ¡te dejaron sin semana!",
-    "Dani te venció, ¡qué derrota tan cercana!",
-    "Albert te atrapó, ¡qué caída tan humana!",
-    "Dani y Albert, ¡te dejaron sin ventana!",
-    "Albert te ganó, ¡qué derrota tan profana!",
-    "Dani te atrapó, ¡qué jugada tan arcana!",
-    "Albert y Dani, ¡te dejaron sin manzana!",
-    "Dani te venció, ¡qué derrota tan temprana!",
-    "Albert te atrapó, ¡qué caída tan villana!",
-    "Dani y Albert, ¡te dejaron sin banana!",
-    "Albert te ganó, ¡qué derrota tan pagana!",
-    "Dani te atrapó, ¡qué jugada tan lejana!",
-    "Albert y Dani, ¡te dejaron sin semana!",
 ];
 
 // Añadir música electrónica
@@ -132,8 +96,7 @@ function generateBackgroundLayers() {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             speed: Math.random() * 0.5 + 0.2, // Velocidad de movimiento
-            text: Math.random() > 0.5 ? 'Dani' : 'Albert',
-            fontSize: Math.random() * 30 + 10, // Tamaño de fuente
+            size: Math.random() * 2 + 1, // Tamaño de las estrellas
         });
     }
 }
@@ -141,13 +104,14 @@ function generateBackgroundLayers() {
 // Dibujar capas de fondo
 function drawBackgroundLayers() {
     backgroundLayers.forEach((layer) => {
-        ctx.fillStyle = `rgba(255, 255, 255, 0.1)`; // Transparente para un efecto artístico
-        ctx.font = `${layer.fontSize}px Arial`;
-        ctx.fillText(layer.text, layer.x, layer.y);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(layer.x, layer.y, layer.size, 0, Math.PI * 2);
+        ctx.fill();
 
         // Mover las capas
         layer.x -= layer.speed;
-        if (layer.x + ctx.measureText(layer.text).width < 0) {
+        if (layer.x < 0) {
             layer.x = canvas.width;
             layer.y = Math.random() * canvas.height;
         }
@@ -286,6 +250,7 @@ window.addEventListener('resize', () => {
 
 // Iniciar el juego al hacer clic en el botón
 document.getElementById('startButton').addEventListener('click', () => {
+    showRandomPhrase(); // Mostrar frase al inicio
     document.getElementById('startButton').style.display = 'none';
     isPlaying = true;
     backgroundMusic.play(); // Iniciar la música al comenzar el juego
