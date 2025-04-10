@@ -7,6 +7,7 @@ canvas.height = window.innerHeight;
 
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
 let obstacles = [];
+let backgroundLayers = [];
 let isPlaying = false;
 let time = 0;
 let score = 0;
@@ -15,43 +16,61 @@ let score = 0;
 let params = {
     gravity: 0.5,
     jumpStrength: -10,
-    obstacleSpeed: 5,
-    obstacleFrequency: 90,
+    obstacleSpeed: 4,
+    obstacleFrequency: 120,
     colorHue: 200,
-    colorSaturation: 50,
-    colorLightness: 80,
-    gapSize: 250, // Aumentar el tamaño del agujero
+    colorSaturation: 70,
+    colorLightness: 50,
+    gapSize: 300, // Más espacio entre obstáculos
 };
 
 // Añadir música electrónica
 const backgroundMusic = new Audio('path/to/electronic-music.mp3'); // Reemplaza con la ruta de tu archivo de música
 backgroundMusic.loop = true;
 
+// Generar capas de fondo
+function generateBackgroundLayers() {
+    for (let i = 0; i < 10; i++) {
+        backgroundLayers.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            speed: Math.random() * 0.5 + 0.2, // Velocidad de movimiento
+            text: Math.random() > 0.5 ? 'Dani' : 'Albert',
+            fontSize: Math.random() * 30 + 10, // Tamaño de fuente
+        });
+    }
+}
+
+// Dibujar capas de fondo
+function drawBackgroundLayers() {
+    backgroundLayers.forEach((layer) => {
+        ctx.fillStyle = `rgba(255, 255, 255, 0.1)`; // Transparente para un efecto artístico
+        ctx.font = `${layer.fontSize}px Arial`;
+        ctx.fillText(layer.text, layer.x, layer.y);
+
+        // Mover las capas
+        layer.x -= layer.speed;
+        if (layer.x + ctx.measureText(layer.text).width < 0) {
+            layer.x = canvas.width;
+            layer.y = Math.random() * canvas.height;
+        }
+    });
+}
+
 // Dibujar el jugador
 function drawPlayer() {
     ctx.beginPath();
     ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillStyle = 'rgba(0, 255, 255, 0.8)'; // Color ciberpunk
     ctx.fill();
     ctx.closePath();
-
-    // Dibujar el nombre "Alberto" en el jugador
-    ctx.fillStyle = 'black';
-    ctx.font = '12px Arial';
-    ctx.fillText('Alberto', player.x - player.size / 2, player.y + 4);
 }
 
 // Dibujar obstáculos
 function drawObstacles() {
-    obstacles.forEach((obstacle, index) => {
+    obstacles.forEach((obstacle) => {
         ctx.fillStyle = `hsl(${(params.colorHue + time * 5) % 360}, ${params.colorSaturation}%, ${params.colorLightness}%)`;
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-
-        // Dibujar nombres "Dani" y "Albert" en las barras
-        ctx.fillStyle = 'white';
-        ctx.font = '16px Arial';
-        const name = index % 2 === 0 ? 'Dani' : 'Albert';
-        ctx.fillText(name, obstacle.x + 5, obstacle.y + obstacle.height / 2);
     });
 }
 
@@ -60,8 +79,6 @@ function generateObstacles() {
     if (time % params.obstacleFrequency === 0) {
         const height = Math.random() * (canvas.height / 2);
         const gap = params.gapSize; // Usar el tamaño del agujero ajustado
-
-        // Barras horizontales
         obstacles.push({
             x: canvas.width,
             y: 0,
@@ -74,18 +91,6 @@ function generateObstacles() {
             width: 30,
             height: canvas.height - height - gap,
         });
-
-        // Barras verticales (opcional)
-        if (Math.random() > 0.5) {
-            const verticalHeight = 100;
-            const verticalY = Math.random() * (canvas.height - verticalHeight);
-            obstacles.push({
-                x: canvas.width,
-                y: verticalY,
-                width: 30,
-                height: verticalHeight,
-            });
-        }
     }
 }
 
@@ -130,10 +135,11 @@ function resetGame() {
 function animate() {
     if (!isPlaying) return;
 
-    ctx.fillStyle = `rgba(0, 0, 0, 0.2)`;
+    ctx.fillStyle = `rgba(0, 0, 0, 0.2)`; // Fondo semitransparente
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Dibujar y actualizar elementos
+    drawBackgroundLayers();
     drawPlayer();
     drawObstacles();
     generateObstacles();
@@ -188,3 +194,6 @@ document.getElementById('startButton').addEventListener('click', () => {
     backgroundMusic.play(); // Iniciar la música al comenzar el juego
     animate();
 });
+
+// Generar las capas de fondo al inicio
+generateBackgroundLayers();
