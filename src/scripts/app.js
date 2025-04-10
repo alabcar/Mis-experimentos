@@ -16,7 +16,7 @@ let params = {
     colorHue: 200,
     colorSaturation: 50,
     colorLightness: 80,
-    playerSize: 20,
+    playerSize: 20, 
 };
 
 // Figuras musicales en la cuadrícula
