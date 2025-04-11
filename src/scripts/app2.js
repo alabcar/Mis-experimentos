@@ -2,7 +2,9 @@ const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 document.body.appendChild(canvas);
 
-canvas.width = window.innerWidth;
+// Configurar el tamaño inicial del canvas con un ancho mínimo
+const minWidth = 600; // Ancho mínimo en píxeles
+canvas.width = Math.max(window.innerWidth, minWidth);
 canvas.height = window.innerHeight;
 
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
@@ -351,7 +353,8 @@ canvas.addEventListener('click', () => {
 
 // Ajustar el tamaño del canvas al cambiar el tamaño de la ventana
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
+    const minWidth = 600; // Ancho mínimo en píxeles
+    canvas.width = Math.max(window.innerWidth, minWidth);
     canvas.height = window.innerHeight;
     drawMenu();
 });
