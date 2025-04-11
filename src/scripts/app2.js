@@ -2,11 +2,38 @@ const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 document.body.appendChild(canvas);
 
-// Configurar el tamaño inicial del canvas con un ancho mínimo
-const minWidth = 600; // Ancho mínimo en píxeles
-canvas.width = Math.max(window.innerWidth, minWidth);
-canvas.height = window.innerHeight;
+// Configurar relación de aspecto fija (16:9)
+const aspectRatio = 16 / 9;
 
+function resizeCanvas() {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Calcular el ancho y alto del canvas manteniendo la relación de aspecto
+    let canvasWidth = windowWidth;
+    let canvasHeight = canvasWidth / aspectRatio;
+
+    // Si la altura calculada es mayor que la altura de la ventana, ajustar al alto
+    if (canvasHeight > windowHeight) {
+        canvasHeight = windowHeight;
+        canvasWidth = canvasHeight * aspectRatio;
+    }
+
+    // Aplicar tamaño al canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    // Centrar el canvas en la pantalla
+    canvas.style.position = 'absolute';
+    canvas.style.top = `${(windowHeight - canvasHeight) / 2}px`;
+    canvas.style.left = `${(windowWidth - canvasWidth) / 2}px`;
+    canvas.style.backgroundColor = 'black'; // Fondo negro para rellenar los márgenes
+}
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Variables del juego
 let player = { x: 100, y: canvas.height / 2, size: 20, dy: 0 };
 let obstacles = [];
 let stars = [];
@@ -370,3 +397,33 @@ document.getElementById('startButton').addEventListener('click', () => {
 generateStars();
 generateMoon();
 drawMenu();
+
+// Ajustar el botón de inicio dinámicamente
+function positionStartButton() {
+    const button = document.getElementById('startButton');
+
+    // Estilizar el botón
+    button.style.position = 'absolute';
+    button.style.backgroundColor = '#00ffcc'; // Fondo cian brillante
+    button.style.color = '#000000'; // Texto negro
+    button.style.border = '2px solid #ffffff'; // Borde blanco
+    button.style.fontSize = '24px'; // Tamaño de fuente más grande
+    button.style.padding = '15px 30px'; // Más espacio en el botón
+    button.style.borderRadius = '10px'; // Bordes redondeados
+    button.style.boxShadow = '0px 0px 15px #00ffcc'; // Efecto de brillo
+
+    // Posicionar el botón en el centro del canvas
+    button.style.top = `${canvas.offsetTop + canvas.height / 2 - 50}px`; // Centrar verticalmente
+    button.style.left = `${canvas.offsetLeft + canvas.width / 2}px`; // Centrar horizontalmente
+    button.style.transform = 'translate(-50%, -50%)'; // Ajustar para centrar
+}
+
+// Llamar a la función al redimensionar la ventana
+window.addEventListener('resize', () => {
+    resizeCanvas();
+    positionStartButton();
+});
+
+// Llamar a la función al cargar la página
+resizeCanvas();
+positionStartButton();
