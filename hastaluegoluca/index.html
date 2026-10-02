@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>¡No llegas!</title>
+<title>¡Hasta luego Luca!</title>
 <meta name="description" content="El tenis de los piques. Devuelve todas las bolas que puedas y reta a tus amigos con las mismas bolas.">
 <meta name="theme-color" content="#2c5fd6">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,7 +36,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(20,33,61,.28);z-index:5;overflow:auto}
 .card{background:var(--paper);border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 0 var(--ink);width:min(100%,420px);max-height:calc(100dvh - 32px);overflow:auto;padding:20px 18px 18px;touch-action:pan-y;text-align:center;animation:rise .35s cubic-bezier(.2,1.3,.4,1)}
 @keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
-.logo{font-family:'Lilita One',system-ui,sans-serif;font-weight:400;font-size:58px;line-height:.92;margin:4px 0 2px;color:var(--hot);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink);transform:rotate(-3deg)}
+.logo{font-family:'Lilita One',system-ui,sans-serif;font-weight:400;font-size:min(13vw,54px);line-height:.92;margin:4px 0 2px;color:var(--hot);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink);transform:rotate(-3deg)}
 .tag{margin:8px 0 14px;font-weight:900;color:var(--muted)}
 h2{font-family:'Lilita One',system-ui,sans-serif;font-weight:400;font-size:30px;margin:6px 0 4px;line-height:1.05}
 h3{font-size:15px;margin:16px 0 8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -59,6 +59,8 @@ input[type=text]:focus{box-shadow:0 0 0 4px var(--ball)}
 .big{font-family:'Lilita One',system-ui,sans-serif;font-size:76px;line-height:.95;color:var(--blue);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink)}
 .sub{font-weight:900;color:var(--muted);margin-top:4px}
 .line{font-weight:900;font-size:18px;margin:12px 0 4px}
+.joke{background:#fff;border:2.5px dashed var(--ink);border-radius:14px;padding:10px 12px;font-weight:800;font-size:15px;line-height:1.35;margin:10px 0 0;text-align:left}
+.joke::before{content:'🎙️ Y ahora, un chiste: ';font-weight:900;color:var(--hot)}
 .fine{font-size:13px;color:var(--muted);font-weight:800;margin:14px 0 0}
 .warn{background:#ffe1d9;border:2.5px solid var(--hot);border-radius:12px;padding:8px;font-weight:800;font-size:14px}
 .facebig{width:150px;height:150px;display:block;margin:0 auto}
@@ -104,7 +106,7 @@ input[type=range]{width:100%;accent-color:var(--hot)}
 <!-- Inicio -->
 <div class="screen" id="home" hidden>
   <div class="card">
-    <h1 class="logo">¡No<br>llegas!</h1>
+    <h1 class="logo">¡Hasta luego<br>Luca!</h1>
     <p class="tag">El tenis de los piques</p>
     <div class="me">
       <canvas id="meFace" width="192" height="192"></canvas>
@@ -126,6 +128,7 @@ input[type=range]{width:100%;accent-color:var(--hot)}
         <li>Desliza el dedo a los lados para llegar a la bola (en el ordenador, el ratón o las flechas).</li>
         <li>Si te llega al centro del cuerpo, cabezazo. Con el balón de fútbol, ¡golazo!: <b>+3</b>.</li>
         <li>Con la punta de la raqueta, puntazo: <b>+3</b>. Pero es más fácil fallar.</li>
+        <li>La raya bajo tus pies te dice dónde le vas a dar: amarillo es la cabeza, blanco la raqueta y rojo la punta.</li>
         <li>Esquiva las chanclas, que duelen.</li>
         <li>Al acabar, manda el reto: tu rival jugará con las mismas bolas.</li>
       </ul>
@@ -161,6 +164,7 @@ input[type=range]{width:100%;accent-color:var(--hot)}
     <div class="big" id="endScore">0</div>
     <div class="sub" id="endSub">puntos</div>
     <p id="endLine" class="line"></p>
+    <p id="endJoke" class="joke"></p>
     <ol id="board" class="board"></ol>
     <button id="again" class="btn">Otra vez</button>
     <button id="shareBtn" class="btn hot">Mandar el reto</button>
@@ -239,17 +243,17 @@ function newSeed() {
 
 /* ---------- el comentarista (homenaje a Chiquito de la Calzada) ---------- */
 const L = {
-  start: ['¿Preparao, {name}? ¡Al ataquerl!', '¡Cuidadín, fistro, que vienen bolas!', '¡Por la gloria de mi madre, que empiece el partido!', '¿Te das cuenta, {name}? ¡Esto va a ser un no parar!', '¡Jarl! A ver qué sabe hacer este pecador.', '¡Siete caballos que vienen de Bonanza! ¡Y todos a por ti, {name}!', '¡Atención, pecadores de la pradera, que sale {name}!'],
-  ret: ['¡Toma, fistro!', '¡Jarl, qué derechazo!', '¡Eso es un revés de la pradera!', '¡Condemor, qué muñeca!', '¡No puedorl con tanto arte!', '¡Qué pedazo de golpe, pecador!', '¿Te das cuenta? ¡Qué zarpazo!', '¡Hasta luego, bolita!', '¡Eso no lo devuelve ni un torpedo!', '¡Lo veo, lo veo, lo veo!', '¡Fistro raquetero!', '¡Diodenal! ¡Qué golpe!', '¡A wan, a peich!', '¡Ahí va, ahí va, ahí va!', '¡Esa bola va más rápida que un caballo de Bonanza!', '¡Cobarde! ¡Que la bola se esconde de ti!'],
+  start: ['¿Preparao, {name}? ¡Al ataquerl!', '¡Cuidadín, fistro, que vienen bolas!', '¡Por la gloria de mi madre, que empiece el partido!', '¡Te das cuénn, {name}! ¡Esto va a ser un no parar!', '¡Jarl! A ver qué sabe hacer este pecador.', '¡Siete caballos que vienen de Bonanza! ¡Y todos a por ti, {name}!', '¡Atención, pecadores de la pradera, que sale {name}!'],
+  ret: ['¡Toma, fistro!', '¡Jarl, qué derechazo!', '¡Eso es un revés de la pradera!', '¡Condemor, qué muñeca!', '¡No puedorl con tanto arte!', '¡Qué pedazo de golpe, pecador!', '¡Te das cuénn! ¡Qué zarpazo!', '¡Hasta luego, bolita!', '¡Eso no lo devuelve ni un torpedo!', '¡Lo veo, lo veo, lo veo!', '¡Fistro raquetero!', '¡Diodenal! ¡Qué golpe!', '¡A wan, a peich!', '¡Ahí va, ahí va, ahí va!', '¡Esa bola va más rápida que un caballo de Bonanza!', '¡Cobarde! ¡Que la bola se esconde de ti!'],
   head: ['¡De cabezarl! ¡Como en el fútbol, fistro!', '¡Con el melón! ¡No puedorl!', '¡Remate de cabeza, por la gloria de mi madre!', '¡Cabezazo de la pradera!', '¡Ese melón tiene más efecto que un pecador!'],
   golazo: ['¡GOLAZO DE LA PRADERA!', '¡Gol, gol, golorl!', '¡Golazo de cabeza! ¡Por la gloria de mi madre!'],
-  winner: ['¡PUNTAZO! ¡El rival se ha quedao como un fistro!', '¡Ganador! ¡Hasta luego, Lucas!', '¡Al rincón, pecador de la pradera!', '¡Jarl! ¡No llega ni con siete caballos!', '¡Que se ha caído, que se ha caídorl!', '¡Puntazo! ¡Te das cuenta, qué arte!', '¡Esa al rincón, como los cobardes!'],
+  winner: ['¡PUNTAZO! ¡El rival se ha quedao como un fistro!', '¡Ganador! ¡Hasta luego, Luca!', '¡Al rincón, pecador de la pradera!', '¡Jarl! ¡No llega ni con siete caballos!', '¡Que se ha caído, que se ha caídorl!', '¡Puntazo! ¡Te das cuénn, qué arte!', '¡Esa al rincón, como los cobardes!'],
   pass: ['¡Has pasado a {rival}! ¡Hasta luego, {rival}!', '¡{rival} se ha quedao atrás como un fistro!', '¡Adiós, {rival}, pecador de la pradera!', '¡Jarl! ¡{rival} ya no puedorl contigo!'],
   mile: ['¡{n} puntos! ¡No puedorl!', '¡{n}! ¡Por la gloria de mi madre!', '¡{n} puntos, fistro! ¡Esto es un torpedo!', '¡Llevas {n}! ¡Siete caballos que vienen de Bonanza!'],
-  miss: ['¡Pecador! ¡Que no llegas!', '¡Jarl! ¡En toda la cara!', '¡Te ha dao en el melón, fistro!', '¡No llegas, cobarde, que no llegas!', '¡Hasta luego, Lucas!', '¿Te das cuenta? ¡Ni la has olido!', '¡Quietor estabas, como un fistro!', '¡Por la gloria de mi madre, qué paquetorl!', '¡Condemor! ¡Esa pasaba por al lado!'],
+  miss: ['¡Pecador! ¡Que no llegas!', '¡Jarl! ¡En toda la cara!', '¡Te ha dao en el melón, fistro!', '¡No llegas, cobarde, que no llegas!', '¡Hasta luego, Luca!', '¡Te das cuénn! ¡Ni la has olido!', '¡Quietor estabas, como un fistro!', '¡Por la gloria de mi madre, qué paquetorl!', '¡Condemor! ¡Esa pasaba por al lado!'],
   chanclazo: ['¡CHANCLAZO! ¡Esto no se hace, pecador!', '¡La abuela no falla nunca, fistro!', '¡Chanclazo de la pradera! ¡No puedorl!', '¡Jarl! ¡Te ha dao la zapatilla en todo el melón!'],
   dodge: ['¡Esquivada! ¡Cobarde, pero listo!', '¡Uy, la chancla! ¡Por los pelos, fistro!'],
-  i_canon: ['¡Cañonazo! ¿Te das cuenta?', '¡Ahí viene un torpedo, fistro!'],
+  i_canon: ['¡Cañonazo! ¡Te das cuénn!', '¡Ahí viene un torpedo, fistro!'],
   i_efecto: ['¡Con efecto, pecador! ¡Que se tuerce!', '¡Esa bola va más torcida que un fistro!'],
   i_globo: ['¡Globo de la pradera! ¡Mira p\'arriba!', '¡Una bola que va al cielo, fistro!'],
   i_pollo: ['¡Cuidao, que viene un pollo, fistro!', '¡Un pollo! ¡No puedorl!', '¡Ese pollo tiene más efecto que un pecador!'],
@@ -257,11 +261,29 @@ const L = {
   i_chancla: ['¡Chancla de la abuela! ¡Esquívala, cobarde!', '¡Que te cae la zapatilla, fistro!'],
   i_triple: ['¡Tres bolas! ¡No puedorl!', '¡Triplete, pecador de la pradera!'],
   i_balon: ['¡Balón al campo! ¡De cabeza, pecador!', '¡Un balón de fútbol! ¡Golazo si le das con el melón!'],
-  i_fantasma: ['¡Una bola fantasma! ¡Mira la sombra, fistro!', '¡Bola invisible! ¡Te das cuenta!'],
+  i_fantasma: ['¡Una bola fantasma! ¡Mira la sombra, fistro!', '¡Bola invisible! ¡Te das cuénn!'],
   record: ['¡Récord nuevo! ¡Por la gloria de mi madre!', '¡Récord, fistro! ¡Esto hay que mandarlo!'],
   beat: ['¡Le has ganado a {rival}! ¡Mándale el reto, que se entere!', '¡{rival} va a llorar más que un fistro! ¡Mándaselo!'],
   lose: ['Te faltan {d} para pillar a {rival}. ¡No puedorl! ¿Otra?', '¡{rival} te gana por {d}, pecador! ¿Otra?', 'A {d} puntos de {rival}. ¡Al ataquerl otra vez!'],
-  solo: ['¡{n} puntos! Ahora reta a alguien, fistro.', '¿Te das cuenta? Manda el reto a ver quién llega.']
+  joke: [
+    '¡Paparl, paparl, llévame al circorl! ¡Norl! El que quiera verte, que venga a casa. ¡Jarl!',
+    'Era un enano tan pequeño, tan pequeño, que se subió a una canica y gritó: ¡el mundo es mío! ¡Fistro!',
+    'Va un caracol, se sube a una tortuga y dice: ¡uiiiii, qué velocidarl!',
+    '¿Cómo se dice pañuelo en japonés? ¡Saka-moko! ¡Te das cuénn!',
+    'Era un hombre tan alto, tan alto, que se tropezó el lunes y se cayó el jueves. ¡Hasta luego, Luca!',
+    'Tengo un perro que no tiene patas. ¿Y cómo se llama? ¡Da igual, no viene! ¡Jarl!',
+    'Era un tenista tan malo, tan malo, que perdió el calentamiento seis a cero. ¡No puedorl!',
+    'Doctor, doctor, veo bolas amarillas por todas partes. ¡Normal, pecador, que está usted en una pista de tenis!',
+    'Era uno tan lento, tan lento, que la tortuga le pidió paso. ¡Por la gloria de mi madre!',
+    'Camarero, hay una mosca en mi sopa. Tranquilo, que poco se va a comer, fistro.',
+    '¿Qué hace una abeja en el gimnasio? ¡Zumba! ¡Jarl!',
+    'Era un pollo tan rápido, tan rápido, que llegó al restaurante antes que el cocinero. ¡Cobarde!',
+    'Mamarl, mamarl, en el cole me llaman despistao. Niño, ¡que tú no vives aquí! ¡Fistro!',
+    'Era un portero tan bueno, tan bueno, que paraba hasta los autobuses. ¡Te das cuénn!',
+    '¿Por qué la pelota de tenis nunca se aburre? ¡Porque siempre está de ida y vuelta, pecador!',
+    'Era uno tan bajito, tan bajito, que se le cayó la raqueta y se hizo una casa. ¡Diodenal!'
+  ],
+  solo: ['¡{n} puntos! Ahora reta a alguien, fistro.', '¡Te das cuénn! Manda el reto a ver quién llega.']
 };
 const lastPick = {};
 function line(cat, vars) {
@@ -319,31 +341,43 @@ let esVoice = null;
 function pickVoice() {
   try {
     const vs = speechSynthesis.getVoices();
-    esVoice = vs.find(v => /^es[-_]ES/i.test(v.lang)) || vs.find(v => /^es/i.test(v.lang)) || null;
+    // Las voces de mejor calidad primero (Google, «natural»/«neural», voces conocidas de Apple y Microsoft)
+    const score = v => (/^es[-_]ES/i.test(v.lang) ? 10 : /^es/i.test(v.lang) ? 4 : -99)
+      + (/natural|neural|online|premium|enhanced|mejorad/i.test(v.name) ? 6 : 0)
+      + (/google/i.test(v.name) ? 5 : 0)
+      + (/m[oó]nica|jorge|[aá]lvaro|elvira|dalia|marisol|paulina|pablo/i.test(v.name) ? 3 : 0)
+      + (v.localService === false ? 1 : 0);
+    esVoice = vs.filter(v => score(v) > 0).sort((a, b) => score(b) - score(a))[0] || null;
   } catch (e) { esVoice = null; }
 }
 const canSpeak = 'speechSynthesis' in window;
 if (canSpeak) { pickVoice(); try { speechSynthesis.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
-function speak(text) {
+// Solo habla en los momentos importantes. Una frase no corta a otra de igual o menor importancia.
+let speakPri = 0;
+function speak(text, pri = 1, queue = false) {
   if (muted || !voiceOn || !canSpeak) return;
   try {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text.replace(/[^\p{L}\p{N}\s¡!¿?,.']/gu, ''));
+    const busy = speechSynthesis.speaking || speechSynthesis.pending;
+    if (busy && !queue) { if (pri <= speakPri) return; speechSynthesis.cancel(); }
+    const clean = text.replace(/rl\b/g, 'r').replace(/[^\p{L}\p{N}\s¡!¿?,.']/gu, '');
+    const u = new SpeechSynthesisUtterance(clean);
     u.lang = 'es-ES'; if (esVoice) u.voice = esVoice;
-    u.rate = 1.1; u.pitch = 0.85; u.volume = 1;
+    u.rate = 1.05; u.pitch = 1; u.volume = 1;
+    u.onend = u.onerror = () => { if (!speechSynthesis.speaking && !speechSynthesis.pending) speakPri = 0; };
+    speakPri = Math.max(queue ? speakPri : 0, pri);
     speechSynthesis.speak(u);
   } catch (e) {}
 }
-function shutUp() { if (canSpeak) try { speechSynthesis.cancel(); } catch (e) {} }
+function shutUp() { speakPri = 0; if (canSpeak) try { speechSynthesis.cancel(); } catch (e) {} }
 
 let sayT = 0;
-function say(text, force) {
+function say(text, force, voice) {
   if (!force && sayT > 0.6) return;
   const el = $('#say');
   el.textContent = text; el.hidden = false;
   el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
   sayT = 2.4;
-  speak(text);
+  if (voice) speak(text, voice === true ? 1 : voice);
 }
 function hideSay() { sayT = 0; $('#say').hidden = true; }
 
@@ -499,7 +533,7 @@ function P(x, z, h) {
 }
 
 /* ---------- juego ---------- */
-const REACH = 0.34, HEAD = 0.075, EDGE = 0.255, CH_R = 0.12;
+const REACH = 0.34, HEAD = 0.09, EDGE = 0.25, CH_R = 0.12, HEAD_H = 0.83;
 const KINDS = ['canon', 'efecto', 'globo', 'pollo', 'tortuga', 'chancla', 'triple', 'balon', 'fantasma'];
 const INTRO = { canon: 4, efecto: 7, globo: 9, pollo: 11, tortuga: 13, chancla: 15, triple: 17, balon: 19, fantasma: 21 };
 const WEIGHT = { canon: 0.5, efecto: 0.5, globo: 0.35, pollo: 0.35, tortuga: 0.3, chancla: 0.3, triple: 0.22, balon: 0.25, fantasma: 0.22 };
@@ -542,7 +576,7 @@ function startGame(seed) {
   state = 'count'; G.countT = 0;
   $('#scoreBox').hidden = false;
   paintHud();
-  say(line('start', { name: me }), true);
+  say(line('start', { name: me }), true, true);
   bigMsg('¿Preparao?');
   SFX.beep(false);
 }
@@ -556,7 +590,7 @@ function bigMsg(t) {
 function mkBall(kind, x1, Tm, delay, sp) {
   const b = { kind, x0: G.ox, x1, aim: x1, T: Tm, t: -delay, ub: 0.72, a1: 0.32, a2: 0.22, curve: 0, warp: false, u: 0, trail: [], spin: Math.random() * 6 };
   switch (kind) {
-    case 'canon': b.T = Tm * 0.72; b.a1 = 0.08; b.a2 = 0.08; break;
+    case 'canon': b.T = Tm * 0.72; b.a1 = 0.2; b.a2 = 0.08; break;
     case 'efecto': b.curve = (sp.r1 < 0.5 ? -1 : 1) * (0.35 + sp.r2 * 0.2); b.aim = x1 - b.curve; break;
     case 'globo': b.T = Tm * 1.3; b.a1 = 1.5; b.a2 = 0.3; b.ub = 0.8; break;
     case 'pollo': b.T = Tm * 1.1; b.a1 = 0.45; break;
@@ -598,8 +632,8 @@ function inPos(b, u) {
   const z = 1 - u;
   let h;
   if (u < b.ub) { const s = u / b.ub; h = lerp(0.5, 0, s) + b.a1 * 4 * s * (1 - s); }
-  else if (u <= 1) { const s = (u - b.ub) / (1 - b.ub); h = lerp(0, 0.5, s) + b.a2 * 4 * s * (1 - s); }
-  else h = 0.5 + (u - 1) * 0.6;
+  else if (u <= 1) { const s = (u - b.ub) / (1 - b.ub); h = lerp(0, b.hEnd || 0.5, s) + b.a2 * 4 * s * (1 - s); }
+  else h = (b.hEnd || 0.5) + (u - 1) * 0.6;
   return { x, z, h };
 }
 function outPos(o, u) {
@@ -622,7 +656,7 @@ function addScore(pts, label, sx, sy, col) {
   pops.push({ text: label, x: sx, y: sy, t: 0, col });
   if (G.rival && !G.passed && G.score > G.rival[1]) {
     G.passed = true; crowdJump = 1.4; SFX.cheer();
-    say(line('pass', { rival: G.rival[0] }), true);
+    say(line('pass', { rival: G.rival[0] }), true, true);
   } else if (Math.floor(G.score / 10) > Math.floor(before / 10)) {
     say(line('mile', { n: Math.floor(G.score / 10) * 10 }), true);
   }
@@ -633,9 +667,11 @@ function resolve(b) {
   const dx = b.x1 - G.px, ad = Math.abs(dx);
   G.balls.splice(G.balls.indexOf(b), 1);
   if (ad > REACH) return miss(b);
-  const hp = P(b.x1, 0, 0.5);
   let kind = 'ret';
   if (ad <= HEAD) kind = 'head'; else if (ad >= EDGE) kind = 'winner';
+  const hp = P(b.x1, 0, kind === 'head' ? HEAD_H : 0.5);
+  G.freeze = kind === 'winner' ? 0.11 : 0.06;
+  impact(hp.x, hp.y, kind !== 'ret');
   let xb;
   if (kind === 'winner') { xb = Math.sign(dx) * (1.0 + Math.random() * 0.15); G.anyWinner = true; G.oTarget = Math.sign(dx) * 0.78; }
   else if (kind === 'head') { xb = G.ox * 0.4 + (Math.random() - 0.5) * 0.3; G.oTarget = xb; }
@@ -645,12 +681,12 @@ function resolve(b) {
     G.jump = 0.35; G.headSq = 0.5; SFX.boing(); buzz(20);
     const gol = b.kind === 'balon';
     addScore(gol ? 3 : 1, gol ? '¡GOLAZO! +3' : '¡Cabezazo! +1', hp.x, hp.y - HW * 0.5, '#ffd400');
-    say(line(gol ? 'golazo' : 'head'), true);
+    say(line(gol ? 'golazo' : 'head'), true, gol);
     if (gol) { crowdJump = 1.2; SFX.cheer(); }
   } else {
     G.swing = 0.22; G.side = Math.sign(dx) || 1;
     SFX.pock(kind === 'winner' ? 1.3 : 1); buzz(kind === 'winner' ? 30 : 12);
-    if (kind === 'winner') { addScore(3, '¡PUNTAZO! +3', hp.x, hp.y - HW * 0.3, '#ff4d2e'); say(line('winner'), true); shake = 6; }
+    if (kind === 'winner') { addScore(3, '¡PUNTAZO! +3', hp.x, hp.y - HW * 0.3, '#ff4d2e'); say(line('winner'), true, true); shake = 6; }
     else { addScore(1, '+1', hp.x, hp.y - HW * 0.2, '#ffffff'); if (Math.random() < 0.3) say(line('ret')); }
   }
   burst(hp.x, hp.y, b.kind === 'pollo' ? 'feather' : 'spark', b.kind === 'pollo' ? 14 : 8);
@@ -659,7 +695,7 @@ function resolve(b) {
 function miss(b) {
   state = 'dying'; G.die = b; G.dieKind = 'ball'; G.dieT = 0; G.oMood = 'mock';
   b.t = b.T; b.dying = true; G.balls.push(b);
-  say(line('miss'), true); SFX.ooh();
+  say(line('miss'), true, 2); SFX.ooh();
 }
 function chanclazo(c) {
   state = 'dying'; G.dieKind = 'chancla'; G.dieT = 0.6; G.oMood = 'mock'; G.dizzy = true; G.headSq = 1; G.chOnHead = c.col;
@@ -668,9 +704,13 @@ function chanclazo(c) {
   pops.push({ text: '¡CHANCLAZO!', x: hp.x, y: hp.y - HW * 0.4, t: 0, col: '#ff5fa2', big: true });
   burst(hp.x, hp.y, 'star', 10);
   SFX.slap(); buzz([60, 40, 120]); shake = 16; flash = 0.6;
-  say(line('chanclazo'), true);
+  say(line('chanclazo'), true, 2);
 }
 
+function dust(x, y, s) {
+  for (let i = 0; i < 5; i++) parts.push({ x, y, vx: (Math.random() - 0.5) * 90 * s, vy: -Math.random() * 40 * s, life: 0.4, max: 0.4, kind: 'dust', rot: 0, r: (3 + Math.random() * 4) * Math.max(0.6, s) });
+}
+function impact(x, y, big) { parts.push({ x, y, vx: 0, vy: 0, life: 0.28, max: 0.28, kind: 'ring', rot: 0, r: big ? 1.6 : 1 }); }
 function burst(x, y, kind, n) {
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2, sp = (kind === 'feather' ? 80 : 160) + Math.random() * 180;
@@ -720,6 +760,7 @@ function update(dt) {
   for (let i = parts.length - 1; i >= 0; i--) {
     const p = parts[i]; p.life -= dt;
     if (p.life <= 0) { parts.splice(i, 1); continue; }
+    if (p.kind === 'ring') continue;
     p.vy += (p.kind === 'feather' ? 120 : 600) * dt; if (p.kind === 'feather') { p.vx *= 0.96; p.vy *= 0.94; }
     p.x += p.vx * dt; p.y += p.vy * dt; p.rot += dt * 5;
   }
@@ -743,6 +784,7 @@ function update(dt) {
   const od = G.oTarget - G.ox; G.ox += clamp(od, -3.2 * dt, 3.2 * dt); G.oRun = lerp(G.oRun, Math.abs(od) > 0.02 ? 1 : 0, 0.2);
   if (G.oDive > 0) G.oDive = Math.max(0, G.oDive - dt * 0.9);
 
+  if (state === 'play' && G.freeze > 0) { G.freeze -= dt; return; } // parón al golpear: se nota el contacto
   if (state === 'play') {
     G.time += dt;
     if (G.next !== null) { G.next -= dt; if (G.next <= 0) serve(); }
@@ -751,7 +793,8 @@ function update(dt) {
       if (b.t < 0) continue;
       if (!b.launched) { b.launched = true; SFX.serve(); G.oSwing = 0.22; }
       const tau = b.t / b.T; b.u = b.warp ? (tau <= 1 ? warpU(tau) : tau) : tau;
-      if (!b.bounced && b.u >= b.ub) { b.bounced = true; SFX.bounce(); }
+      if (!b.bounced && b.u >= b.ub) { b.bounced = true; SFX.bounce(); const bp = inPos(b, b.ub), q = P(bp.x, bp.z, 0); dust(q.x, q.y, q.s); }
+      if (b.u > b.ub) { const target = Math.abs(b.x1 - G.px) <= HEAD ? HEAD_H : 0.5; b.hEnd = lerp(b.hEnd || 0.5, target, Math.min(1, dt * 14)); }
       if (b.u >= 1) resolve(b);
       if (state !== 'play') break;
     }
@@ -807,10 +850,13 @@ function endGame() {
   else if (record && prev !== null) msg = line('record');
   else msg = line('solo', { n: G.score });
   $('#endLine').textContent = msg;
+  const joke = line('joke');
+  $('#endJoke').textContent = joke;
   fillBoard($('#board'), G.seed);
   $('#shareBtn').textContent = rv ? 'Mandar el reto a ' + rv[0] : 'Mandar el reto';
   $('#scoreBox').hidden = true;
-  hideSay(); setTimeout(() => { if (state === 'end') speak(msg); }, 250);
+  hideSay(); shutUp();
+  setTimeout(() => { if (state === 'end') { speak(msg, 2); speak('Y ahora, un chiste. ' + joke, 2, true); } }, 900);
   showScreen('end');
 }
 
@@ -850,7 +896,7 @@ function draw() {
   const bY = crowd.standBottom, bH = HW * 0.12;
   g.fillStyle = '#ff4d2e'; g.fillRect(-20, bY, W + 40, bH);
   g.fillStyle = '#fff'; g.font = `400 ${Math.round(bH * 0.62)}px 'Lilita One', system-ui, sans-serif`; g.textAlign = 'left'; g.textBaseline = 'middle';
-  const ad = '¡NO LLEGAS!   ·   FISTRO OPEN   ·   ';
+  const ad = '¡HASTA LUEGO LUCA!   ·   FISTRO OPEN   ·   ';
   const adW = g.measureText(ad).width || 200;
   const off = -((T * 30) % adW);
   for (let x = off; x < W; x += adW) g.fillText(ad, x, bY + bH * 0.55);
@@ -890,12 +936,20 @@ function draw() {
   let look = 0; if (V.balls.length) { const b = V.balls[0]; look = clamp((b.x1 - V.px) * 3, -1, 1); }
   let side = V.side;
   if (V.swing <= 0 && V.balls.length) { const b = V.balls.find(b => b.t >= 0) || V.balls[0]; side = Math.sign(b.x1 - V.px) || 1; }
+  if (G && (state === 'play' || state === 'count')) drawReach(g, V);
+  // en el último instante la raqueta va a buscar la bola
+  let aim = null;
+  const lead = V.balls.filter(b => b.t >= 0 && !b.dying).sort((a, b) => b.u - a.u)[0];
+  if (lead && V.swing <= 0) {
+    const dx = lead.x1 - V.px, left = (1 - lead.u) * lead.T;
+    if (left < 0.2 && Math.abs(dx) > HEAD && Math.abs(dx) <= REACH + 0.06) { const p = inPos(lead, lead.u), q = P(p.x, p.z, p.h); aim = { x: q.x, y: q.y }; side = Math.sign(dx) || 1; }
+  }
   const behind = near.filter(it => it.p.z > 0.02 || it.type === 'ch' && it.p.z > 0.02);
   const front = near.filter(it => !behind.includes(it));
   behind.forEach(it => drawThing(g, it));
   drawGuy(g, pp.x, pp.y, pu, playerName, {
     t: T, run: V.run, swing: V.swing > 0 ? 1 - V.swing / 0.22 : 0, side, jump: V.jump > 0 ? Math.sin((1 - V.jump / 0.35) * Math.PI) : 0,
-    squash: V.headSq, dizzy: V.dizzy, look, mood: V.dizzy ? 'ouch' : '', chancla: V.chOnHead
+    squash: V.headSq, dizzy: V.dizzy, look, mood: V.dizzy ? 'ouch' : '', chancla: V.chOnHead, aim
   });
   front.forEach(it => drawThing(g, it));
 
@@ -904,6 +958,8 @@ function draw() {
     g.save(); g.globalAlpha = clamp(p.life / p.max, 0, 1); g.translate(p.x, p.y); g.rotate(p.rot);
     if (p.kind === 'feather') { g.fillStyle = '#fff'; g.strokeStyle = INK; g.lineWidth = 1; g.beginPath(); g.ellipse(0, 0, 9, 3.5, 0, 0, 7); g.fill(); g.stroke(); }
     else if (p.kind === 'star') star(g, 0, 0, 9, '#ffd400');
+    else if (p.kind === 'dust') { g.fillStyle = 'rgba(255,255,255,.7)'; g.beginPath(); g.arc(0, 0, p.r * (1.6 - p.life / p.max), 0, 7); g.fill(); }
+    else if (p.kind === 'ring') { const k = 1 - p.life / p.max, rr = HW * 0.09 * p.r * (0.4 + k); g.rotate(-p.rot); g.lineWidth = Math.max(2, HW * 0.02 * (1 - k)); g.strokeStyle = '#fff'; g.beginPath(); for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2, q = i % 2 ? rr * 0.55 : rr; g.lineTo(Math.cos(a) * q, Math.sin(a) * q); } g.closePath(); g.fillStyle = 'rgba(255,212,0,' + (1 - k) + ')'; g.fill(); g.stroke(); }
     else { g.fillStyle = p.col; g.fillRect(-3, -3, 6, 6); }
     g.restore();
   }
@@ -949,6 +1005,20 @@ function drawNet(g) {
   g.strokeStyle = '#fff'; g.lineWidth = Math.max(3, HW * 0.025); g.beginPath(); g.moveTo(l1.x, l1.y); g.lineTo(r1.x, r1.y); g.stroke();
   g.strokeStyle = INK; g.lineWidth = Math.max(3, HW * 0.03);
   for (const [a, b] of [[l0, l1], [r0, r1]]) { g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y - 4); g.stroke(); }
+}
+// Zona de golpeo en el suelo: centro = cabezazo, blanco = raqueta, puntas rojas = puntazo
+function drawReach(g, V) {
+  const lead = V.balls.find(b => b.t >= 0);
+  const k = lead ? clamp((lead.u - 0.3) / 0.5, 0, 1) : 0;
+  const alpha = 0.3 + 0.55 * k, y = P(0, 0, 0).y, th = Math.max(4, HW * 0.035);
+  const X = x => P(V.px + x, 0, 0).x;
+  g.save(); g.globalAlpha = alpha; g.lineCap = 'round';
+  const seg = (a, b, col, w) => { g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(X(a), y); g.lineTo(X(b), y); g.stroke(); };
+  seg(-REACH, REACH, INK, th + 4);
+  seg(-REACH, REACH, '#ffffff', th);
+  seg(-REACH, -EDGE, '#ff4d2e', th); seg(EDGE, REACH, '#ff4d2e', th);
+  seg(-HEAD, HEAD, '#ffd400', th);
+  g.restore();
 }
 function drawShadow(g, p) {
   if (p.z < -0.2) return;
@@ -1054,7 +1124,13 @@ function drawGuy(g, x, y, u, name, o) {
   // brazo con raqueta
   g.save(); g.translate(x + side * u * 0.14, shY + u * 0.06); g.scale(side, 1);
   const sw = o.swing || 0;
-  const ang = -0.75 + Math.sin(sw * Math.PI) * 1.5;
+  let ang = -0.75 + Math.sin(sw * Math.PI) * 1.5;
+  if (o.aim) {
+    const sx = x + side * u * 0.14, sy = shY + u * 0.06, ax = (o.aim.x - sx) * side, ay = o.aim.y - sy;
+    ang = Math.atan2(ay, ax);
+    const k = clamp(Math.hypot(ax, ay) / (u * 0.33), 0.8, 1.35);
+    g.rotate(ang); g.scale(k, 1); g.rotate(-ang);
+  }
   g.rotate(ang);
   g.strokeStyle = INK; g.lineWidth = u * 0.07; g.beginPath(); g.moveTo(0, 0); g.lineTo(u * 0.13, 0); g.stroke();
   g.lineWidth = u * 0.035; g.strokeStyle = '#333'; g.beginPath(); g.moveTo(u * 0.13, 0); g.lineTo(u * 0.22, 0); g.stroke();
@@ -1168,8 +1244,8 @@ $('#shareBtn').addEventListener('click', async e => {
   const btn = e.currentTarget, seed = G.seed, best = bestOf(seed, me) || 0, rv = rivalFor(seed);
   const url = makeLink(seed);
   const text = rv
-    ? (best > rv[1] ? `🎾 ${me} le gana a ${rv[0]} en ¡No llegas! (${best} a ${rv[1]}). ¿Llegas o no llegas, pecador?` : `🎾 ${me} va a por ${rv[0]} en ¡No llegas! (${best} a ${rv[1]}). ¡Al ataquerl!`)
-    : `🎾 ${me} te reta en ¡No llegas!: ${best} puntos. ¿Llegas o no llegas, pecador de la pradera?`;
+    ? (best > rv[1] ? `🎾 ${me} le gana a ${rv[0]} en ¡Hasta luego Luca! (${best} a ${rv[1]}). ¿Llegas o no llegas, pecador?` : `🎾 ${me} va a por ${rv[0]} en ¡Hasta luego Luca! (${best} a ${rv[1]}). ¡Al ataquerl!`)
+    : `🎾 ${me} te reta en ¡Hasta luego Luca!: ${best} puntos. ¿Llegas o no llegas, pecador de la pradera?`;
   const full = text + '\n' + url;
   if (navigator.share) {
     try { await navigator.share({ text: full }); return; } catch (err) { if (err && err.name === 'AbortError') return; }
