@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>¡Hasta luego Luca!</title>
+<title>¡Hasta luego, Luca!</title>
 <meta name="description" content="El tenis de los piques. Devuelve todas las bolas que puedas y reta a tus amigos con las mismas bolas.">
 <meta name="theme-color" content="#2c5fd6">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -106,7 +106,7 @@ input[type=range]{width:100%;accent-color:var(--hot)}
 <!-- Inicio -->
 <div class="screen" id="home" hidden>
   <div class="card">
-    <h1 class="logo">¡Hasta luego<br>Luca!</h1>
+    <h1 class="logo">¡Hasta luego,<br>Luca!</h1>
     <p class="tag">El tenis de los piques</p>
     <div class="me">
       <canvas id="meFace" width="192" height="192"></canvas>
@@ -243,11 +243,11 @@ function newSeed() {
 
 /* ---------- el comentarista (homenaje a Chiquito de la Calzada) ---------- */
 const L = {
-  start: ['¿Preparao, {name}? ¡Al ataquerl!', '¡Cuidadín, fistro, que vienen bolas!', '¡Por la gloria de mi madre, que empiece el partido!', '¡Te das cuénn, {name}! ¡Esto va a ser un no parar!', '¡Jarl! A ver qué sabe hacer este pecador.', '¡Siete caballos que vienen de Bonanza! ¡Y todos a por ti, {name}!', '¡Atención, pecadores de la pradera, que sale {name}!'],
+  start: ['¿Preparao, {name}? ¡Al ataquerl!', '¡Cuidadín, fistro, que vienen bolas!', '¡Por la gloria de mi madre, que empiece el partido!', '¡Por la gloria de mi padre, que se llama Paquitorrr, que empiece el partido!', '¡Te das cuénn, {name}! ¡Esto va a ser un no parar!', '¡Jarl! A ver qué sabe hacer este pecador.', '¡Siete caballos que vienen de Bonanza! ¡Y todos a por ti, {name}!', '¡Atención, pecadores de la pradera, que sale {name}!'],
   ret: ['¡Toma, fistro!', '¡Jarl, qué derechazo!', '¡Eso es un revés de la pradera!', '¡Condemor, qué muñeca!', '¡No puedorl con tanto arte!', '¡Qué pedazo de golpe, pecador!', '¡Te das cuénn! ¡Qué zarpazo!', '¡Hasta luego, bolita!', '¡Eso no lo devuelve ni un torpedo!', '¡Lo veo, lo veo, lo veo!', '¡Fistro raquetero!', '¡Diodenal! ¡Qué golpe!', '¡A wan, a peich!', '¡Ahí va, ahí va, ahí va!', '¡Esa bola va más rápida que un caballo de Bonanza!', '¡Cobarde! ¡Que la bola se esconde de ti!'],
   head: ['¡De cabezarl! ¡Como en el fútbol, fistro!', '¡Con el melón! ¡No puedorl!', '¡Remate de cabeza, por la gloria de mi madre!', '¡Cabezazo de la pradera!', '¡Ese melón tiene más efecto que un pecador!'],
-  golazo: ['¡GOLAZO DE LA PRADERA!', '¡Gol, gol, golorl!', '¡Golazo de cabeza! ¡Por la gloria de mi madre!'],
-  winner: ['¡PUNTAZO! ¡El rival se ha quedao como un fistro!', '¡Ganador! ¡Hasta luego, Luca!', '¡Al rincón, pecador de la pradera!', '¡Jarl! ¡No llega ni con siete caballos!', '¡Que se ha caído, que se ha caídorl!', '¡Puntazo! ¡Te das cuénn, qué arte!', '¡Esa al rincón, como los cobardes!'],
+  golazo: ['¡GOLAZO DE LA PRADERA!', '¡Golazo! ¡Por la gloria de mi padre, que se llama Paquitorrr!', '¡Gol, gol, golorl!', '¡Golazo de cabeza! ¡Por la gloria de mi madre!'],
+  winner: ['¡PUNTAZO! ¡El rival se ha quedao como un fistro!', '¡Por la gloria de mi padre, que se llama Paquitorrr!', '¡Puntazo! ¡Por la gloria de mi padre, que se llama Paquitorrr!', '¡Ganador! ¡Hasta luego, Luca!', '¡Al rincón, pecador de la pradera!', '¡Jarl! ¡No llega ni con siete caballos!', '¡Que se ha caído, que se ha caídorl!', '¡Puntazo! ¡Te das cuénn, qué arte!', '¡Esa al rincón, como los cobardes!'],
   pass: ['¡Has pasado a {rival}! ¡Hasta luego, {rival}!', '¡{rival} se ha quedao atrás como un fistro!', '¡Adiós, {rival}, pecador de la pradera!', '¡Jarl! ¡{rival} ya no puedorl contigo!'],
   mile: ['¡{n} puntos! ¡No puedorl!', '¡{n}! ¡Por la gloria de mi madre!', '¡{n} puntos, fistro! ¡Esto es un torpedo!', '¡Llevas {n}! ¡Siete caballos que vienen de Bonanza!'],
   miss: ['¡Pecador! ¡Que no llegas!', '¡Jarl! ¡En toda la cara!', '¡Te ha dao en el melón, fistro!', '¡No llegas, cobarde, que no llegas!', '¡Hasta luego, Luca!', '¡Te das cuénn! ¡Ni la has olido!', '¡Quietor estabas, como un fistro!', '¡Por la gloria de mi madre, qué paquetorl!', '¡Condemor! ¡Esa pasaba por al lado!'],
@@ -262,26 +262,26 @@ const L = {
   i_triple: ['¡Tres bolas! ¡No puedorl!', '¡Triplete, pecador de la pradera!'],
   i_balon: ['¡Balón al campo! ¡De cabeza, pecador!', '¡Un balón de fútbol! ¡Golazo si le das con el melón!'],
   i_fantasma: ['¡Una bola fantasma! ¡Mira la sombra, fistro!', '¡Bola invisible! ¡Te das cuénn!'],
-  record: ['¡Récord nuevo! ¡Por la gloria de mi madre!', '¡Récord, fistro! ¡Esto hay que mandarlo!'],
+  record: ['¡Récord nuevo! ¡Por la gloria de mi madre!', '¡Récord! ¡Por la gloria de mi padre, que se llama Paquitorrr!', '¡Récord, fistro! ¡Esto hay que mandarlo!'],
   beat: ['¡Le has ganado a {rival}! ¡Mándale el reto, que se entere!', '¡{rival} va a llorar más que un fistro! ¡Mándaselo!'],
   lose: ['Te faltan {d} para pillar a {rival}. ¡No puedorl! ¿Otra?', '¡{rival} te gana por {d}, pecador! ¿Otra?', 'A {d} puntos de {rival}. ¡Al ataquerl otra vez!'],
   joke: [
     '¡Paparl, paparl, llévame al circorl! ¡Norl! El que quiera verte, que venga a casa. ¡Jarl!',
-    'Era un enano tan pequeño, tan pequeño, que se subió a una canica y gritó: ¡el mundo es mío! ¡Fistro!',
+    'Paco, Paco, ¡qué poco me compras! ¡María, cariño mío, es que no sabía que vendías ná! ¡Fistro!',
+    'Están las cosas tan malamente, tan malamente, que estamos friendo los huevos con saliva. ¡No puedorl!',
+    'Te voy a poner una multa que no te la quita ni Perry Mason. ¡Cobarde!',
+    'No te digo trigo por no llamarte Rodrigo. ¡Te das cuénn!',
+    'Doctor, doctor, mi mujer se cree que es una gallina. ¿Y por qué no la trae? ¡Porque necesitamos los huevos, pecador!',
+    'Me dijo el médico: deje usted la bebida. Y la dejé... en la nevera, fresquita. ¡Jarl!',
+    'Mi suegra está tan gorda, tan gorda, que se cayó de la cama por los dos lados. ¡Por la gloria de mi madre!',
+    'Mi mujer me dice: tú y yo somos uno. ¡Y a la hora de pagar, el uno soy yo! ¡Condemor!',
+    'Era un tío tan tacaño, tan tacaño, que no daba ni los buenos días. ¡Hasta luego, Lucas!',
+    'Era uno tan feo, tan feo, que cuando nació el médico le dio una torta a la madre. ¡Fistro diodenal!',
+    'Era un hombre tan alto, tan alto, que se tropezó el lunes y se cayó el jueves. ¡Jarl!',
+    'Era un enano tan pequeño, tan pequeño, que se subió a una canica y gritó: ¡el mundo es mío! ¡Pecador!',
+    'Tengo un perro que no tiene patas. ¿Y cómo se llama? ¡Da igual, no viene! ¡Al ataquerl!',
     'Va un caracol, se sube a una tortuga y dice: ¡uiiiii, qué velocidarl!',
-    '¿Cómo se dice pañuelo en japonés? ¡Saka-moko! ¡Te das cuénn!',
-    'Era un hombre tan alto, tan alto, que se tropezó el lunes y se cayó el jueves. ¡Hasta luego, Luca!',
-    'Tengo un perro que no tiene patas. ¿Y cómo se llama? ¡Da igual, no viene! ¡Jarl!',
-    'Era un tenista tan malo, tan malo, que perdió el calentamiento seis a cero. ¡No puedorl!',
-    'Doctor, doctor, veo bolas amarillas por todas partes. ¡Normal, pecador, que está usted en una pista de tenis!',
-    'Era uno tan lento, tan lento, que la tortuga le pidió paso. ¡Por la gloria de mi madre!',
-    'Camarero, hay una mosca en mi sopa. Tranquilo, que poco se va a comer, fistro.',
-    '¿Qué hace una abeja en el gimnasio? ¡Zumba! ¡Jarl!',
-    'Era un pollo tan rápido, tan rápido, que llegó al restaurante antes que el cocinero. ¡Cobarde!',
-    'Mamarl, mamarl, en el cole me llaman despistao. Niño, ¡que tú no vives aquí! ¡Fistro!',
-    'Era un portero tan bueno, tan bueno, que paraba hasta los autobuses. ¡Te das cuénn!',
-    '¿Por qué la pelota de tenis nunca se aburre? ¡Porque siempre está de ida y vuelta, pecador!',
-    'Era uno tan bajito, tan bajito, que se le cayó la raqueta y se hizo una casa. ¡Diodenal!'
+    'Era un tenista tan malo, tan malo, que perdió el calentamiento seis a cero. ¡No puedorl!'
   ],
   solo: ['¡{n} puntos! Ahora reta a alguien, fistro.', '¡Te das cuénn! Manda el reto a ver quién llega.']
 };
@@ -896,7 +896,7 @@ function draw() {
   const bY = crowd.standBottom, bH = HW * 0.12;
   g.fillStyle = '#ff4d2e'; g.fillRect(-20, bY, W + 40, bH);
   g.fillStyle = '#fff'; g.font = `400 ${Math.round(bH * 0.62)}px 'Lilita One', system-ui, sans-serif`; g.textAlign = 'left'; g.textBaseline = 'middle';
-  const ad = '¡HASTA LUEGO LUCA!   ·   FISTRO OPEN   ·   ';
+  const ad = '¡HASTA LUEGO, LUCA!   ·   FISTRO OPEN   ·   ';
   const adW = g.measureText(ad).width || 200;
   const off = -((T * 30) % adW);
   for (let x = off; x < W; x += adW) g.fillText(ad, x, bY + bH * 0.55);
@@ -1244,8 +1244,8 @@ $('#shareBtn').addEventListener('click', async e => {
   const btn = e.currentTarget, seed = G.seed, best = bestOf(seed, me) || 0, rv = rivalFor(seed);
   const url = makeLink(seed);
   const text = rv
-    ? (best > rv[1] ? `🎾 ${me} le gana a ${rv[0]} en ¡Hasta luego Luca! (${best} a ${rv[1]}). ¿Llegas o no llegas, pecador?` : `🎾 ${me} va a por ${rv[0]} en ¡Hasta luego Luca! (${best} a ${rv[1]}). ¡Al ataquerl!`)
-    : `🎾 ${me} te reta en ¡Hasta luego Luca!: ${best} puntos. ¿Llegas o no llegas, pecador de la pradera?`;
+    ? (best > rv[1] ? `🎾 ${me} le gana a ${rv[0]} en ¡Hasta luego, Luca! (${best} a ${rv[1]}). ¿Llegas o no llegas, pecador?` : `🎾 ${me} va a por ${rv[0]} en ¡Hasta luego, Luca! (${best} a ${rv[1]}). ¡Al ataquerl!`)
+    : `🎾 ${me} te reta en ¡Hasta luego, Luca!: ${best} puntos. ¿Llegas o no llegas, pecador de la pradera?`;
   const full = text + '\n' + url;
   if (navigator.share) {
     try { await navigator.share({ text: full }); return; } catch (err) { if (err && err.name === 'AbortError') return; }
