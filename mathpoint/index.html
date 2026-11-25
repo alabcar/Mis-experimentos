@@ -11,9 +11,9 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--verd:#2f6b3a;--pista:#2c5f9e;--linia:#f4f4ee;--groc:#d9f03a;--tinta:#1d2733;--paper:#fbfaf4;--bo:#1f8a4c;--mal:#c8412f;--suau:#5d6b7a}
 html,body{height:100%}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--verd);color:var(--tinta);overflow-x:hidden;font-size:17px;line-height:1.4}
-#fons{position:fixed;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-#fons svg{height:100%;max-width:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#0b1530;color:var(--tinta);overflow-x:hidden;font-size:17px;line-height:1.4}
+#fons{position:fixed;inset:0;z-index:0;pointer-events:none}
+#fons svg{width:100%;height:100%;display:block}
 #app{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100%;padding:12px 14px 28px;display:flex;flex-direction:column;gap:12px}
 .carta{background:var(--paper);border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 h1{font-size:34px;text-shadow:0 2px 6px rgba(0,0,0,.6);line-height:1.05;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25);letter-spacing:.5px}
@@ -87,13 +87,64 @@ button{font:inherit;cursor:pointer;border:0}
 .aviso{text-align:center;color:#fff;font-weight:800;font-size:22px;text-shadow:0 2px 0 rgba(0,0,0,.3);min-height:30px}
 .ruff{border-collapse:collapse;margin:12px auto 4px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}.ruff td{min-width:44px;height:40px;text-align:center;padding:0 4px}.ruff td.esq{border-right:3px solid var(--tinta);color:var(--pista)}.ruff tr.lin td{border-top:3px solid var(--tinta)}.ruff tr.lin td.esq{border-top:0}.ruff td.resid{outline:2px solid var(--suau);outline-offset:-4px;border-radius:6px}.ruff td.cur{background:var(--groc);border-radius:8px}.ruff td.mal{background:#fbe6e2;color:var(--mal);border-radius:8px}.pas{font-size:14px;color:var(--suau);text-align:center}
 .secc{margin:10px 0 4px}.secc-t{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--pista)}.perque{font-size:14px;color:var(--suau);background:#eef0f6;border-radius:8px;padding:6px 8px;margin:6px 0}.pistab{background:#fff6c9;border-radius:10px;padding:8px 10px;margin-top:10px;font-size:15px}.ajuda{background:none;color:var(--pista);font-weight:700;font-size:15px;margin-top:10px;padding:4px 0}
+.bloc{position:relative;overflow:hidden;color:#fff;background:var(--sup);border:0;box-shadow:0 6px 16px rgba(0,0,0,.4),inset 0 0 0 3px rgba(255,255,255,.85),inset 0 0 0 7px var(--sup),inset 0 0 0 9px rgba(255,255,255,.55);padding:18px 16px}
+.bloc::after{content:"";position:absolute;right:-20px;top:0;bottom:0;width:86px;border-left:3px solid rgba(255,255,255,.5);background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 14px,transparent 14px 28px)}
+.bloc>*{position:relative;z-index:1}
+.bloc b{text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.bloc span.sub{color:rgba(255,255,255,.85)}
+.bloc .ic{box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.12);color:var(--tinta)}
+.bloc .trof{margin-left:auto;display:flex;flex-direction:column;align-items:center;font-size:12px;font-weight:800;min-width:48px}
+.bloc .trof i{font-style:normal;font-size:24px;filter:grayscale(1) opacity(.45)}
+.bloc .trof i.on{filter:none}
+.sup-tierra{--sup:#c0603a}.sup-herba{--sup:#4a8b3c}.sup-dura{--sup:#2c5f9e}.sup-indoor{--sup:#4b3f8f}.sup-verda{--sup:#2f7a64}
+.cap{padding-top:22px}.titol{font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.35),0 0 24px rgba(120,170,255,.45)}
+.titol .ii{position:relative;display:inline-block}
+.titol .ii::before{content:"";position:absolute;left:50%;top:-6px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8de1c 60%,#9fb20f);animation:bota 1.1s cubic-bezier(.3,0,.7,1) infinite alternate}
+@keyframes bota{from{transform:translateY(-26px)}to{transform:translateY(0) scale(1.15,.85)}}
+.lema{color:#cfe0ff;font-weight:600;font-size:15px;margin-top:8px}
+.vict{display:inline-flex;gap:8px;align-items:center;background:#101820;color:#fff;border-radius:8px;padding:4px 10px;font-weight:800;font-size:14px;margin-top:10px;box-shadow:0 2px 0 rgba(255,255,255,.15)}
+.vict b{background:var(--groc);color:#101820;border-radius:4px;padding:0 6px}
+.intro{background:rgba(10,20,40,.72);color:#eaf1ff;border-radius:14px;padding:12px 14px;font-size:15px;backdrop-filter:blur(3px)}
+.carta.preg{background:#0f1b2b;color:#fff;border-top:5px solid var(--groc)}
+.carta.preg .enun b{color:var(--groc)}
+.carta.preg .fig,.carta.preg .ruff,.carta.preg .dades{background:#fbfaf4;color:var(--tinta);border-radius:12px;padding:6px}
+.carta.preg .ruff{padding:0}
+.carta.preg .pas,.carta.preg .calc{color:#9fb0c6}
+.carta.preg .op{background:#fbfaf4}
+.carta.preg .ajuda{color:var(--groc)}
+.carta.preg .pistab{color:var(--tinta)}
 .peu{color:#fff;font-size:13px;text-align:center;background:rgba(0,0,0,.35);border-radius:10px;padding:6px}
 </style>
 </head>
 <body>
-<div id="fons"><svg viewBox="0 0 200 420" preserveAspectRatio="xMidYMid meet"><rect x="20" y="20" width="160" height="380" fill="#2c5f9e"/><g fill="none" stroke="#f4f4ee" stroke-width="2"><rect x="20" y="20" width="160" height="380"/><line x1="40" y1="20" x2="40" y2="400"/><line x1="160" y1="20" x2="160" y2="400"/><line x1="40" y1="117" x2="160" y2="117"/><line x1="40" y1="303" x2="160" y2="303"/><line x1="100" y1="117" x2="100" y2="303"/><line x1="100" y1="20" x2="100" y2="25"/><line x1="100" y1="395" x2="100" y2="400"/></g><line x1="12" y1="210" x2="188" y2="210" stroke="#e9e9e0" stroke-width="3" stroke-dasharray="2 2"/></svg></div>
+<div id="fons"></div>
 <div id="app"></div>
 <script>
+
+(function(){
+function fons(){
+const Hh=800,W=Math.max(400,Math.round(Hh*innerWidth/innerHeight)),yh=246,A=2355,B=194,D=16,cx=W/2;
+const P=(X,Y)=>[cx+X*B/(D+Y),yh+A/(D+Y)];
+const pl=pts=>pts.map(p=>P(...p).map(v=>v.toFixed(1)).join(',')).join(' ');
+const ln=(a,b,w)=>{const p=P(...a),q=P(...b);return`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="#f4f4ee" stroke-width="${w||2}" stroke-linecap="round"/>`};
+let s=`<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="xMidYMid slice" id="esc"><defs><linearGradient id="cel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070d22"/><stop offset="1" stop-color="#1d3566"/></linearGradient><radialGradient id="llum"><stop offset="0" stop-color="#fff9d8" stop-opacity=".95"/><stop offset=".25" stop-color="#fff2b0" stop-opacity=".35"/><stop offset="1" stop-color="#fff2b0" stop-opacity="0"/></radialGradient><linearGradient id="gra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2740"/><stop offset="1" stop-color="#2a3b5c"/></linearGradient></defs>`;
+s+=`<rect width="${W}" height="${Hh}" fill="url(#cel)"/>`;
+s+=`<rect x="0" y="130" width="${W}" height="${yh-130+30}" fill="url(#gra)"/>`;
+const cols=['#e8e1d0','#c94b3c','#3d6fb5','#f0c23b','#ffffff','#5fa46a','#d9874a','#8a6bbf'];
+for(let row=0;row<9;row++){const y=140+row*11;for(let x=4+(row%2)*5;x<W;x+=10){if(Math.random()<.82)s+=`<circle cx="${x}" cy="${y}" r="3.3" fill="${cols[Math.floor(Math.random()*cols.length)]}" opacity="${.55+row*.04}"/>`}}
+s+=`<rect x="0" y="${yh-20}" width="${W}" height="16" fill="#123b2a"/><rect x="0" y="${yh-20}" width="${W}" height="3" fill="#0b5d3b"/>`;
+for(const x of [28,W-28,W*.3,W*.7].slice(0,W>700?4:2)){s+=`<rect x="${x-2}" y="20" width="4" height="120" fill="#3a4660"/><rect x="${x-16}" y="14" width="32" height="12" rx="2" fill="#dfe6f2"/><circle cx="${x}" cy="20" r="90" fill="url(#llum)"/>`}
+s+=`<rect x="0" y="${yh}" width="${W}" height="${Hh-yh}" fill="#2b6a45"/>`;
+s+=`<polygon points="${pl([[-5.485,-11.885],[5.485,-11.885],[5.485,11.885],[-5.485,11.885]])}" fill="#2c5f9e"/>`;
+const L=11.885,Sd=4.115,Db=5.485,Sv=6.4;
+s+=ln([-Db,-L],[Db,-L],3)+ln([-Db,L],[Db,L])+ln([-Db,-L],[-Db,L])+ln([Db,-L],[Db,L])+ln([-Sd,-L],[-Sd,L])+ln([Sd,-L],[Sd,L])+ln([-Sd,-Sv],[Sd,-Sv])+ln([-Sd,Sv],[Sd,Sv])+ln([0,-Sv],[0,Sv])+ln([0,-L],[0,-L+.3],3)+ln([0,L],[0,L-.3]);
+const n1=P(-6.4,0),n2=P(6.4,0);const nh=0.914*B/D;
+s+=`<rect x="${n1[0]}" y="${n1[1]-nh}" width="${n2[0]-n1[0]}" height="${nh}" fill="#0d1622" opacity=".75"/><line x1="${n1[0]}" y1="${n1[1]-nh}" x2="${n2[0]}" y2="${n2[1]-nh}" stroke="#fff" stroke-width="2"/><line x1="${n1[0]}" y1="${n1[1]}" x2="${n1[0]}" y2="${n1[1]-nh*1.15}" stroke="#c9ccd1" stroke-width="3"/><line x1="${n2[0]}" y1="${n2[1]}" x2="${n2[0]}" y2="${n2[1]-nh*1.15}" stroke="#c9ccd1" stroke-width="3"/>`;
+s+=`<rect width="${W}" height="${Hh}" fill="#000" opacity=".12"/></svg>`;
+document.getElementById('fons').innerHTML=s;
+}
+fons();let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(fons,200)});
+})();
 const $=s=>document.querySelector(s);
 let LANG='va';
 try{const l=localStorage.getItem('trigo-idioma');if(l==='es'||l==='va')LANG=l}catch(e){}
@@ -155,11 +206,11 @@ return s+'</svg>';
 }
 
 const BLOCS=[
-{id:'ruffini',ic:'÷',nom:()=>t('Ruffini i equacions','Ruffini y ecuaciones'),sub:()=>t('Divisió, residu i factors','División, resto y factores'),gens:['taula','residu','taula','candidats','factor','equacio']},
-{id:'angles',ic:'°',nom:()=>t('Mesura d\'angles','Medida de ángulos'),sub:()=>t('Graus, minuts i radians','Grados, minutos y radianes'),gens:['deg2rad','rad2deg','dec2sex','resta']},
-{id:'raons',ic:'α',nom:()=>t('Raons trigonomètriques','Razones trigonométricas'),sub:()=>t(SN()+', cos i tan',SN()+', cos y tan'),gens:['raó','hip','ident','notable']},
-{id:'resol',ic:'△',nom:()=>t('Resoldre triangles','Resolver triángulos'),sub:()=>t('Problemes de pista','Problemas de pista'),gens:['diag','creuat','altura','escala']},
-{id:'sembl',ic:'≈',nom:()=>t('Semblança','Semejanza'),sub:()=>t('Tales, ombres i escales','Tales, sombras y escalas'),gens:['ombra','raok','xarxa']}
+{id:'ruffini',sup:'tierra',supNom:()=>t('Terra batuda','Tierra batida'),ic:'÷',nom:()=>t('Ruffini i equacions','Ruffini y ecuaciones'),sub:()=>t('Divisió, residu i factors','División, resto y factores'),gens:['taula','residu','taula','candidats','factor','equacio']},
+{id:'angles',sup:'herba',supNom:()=>t('Gespa','Hierba'),ic:'°',nom:()=>t('Mesura d\'angles','Medida de ángulos'),sub:()=>t('Graus, minuts i radians','Grados, minutos y radianes'),gens:['deg2rad','rad2deg','dec2sex','resta']},
+{id:'raons',sup:'dura',supNom:()=>t('Pista dura','Pista dura'),ic:'α',nom:()=>t('Raons trigonomètriques','Razones trigonométricas'),sub:()=>t(SN()+', cos i tan',SN()+', cos y tan'),gens:['raó','hip','ident','notable']},
+{id:'resol',sup:'indoor',supNom:()=>t('Pista coberta','Pista cubierta'),ic:'△',nom:()=>t('Resoldre triangles','Resolver triángulos'),sub:()=>t('Problemes de pista','Problemas de pista'),gens:['diag','creuat','altura','escala']},
+{id:'sembl',sup:'verda',supNom:()=>t('Ciment','Cemento'),ic:'≈',nom:()=>t('Semblança','Semejanza'),sub:()=>t('Tales, ombres i escales','Tales, sombras y escalas'),gens:['ombra','raok','xarxa']}
 ];
 
 const G={};
@@ -550,15 +601,18 @@ sembl:()=>[
 };
 
 let S={};
+function llegeixVict(){try{return JSON.parse(localStorage.getItem('mp-vict')||'{}')}catch(e){return{}}}
+function sumaVict(id){try{const v=llegeixVict();v[id]=(v[id]||0)+1;localStorage.setItem('mp-vict',JSON.stringify(v))}catch(e){}}
 function guardaRec(id,v){try{const r=JSON.parse(localStorage.getItem('trigo-rec')||'{}');if(!r[id]||v>r[id])r[id]=v;localStorage.setItem('trigo-rec',JSON.stringify(r))}catch(e){}}
 function llegeixRec(){try{return JSON.parse(localStorage.getItem('trigo-rec')||'{}')}catch(e){return{}}}
 function canviaIdioma(){LANG=LANG==='va'?'es':'va';try{localStorage.setItem('trigo-idioma',LANG)}catch(e){}document.documentElement.lang=LANG==='va'?'ca-valencia':'es';inici()}
 
 function inici(){
 const rec=llegeixRec();
-$('#app').innerHTML=`<div class="cap"><h1>Math Point<small>${t('Mates de 4t d\'ESO, punt a punt','Mates de 4º de ESO, punto a punto')}</small></h1><button class="idioma" id="lg">${LANG==='va'?'es':'va'}</button></div>
-<div class="carta"><p>${t('Cada pregunta és un punt. Si l\'encertes, el punt és teu; si falles, és per a la màquina i l\'<b>ull de falcó</b> et mostra on t\'has equivocat. Guanya qui s\'endú 2 jocs.','Cada pregunta es un punto. Si aciertas, el punto es tuyo; si fallas, es para la máquina y el <b>ojo de halcón</b> te enseña dónde te has equivocado. Gana quien se lleve 2 juegos.')}</p></div>
-${BLOCS.map((b,i)=>`<button class="bloc" data-i="${i}"><span class="ic">${b.ic}</span><span><b>${b.nom()}</b><span class="sub">${b.sub()}</span></span>${rec[b.id]?`<span class="rec">🏆 ${rec[b.id]}</span>`:''}</button>`).join('')}
+const vt=llegeixVict();const tot=Object.values(vt).reduce((a,b)=>a+b,0);
+$('#app').innerHTML=`<div class="cap"><div><div class="titol">Math Po<span class="ii">i</span>nt</div><div class="lema">${t('Mates de 4t d\'ESO, punt a punt','Mates de 4º de ESO, punto a punto')}</div><div class="vict">🏆 ${t('Partits guanyats','Partidos ganados')} <b>${tot}</b></div></div><button class="idioma" id="lg">${LANG==='va'?'es':'va'}</button></div>
+<div class="intro"><p>${t('Cada pregunta és un punt. Si l\'encertes, el punt és teu; si falles, és per a la màquina i l\'<b>ull de falcó</b> et mostra on t\'has equivocat. Guanya qui s\'endú 2 jocs.','Cada pregunta es un punto. Si aciertas, el punto es tuyo; si fallas, es para la máquina y el <b>ojo de halcón</b> te enseña dónde te has equivocado. Gana quien se lleve 2 juegos.')}</p></div>
+${BLOCS.map((b,i)=>`<button class="bloc sup-${b.sup}" data-i="${i}"><span class="ic">${b.ic}</span><span><b>${b.nom()}</b><span class="sub">${b.sub()}</span></span><span class="trof"><i class="${vt[b.id]?'on':''}">🏆</i>${vt[b.id]?'×'+vt[b.id]:''}</span></button>`).join('')}
 <p class="peu">${t('Tingues a mà la calculadora per als problemes de pista.','Ten a mano la calculadora para los problemas de pista.')}</p>`;
 $('#lg').onclick=canviaIdioma;
 document.querySelectorAll('.bloc').forEach(b=>b.onclick=()=>teoria(BLOCS[+b.dataset.i],0,false));
@@ -610,7 +664,7 @@ function pregunta(tornant){
 const Q=S.q;
 $('#app').innerHTML=`<div class="barra"><button id="ix">✕</button><span>${S.B.nom()}</span><button id="te">📖 ${t('Teoria','Teoría')}</button></div>${marcador()}
 <div class="aviso" id="av"></div>
-<div class="carta"><div class="enun">${Q.q}</div>${Q.fig?`<div class="fig">${Q.fig}</div>`:''}${Q.taula?taulaHTML(Q.taula,Q.vis,Q.steps[Q.pas].k,null)+`<div class="pas">${t('Què va en la casella groga?','¿Qué va en la casilla amarilla?')}</div>`:''}${Q.dades?`<div class="dades">${t('Dades','Datos')}: ${Q.dades}</div>`:''}${Q.calc?`<div class="calc">🧮 ${t('Pots fer servir la calculadora.','Puedes usar la calculadora.')}</div>`:''}
+<div class="carta preg"><div class="enun">${Q.q}</div>${Q.fig?`<div class="fig">${Q.fig}</div>`:''}${Q.taula?taulaHTML(Q.taula,Q.vis,Q.steps[Q.pas].k,null)+`<div class="pas">${t('Què va en la casella groga?','¿Qué va en la casilla amarilla?')}</div>`:''}${Q.dades?`<div class="dades">${t('Dades','Datos')}: ${Q.dades}</div>`:''}${Q.calc?`<div class="calc">🧮 ${t('Pots fer servir la calculadora.','Puedes usar la calculadora.')}</div>`:''}
 <div class="opcions">${Q.ops.map((o,i)=>`<button class="op" data-i="${i}">${o.h}</button>`).join('')}</div><div id="pz">${Q.pistaVista!==undefined&&Q.pistaVista===(Q.pas||0)?`<div class="pistab">💡 ${pistaTxt(Q)}</div>`:`<button class="ajuda" id="pb">💡 ${t('Pista','Pista')}</button>`}</div></div>`;
 if($('#pb'))$('#pb').onclick=()=>{Q.pistaVista=Q.pas||0;S.pistes++;$('#pz').innerHTML=`<div class="pistab">💡 ${pistaTxt(Q)}</div>`};
 $('#ix').onclick=inici;
@@ -654,7 +708,7 @@ scrollTo(0,0);
 const NOMG={taula:()=>t('Taula de Ruffini','Tabla de Ruffini'),residu:()=>t('Teorema del residu','Teorema del resto'),candidats:()=>t('Possibles arrels','Posibles raíces'),factor:()=>t('Factoritzar','Factorizar'),equacio:()=>t('Equacions de grau 3','Ecuaciones de grado 3'),deg2rad:()=>t('Graus → radians','Grados → radianes'),rad2deg:()=>t('Radians → graus','Radianes → grados'),dec2sex:()=>t('Decimals → minuts','Decimales → minutos'),resta:()=>t('Complementaris i suplementaris','Complementarios y suplementarios'),'raó':()=>t('Triar la raó','Elegir la razón'),hip:()=>t('Pitàgores + raó','Pitágoras + razón'),ident:()=>t(SN()+'² + cos² = 1',SN()+'² + cos² = 1'),notable:()=>t('Angles notables','Ángulos notables'),diag:()=>t('Diagonals (Pitàgores)','Diagonales (Pitágoras)'),creuat:()=>t('Trobar un angle','Hallar un ángulo'),altura:()=>t('Altures amb tangent','Alturas con tangente'),escala:()=>t('Altures amb '+SN(),'Alturas con '+SN()),ombra:()=>t('Ombres (Tales)','Sombras (Tales)'),raok:()=>t('k, k² i k³','k, k² y k³'),xarxa:()=>t('Pilota i xarxa','Pelota y red')};
 function final(){
 const guanya=S.jc[0]>=2;const pc=Math.round(100*S.encerts/S.total);
-if(guanya)guardaRec(S.B.id,`${S.jc[0]}-${S.jc[1]}`);
+if(guanya){guardaRec(S.B.id,`${S.jc[0]}-${S.jc[1]}`);sumaVict(S.B.id)}
 const errs=Object.entries(S.errors).sort((a,b)=>b[1]-a[1]);
 $('#app').innerHTML=`<div class="carta res"><div class="etiq" style="color:${guanya?'#1f8a4c':'#c8412f'}">${guanya?t('Partit guanyat','Partido ganado'):t('Partit perdut','Partido perdido')}</div>
 <div class="gros">${S.jc[0]} – ${S.jc[1]}</div><p>${t('Has encertat','Has acertado')} <b>${S.encerts}</b> ${t('de','de')} <b>${S.total}</b> (${pc}%)</p><p>${t('Millor ratxa','Mejor racha')}: <b>${S.millor}</b>${S.pistes?` · ${t('Pistes','Pistas')}: <b>${S.pistes}</b>`:''}</p>
