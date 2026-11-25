@@ -611,8 +611,8 @@ const Q=S.q;
 $('#app').innerHTML=`<div class="barra"><button id="ix">✕</button><span>${S.B.nom()}</span><button id="te">📖 ${t('Teoria','Teoría')}</button></div>${marcador()}
 <div class="aviso" id="av"></div>
 <div class="carta"><div class="enun">${Q.q}</div>${Q.fig?`<div class="fig">${Q.fig}</div>`:''}${Q.taula?taulaHTML(Q.taula,Q.vis,Q.steps[Q.pas].k,null)+`<div class="pas">${t('Què va en la casella groga?','¿Qué va en la casilla amarilla?')}</div>`:''}${Q.dades?`<div class="dades">${t('Dades','Datos')}: ${Q.dades}</div>`:''}${Q.calc?`<div class="calc">🧮 ${t('Pots fer servir la calculadora.','Puedes usar la calculadora.')}</div>`:''}
-<div class="opcions">${Q.ops.map((o,i)=>`<button class="op" data-i="${i}">${o.h}</button>`).join('')}</div><div id="pz">${Q.pistaVista===Q.pas?`<div class="pistab">💡 ${pistaTxt(Q)}</div>`:`<button class="ajuda" id="pb">💡 ${t('Pista','Pista')}</button>`}</div></div>`;
-if($('#pb'))$('#pb').onclick=()=>{Q.pistaVista=Q.pas;S.pistes++;$('#pz').innerHTML=`<div class="pistab">💡 ${pistaTxt(Q)}</div>`};
+<div class="opcions">${Q.ops.map((o,i)=>`<button class="op" data-i="${i}">${o.h}</button>`).join('')}</div><div id="pz">${Q.pistaVista!==undefined&&Q.pistaVista===(Q.pas||0)?`<div class="pistab">💡 ${pistaTxt(Q)}</div>`:`<button class="ajuda" id="pb">💡 ${t('Pista','Pista')}</button>`}</div></div>`;
+if($('#pb'))$('#pb').onclick=()=>{Q.pistaVista=Q.pas||0;S.pistes++;$('#pz').innerHTML=`<div class="pistab">💡 ${pistaTxt(Q)}</div>`};
 $('#ix').onclick=inici;
 $('#te').onclick=()=>teoria(S.B,0,true);
 document.querySelectorAll('.op').forEach(b=>b.onclick=()=>respon(+b.dataset.i));
