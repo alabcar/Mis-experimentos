@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="ca-valencia">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1d4f8a">
+<title>Àlgebra Open</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--pista:#2c6db0;--fosc:#1d4f8a;--groc:#d9f03a;--tinta:#1d2733;--paper:#fbfaf4;--bo:#1f8a4c;--mal:#c8412f;--suau:#5d6b7a;--verd:#2f6b3a}
+html,body{min-height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tinta);font-size:17px;line-height:1.45;overflow-x:hidden;background:var(--fosc);background-image:linear-gradient(90deg,transparent calc(50% - 1px),rgba(255,255,255,.55) calc(50% - 1px),rgba(255,255,255,.55) calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(180deg,var(--fosc) 0,var(--pista) 40%,var(--pista) 100%);background-attachment:fixed}
+#app{position:relative;max-width:540px;margin:0 auto;min-height:100vh;padding:12px 16px 32px;display:flex;flex-direction:column;gap:12px}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+.cap{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding-top:14px}
+.titol{font-size:42px;font-weight:900;color:#fff;line-height:1;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.titol span{color:var(--groc)}
+.lema{color:#dbe8ff;font-weight:600;font-size:15px;margin-top:6px}
+.vict{display:inline-flex;gap:6px;align-items:center;background:#101820;color:#fff;border-radius:8px;padding:4px 10px;font-weight:700;font-size:14px;margin-top:10px}
+.vict b{background:var(--groc);color:#101820;border-radius:4px;padding:0 6px}
+.idioma{background:rgba(255,255,255,.18);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:10px;padding:6px 12px;font-weight:800;font-size:16px}
+.intro{background:rgba(10,25,50,.7);color:#eaf1ff;border-radius:14px;padding:12px 14px;font-size:15px}
+.peu{color:#fff;font-size:13px;text-align:center;opacity:.85}
+.bloc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--paper);border-radius:14px;padding:12px 14px;box-shadow:0 4px 12px rgba(0,0,0,.22)}
+.bloc .ic{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8de1c 60%,#9fb20f);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex:none}
+.bloc b{display:block;font-size:17px}
+.bloc .sub{font-size:13.5px;color:var(--suau)}
+.bloc .rec{margin-left:auto;font-size:14px;font-weight:800;color:var(--bo);white-space:nowrap}
+.carta{background:var(--paper);border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.25);overflow-wrap:break-word}
+h2{font-size:21px;margin-bottom:8px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+p{margin:6px 0}
+.ronda{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--pista);margin-bottom:6px}
+.gran{display:block;width:100%;background:var(--groc);color:var(--tinta);font-weight:800;font-size:18px;padding:14px;border-radius:14px;box-shadow:0 4px 0 #a9bd22}
+.gran:active{transform:translateY(2px);box-shadow:0 2px 0 #a9bd22}
+.sec{display:block;width:100%;background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7);font-weight:700;padding:11px;border-radius:14px}
+.fila{display:flex;gap:10px}.fila>*{flex:1}
+.barra{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px;gap:8px}
+.barra button{background:rgba(255,255,255,.18);border-radius:10px;padding:6px 10px;font-weight:700;font-size:14px;color:#fff}
+.marcador{display:grid;grid-template-columns:1fr auto auto;background:#101820;color:#fff;border-radius:12px;overflow:hidden;font-variant-numeric:tabular-nums;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.marcador div{padding:7px 12px;font-weight:700}
+.marcador .nom{display:flex;align-items:center;gap:8px}
+.marcador .nom i{width:9px;height:9px;border-radius:50%;background:var(--groc);visibility:hidden}
+.marcador .nom i.s{visibility:visible}
+.marcador .jocs{background:#26313d;text-align:center;min-width:40px}
+.marcador .pts{background:var(--groc);color:#101820;text-align:center;min-width:70px}
+.marcador .sep{grid-column:1/-1;height:1px;background:#2d3946;padding:0}
+.carta.preg{background:#0f1b2b;color:#fff;border-top:5px solid var(--groc)}
+.tipus{font-size:12.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9fb0c6;margin-bottom:8px}
+.rally{color:var(--groc)}
+.enun{font-size:18px}
+.preg .enun b{color:var(--groc)}
+.pas{margin-top:12px;color:#cfe0ff;font-weight:600}
+.fets{margin-top:10px;font-size:14px;color:#8fe0a9;border-left:3px solid #8fe0a9;padding-left:8px}
+.opcions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}
+.op{background:#fbfaf4;color:var(--tinta);border:2px solid #d6d9de;border-radius:12px;padding:11px 10px;font-size:18px;font-weight:700;min-height:54px;display:flex;align-items:center;justify-content:center;text-align:center}
+.op.bo{border-color:var(--bo);background:#d9f2e3}
+.op.mal{border-color:var(--mal);background:#fbe1dc}
+.op[disabled]{opacity:1;cursor:default}
+.ajuda{margin-top:12px;background:none;color:var(--groc);font-weight:700;font-size:15px;padding:4px 0}
+.pistab{background:#fff8c9;color:var(--tinta);border-radius:10px;padding:8px 10px;margin-top:6px;font-size:15px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+.gros{font-size:20px}
+.sist{display:inline-block;border-left:3px solid currentColor;padding:2px 0 2px 10px;margin:6px 0;font-weight:700;line-height:1.6}
+table.ruff{border-collapse:collapse;margin:10px auto;background:#fbfaf4;color:var(--tinta);border-radius:10px;font-weight:700;font-size:17px}
+table.ruff td{padding:5px 9px;text-align:center;min-width:36px}
+table.ruff td.esq{border-right:2px solid var(--tinta)}
+table.ruff tr.baix td{border-top:2px solid var(--tinta)}
+table.ruff td.res{background:#eef2e4}
+table.ruff em{color:var(--mal);font-style:normal;font-size:20px}
+.teo .ruff{background:#eef2e4}
+.exemple{background:#eef2e4;border-radius:12px;padding:10px 12px;margin:10px 0}
+.exemple .etq{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--verd)}
+.passos{counter-reset:p;list-style:none;margin:6px 0}
+.passos li{counter-increment:p;position:relative;padding:6px 0 6px 34px;border-bottom:1px dashed #cfd3d8}
+.passos li:last-child{border-bottom:0}
+.passos li::before{content:counter(p);position:absolute;left:0;top:7px;width:24px;height:24px;border-radius:50%;background:var(--pista);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.llista{margin:6px 0 6px 20px}
+.caixa{background:#101820;color:#fff;border-radius:12px;padding:10px 12px;margin:10px 0;font-weight:700;text-align:center;line-height:1.7}
+.serv{background:#e4eefb;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:15.5px}
+.error{background:#fbe6e2;border-radius:10px;padding:10px;margin:8px 0;font-size:15.5px}
+.taula{border-collapse:collapse;width:100%;margin:8px 0;font-size:15px;text-align:center}
+.taula td,.taula th{border:1px solid #d6d9de;padding:6px 4px}
+.taula th{background:#eef2e4}
+.ull{border-left:6px solid var(--mal)}
+.ull.ok{border-left-color:var(--bo)}
+.etiq{font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--mal)}
+.ull.ok .etiq{color:var(--bo)}
+.ull .enun{font-size:16px;background:#f0f1ec;border-radius:10px;padding:8px 10px;margin:8px 0}
+.calc{font-size:14px;color:var(--suau)}
+details summary{cursor:pointer;font-weight:700;color:var(--pista);margin-top:6px}
+.joc{background:var(--groc);border-radius:10px;padding:6px 10px;font-weight:800;margin:6px 0;display:inline-block}
+.final{text-align:center}
+.final .trofeu{font-size:60px}
+.final .res{font-size:20px;font-weight:800}
+.dato{background:#e4eefb;border-radius:12px;padding:10px 12px;margin-top:12px;text-align:left;font-size:15.5px}
+.pilota{position:fixed;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8de1c 60%,#9fb20f);z-index:9;pointer-events:none;animation:.75s ease-out forwards}
+.pilota.anA{animation-name:anA}.pilota.anB{animation-name:anB}
+@keyframes anA{from{left:50%;top:85%;transform:scale(1)}50%{transform:scale(1.6)}to{left:62%;top:4%;transform:scale(.7)}}
+@keyframes anB{from{left:45%;top:2%;transform:scale(.7)}50%{transform:scale(1.5)}to{left:30%;top:95%;transform:scale(1)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+let LANG='va';try{LANG=localStorage.getItem('alg-idioma')||'va'}catch(e){}
+const t=(va,es)=>LANG==='va'?va:es;
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const nz=(a,b)=>{let x;do{x=R(a,b)}while(x===0);return x};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+const MN=n=>n<0?'−'+(-n):String(n+0);
+const PM=n=>n<0?'('+MN(n)+')':String(n);
+const SUP=['','','²','³','⁴','⁵','⁶'];
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const B=s=>`<b>${s}</b>`;
+function poli(c,v='x'){const n=c.length-1;let s='';c.forEach((k,i)=>{const d=n-i;if(k===0)return;const ab=Math.abs(k);const body=d===0?String(ab):(ab===1?'':ab)+v+SUP[d];s+=s===''?(k<0?'−':'')+body:(k<0?' − ':' + ')+body});return s||'0'}
+const pnorm=c=>{let i=0;while(i<c.length-1&&c[i]===0)i++;return c.slice(i).map(x=>x+0)};
+function padd(a,b){const n=Math.max(a.length,b.length);const A=Array(n-a.length).fill(0).concat(a),Bb=Array(n-b.length).fill(0).concat(b);return pnorm(A.map((x,i)=>x+Bb[i]))}
+const pneg=a=>a.map(x=>-x+0);
+function pmul(a,b){const r=Array(a.length+b.length-1).fill(0);a.forEach((x,i)=>b.forEach((y,j)=>r[i+j]+=x*y));return pnorm(r)}
+const pev=(c,x)=>c.reduce((s,k)=>s*x+k,0);
+const deRoots=(r,a=1)=>r.reduce((p,x)=>pmul(p,[1,-x]),[a]);
+const lin=(r,v='x')=>r===0?v:v+(r>0?' − ':' + ')+Math.abs(r);
+const fx=r=>r===0?'x':'('+lin(r)+')';
+function facs(rs){const m=new Map();rs.forEach(r=>m.set(r,(m.get(r)||0)+1));return[...m.entries()].map(([r,k])=>fx(r)+(k>1?SUP[k]:'')).join('')}
+function qf(n,d){if(d<0){n=-n;d=-d}const g=gcd(n,d);n/=g;d/=g;if(d===1)return MN(n);return(n<0?'−':'')+F(Math.abs(n),d)}
+function tm(k,v,first){if(k===0)return'';const ab=Math.abs(k);const body=(ab===1&&v?'':ab)+v;return first?(k<0?'−':'')+body:(k<0?' − ':' + ')+body}
+function lin2(a,b,c){const s1=tm(a,'x',true);const s2=tm(b,'y',s1==='');return s1+s2+' = '+MN(c)}
+const xs=(arr,v='x')=>arr.slice().sort((p,q)=>p-q).map(r=>v+' = '+MN(r)).join(', ');
+const INF='+∞',NINF='−∞';
+function iv(a,b,ca,cb){return(a===null?'('+NINF:(ca?'[':'(')+MN(a))+', '+(b===null?INF+')':MN(b)+(cb?']':')'))}
+function divs(n){n=Math.abs(n);const d=[];for(let i=1;i<=n;i++)if(n%i===0)d.push(i);return d}
+function ruff(c,a){const p=[null],r=[c[0]];for(let i=1;i<c.length;i++){p.push(r[i-1]*a);r.push(c[i]+p[i])}return{p,r}}
+function pdiv(P,D,mal){const r=P.slice();const q=[];const n=P.length-D.length+1;for(let i=0;i<n;i++){const k=r[i]/D[0];q.push(k);for(let j=0;j<D.length;j++){if(mal&&j>0)r[i+j]+=k*D[j];else r[i+j]-=k*D[j]}}return{q:pnorm(q),r:pnorm(r.slice(n))}}
+function ops(ok,mals){const seen=new Set([ok]);const r=[{h:ok,ok:1}];for(const[m,e]of mals){if(r.length>=4)break;if(m==null||seen.has(m))continue;seen.add(m);r.push({h:m,e})}return shuffle(r)}
+function taula(c,a,mid,bot,cur){const td=(x,cl)=>`<td${cl?' class="'+cl+'"':''}>${x}</td>`;const n=c.length;
+return`<table class="ruff"><tr>${td('','esq')}${c.map((k,i)=>td(MN(k),i===n-1?'res':'')).join('')}</tr><tr>${td(MN(a),'esq')}${c.map((_,i)=>td(i===0||mid[i]==null?'':MN(mid[i]),i===n-1?'res':'')).join('')}</tr><tr class="baix">${td('','esq')}${c.map((_,i)=>td(i===cur?'<em>?</em>':bot[i]==null?'':MN(bot[i]),i===n-1?'res':'')).join('')}</tr></table>`}
+
+const G={};
+const P1=(q,o,pista)=>({q,ops:o,pista});
+const SIGNE=()=>t('Error de signe. Repassa els signes pas a pas: menys per menys és més, i menys per més és menys.','Error de signo. Repasa los signos paso a paso: menos por menos es más, y menos por más es menos.');
+
+G.suma=()=>{const P=[nz(-4,4),R(-6,6),R(-6,6),nz(-7,7)];const Q=[nz(-5,5),nz(-6,6),nz(-7,7)];
+const D=padd(P,pneg(Q));const parc=padd(P,[-Q[0],Q[1],Q[2]]);
+return{enun:`P(x) = ${B(poli(P))}<br>Q(x) = ${B(poli(Q))}`,
+passos:[P1(t('Calcula P(x) − Q(x)','Calcula P(x) − Q(x)'),ops(poli(D),[
+[poli(parc),t('Només has canviat el signe del primer terme de Q. El signe − de davant del parèntesi canvia el signe de TOTS els termes de Q.','Solo has cambiado el signo del primer término de Q. El signo − delante del paréntesis cambia el signo de TODOS los términos de Q.')],
+[poli(padd(P,Q)),t('Has sumat en lloc de restar: P − Q vol dir sumar a P l\'oposat de Q.','Has sumado en lugar de restar: P − Q significa sumar a P el opuesto de Q.')],
+[poli(padd(P,[-Q[0],-Q[1],Q[2]])),t('Se t\'ha oblidat canviar el signe del terme independent de Q.','Se te ha olvidado cambiar el signo del término independiente de Q.')]]),
+t('Canvia el signe de cada terme de Q i després suma els termes del mateix grau.','Cambia el signo de cada término de Q y después suma los términos del mismo grado.'))],
+sol:[`P − Q = (${poli(P)}) − (${poli(Q)})`,t('Traiem el parèntesi canviant TOTS els signes de Q: ','Quitamos el paréntesis cambiando TODOS los signos de Q: ')+`${poli(P)} ${poli(pneg(Q)).startsWith('−')?'− '+poli(pneg(Q)).slice(1):'+ '+poli(pneg(Q))}`,t('Agrupem els termes del mateix grau: ','Agrupamos los términos del mismo grado: ')+B(poli(D))]}};
+
+G.prod=()=>{const a=pick([1,1,2,3]),c=pick([1,2]),b=nz(-6,6),d=nz(-6,6);
+const ok=[a*c,a*d+b*c,b*d];const ax=poli([a,0]),cx=poli([c,0]);
+return{enun:t('Multiplica:','Multiplica:')+` ${B('('+poli([a,b])+')('+poli([c,d])+')')}`,
+passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(poli(ok),[
+[poli([a*c,0,b*d]),t('T\'has deixat els productes creuats. Cada terme del primer parèntesi es multiplica per CADA terme del segon: són 4 productes.','Te has dejado los productos cruzados. Cada término del primer paréntesis se multiplica por CADA término del segundo: son 4 productos.')],
+[poli([a*c,a*d+b*c,-b*d]),t(`Error de signe en l'últim producte: ${PM(b)}·${PM(d)} = ${MN(b*d)}.`,`Error de signo en el último producto: ${PM(b)}·${PM(d)} = ${MN(b*d)}.`)],
+[poli([a*c,a*b+c*d,b*d]),t('Els termes en x són ('+ax+')·('+MN(d)+') i ('+MN(b)+')·('+cx+'), no els que has multiplicat.','Los términos en x son ('+ax+')·('+MN(d)+') y ('+MN(b)+')·('+cx+'), no los que has multiplicado.')],
+[poli([a*c,a*d-b*c,b*d]),SIGNE()]]),
+t('Propietat distributiva: primer·primer, primer·segon, segon·primer, segon·segon.','Propiedad distributiva: primero·primero, primero·segundo, segundo·primero, segundo·segundo.'))],
+sol:[`(${ax})·(${cx}) = ${poli([a*c,0,0])}`,`(${ax})·(${MN(d)}) = ${poli([a*d,0])}`,`(${MN(b)})·(${cx}) = ${poli([b*c,0])}`,`(${MN(b)})·(${MN(d)}) = ${MN(b*d)}`,t('Sumem i agrupem: ','Sumamos y agrupamos: ')+B(poli(ok))]}};
+
+G.notable=()=>{const k=pick([1,1,2,3]),a=R(1,7);const kx=poli([k,0]);const tipus=pick(['+','−','·']);
+if(tipus==='·'){const ok=[k*k,0,-a*a];return{enun:t('Desenvolupa amb una identitat notable:','Desarrolla con una identidad notable:')+` ${B('('+kx+' + '+a+')('+kx+' − '+a+')')}`,
+passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(poli(ok),[
+[poli([k*k,0,a*a]),t('Suma per diferència és diferència de quadrats: el segon quadrat va RESTANT.','Suma por diferencia es diferencia de cuadrados: el segundo cuadrado va RESTANDO.')],
+[poli([k*k,2*k*a,-a*a]),t('Ací no hi ha terme del mig: els productes creuats +'+k*a+'x i −'+k*a+'x s\'anul·len.','Aquí no hay término del medio: los productos cruzados +'+k*a+'x y −'+k*a+'x se anulan.')],
+[k>1?poli([k,0,-a*a]):poli([1,-2*a,-a*a]),k>1?t(`(${kx})² = ${k*k}x², no ${k}x²: el quadrat afecta també al número.`,`(${kx})² = ${k*k}x², no ${k}x²: el cuadrado afecta también al número.`):t('Això no és cap identitat notable: (a + b)(a − b) = a² − b².','Eso no es ninguna identidad notable: (a + b)(a − b) = a² − b².')]]),
+t('(a + b)(a − b) = a² − b²','(a + b)(a − b) = a² − b²'))],
+sol:[t('Suma per diferència = diferència de quadrats: (a + b)(a − b) = a² − b²','Suma por diferencia = diferencia de cuadrados: (a + b)(a − b) = a² − b²'),`a = ${kx}, b = ${a}`,`(${kx})² − ${a}² = `+B(poli(ok))]}}
+const s=tipus==='+'?1:-1;const ok=[k*k,2*k*a*s,a*a];
+return{enun:t('Desenvolupa amb una identitat notable:','Desarrolla con una identidad notable:')+` ${B('('+kx+' '+tipus+' '+a+')²')}`,
+passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(poli(ok),[
+[poli([k*k,0,a*a]),t(`Falta el doble producte 2·(${kx})·(${a}). (a ${tipus} b)² NO és a² + b².`,`Falta el doble producto 2·(${kx})·(${a}). (a ${tipus} b)² NO es a² + b².`)],
+[poli([k*k,k*a*s,a*a]),t('El terme del mig és el DOBLE del producte: 2·a·b.','El término del medio es el DOBLE del producto: 2·a·b.')],
+[poli([k*k,2*k*a*s,-a*a]),t(`L'últim terme és ${a}² = ${a*a}, que és positiu: un quadrat mai no és negatiu.`,`El último término es ${a}² = ${a*a}, que es positivo: un cuadrado nunca es negativo.`)],
+[k>1?poli([k,2*k*a*s,a*a]):poli([1,-2*a*s,a*a]),k>1?t(`(${kx})² = ${k*k}x², no ${k}x².`,`(${kx})² = ${k*k}x², no ${k}x².`):t('El signe del terme del mig és el mateix que el del binomi.','El signo del término del medio es el mismo que el del binomio.')]]),
+t(`(a ${tipus} b)² = a² ${tipus==='+'?'+':'−'} 2ab + b²`,`(a ${tipus} b)² = a² ${tipus==='+'?'+':'−'} 2ab + b²`))],
+sol:[`(a ${tipus} b)² = a² ${tipus} 2ab + b²`,`a = ${kx}, b = ${a}`,`a² = ${poli([k*k,0,0])}, 2ab = 2·${kx}·${a} = ${poli([2*k*a,0])}, b² = ${a*a}`,t('Resultat: ','Resultado: ')+B(poli(ok))]}};
+
+G.valor=()=>{const P=[nz(-3,3),nz(-5,5),R(-6,6),R(-9,9)];const k=pick([-3,-2,-1,2,3]);const ok=pev(P,k);
+const malq=P[0]*k*k*k+P[1]*(-Math.abs(k*k))*(k<0?1:-1)*-1;
+const malq2=P[0]*k*k*k-P[1]*k*k+P[2]*k+P[3];
+return{enun:`P(x) = ${B(poli(P))}`,passos:[P1(t(`Calcula el valor numèric P(${MN(k)})`,`Calcula el valor numérico P(${MN(k)})`),ops(String(MN(ok)),[
+[MN(pev(P,-k)),t(`Has substituït x = ${MN(-k)} en lloc de x = ${MN(k)}.`,`Has sustituido x = ${MN(-k)} en lugar de x = ${MN(k)}.`)],
+[MN(malq2),k<0?t(`(${MN(k)})² = ${k*k}, sempre positiu. Posa el número negatiu entre parèntesis abans d'elevar-lo.`,`(${MN(k)})² = ${k*k}, siempre positivo. Pon el número negativo entre paréntesis antes de elevarlo.`):t('Compte amb el signe del terme en x²: és '+MN(P[1])+'·'+k*k+' = '+MN(P[1]*k*k)+'.','Cuidado con el signo del término en x²: es '+MN(P[1])+'·'+k*k+' = '+MN(P[1]*k*k)+'.')],
+[MN(ok+2*P[2]*(k<0?1:-1)||ok+1),t('Error de càlcul en algun terme. Fes-los un a un i suma al final.','Error de cálculo en algún término. Hazlos uno a uno y suma al final.')]]),
+t(`Substitueix x per (${MN(k)}), amb parèntesis.`,`Sustituye x por (${MN(k)}), con paréntesis.`))],
+sol:[`P(${MN(k)}) = ${MN(P[0])}·(${MN(k)})³ ${P[1]<0?'−':'+'} ${Math.abs(P[1])}·(${MN(k)})² ${P[2]<0?'−':'+'} ${Math.abs(P[2])}·(${MN(k)}) ${P[3]<0?'−':'+'} ${Math.abs(P[3])}`,`= ${MN(P[0]*k**3)} ${P[1]*k*k<0?'−':'+'} ${Math.abs(P[1]*k*k)} ${P[2]*k<0?'−':'+'} ${Math.abs(P[2]*k)} ${P[3]<0?'−':'+'} ${Math.abs(P[3])} = ${B(MN(ok))}`]}};
+
+G.divisio=()=>{const D=[1,nz(-4,4),nz(-5,5)];const Q=[pick([1,2,3]),nz(-5,5)];const Rm=[R(-5,5),nz(-6,6)];
+const P=padd(pmul(D,Q),Rm);const w=pdiv(P,D,true);const okC=poli(Q),okR=poli(pnorm(Rm));
+const c1=`C(x) = ${okC}`;
+return{enun:t('Divideix','Divide')+` ${B('('+poli(P)+') : ('+poli(D)+')')}`,
+passos:[P1(t('Quin és el quocient C(x)?','¿Cuál es el cociente C(x)?'),ops(c1,[
+[`C(x) = ${poli(w.q)}`,t('En cada pas de la divisió cal RESTAR: canvia el signe de tot el que poses davall abans de sumar.','En cada paso de la división hay que RESTAR: cambia el signo de todo lo que pones debajo antes de sumar.')],
+[`C(x) = ${poli([Q[0],-Q[1]])}`,SIGNE()],
+[`C(x) = ${poli([Q[0],0,Q[1]])}`,t('El grau del quocient és grau(P) − grau(D) = 3 − 2 = 1.','El grado del cociente es grado(P) − grado(D) = 3 − 2 = 1.')]]),
+t(`Primer terme del quocient: ${poli([P[0],0,0,0])} : x² = ${poli([Q[0],0])}.`,`Primer término del cociente: ${poli([P[0],0,0,0])} : x² = ${poli([Q[0],0])}.`)),
+P1(t('I el residu R(x)?','¿Y el resto R(x)?'),ops(`R(x) = ${okR}`,[
+[`R(x) = ${poli(pneg(pnorm(Rm)))}`,SIGNE()],
+[`R(x) = ${poli(pdiv(P,D,true).r)}`,t('Has sumat en lloc de restar en algun pas.','Has sumado en lugar de restar en algún paso.')],
+[`R(x) = ${poli([Rm[0]+1,Rm[1]])}`,t('Comprova: D(x)·C(x) + R(x) ha de donar P(x).','Comprueba: D(x)·C(x) + R(x) tiene que dar P(x).')]]),
+t('El residu té grau menor que el divisor (grau 1 o menys).','El resto tiene grado menor que el divisor (grado 1 o menos).'))],
+sol:[t(`1r: ${poli([P[0],0,0,0])} : x² = ${poli([Q[0],0])}. Multipliquem ${poli([Q[0],0])}·(${poli(D)}) = ${poli(pmul([Q[0],0],D))} i ho restem.`,`1º: ${poli([P[0],0,0,0])} : x² = ${poli([Q[0],0])}. Multiplicamos ${poli([Q[0],0])}·(${poli(D)}) = ${poli(pmul([Q[0],0],D))} y lo restamos.`),
+t(`Queda ${poli(padd(P,pneg(pmul([Q[0],0],D))))}.`,`Queda ${poli(padd(P,pneg(pmul([Q[0],0],D))))}.`),
+t(`2n: ${poli([Q[1],0,0])} : x² = ${MN(Q[1])}. Multipliquem ${MN(Q[1])}·(${poli(D)}) = ${poli(pmul([Q[1]],D))} i ho restem.`,`2º: ${poli([Q[1],0,0])} : x² = ${MN(Q[1])}. Multiplicamos ${MN(Q[1])}·(${poli(D)}) = ${poli(pmul([Q[1]],D))} y lo restamos.`),
+t('Quocient ','Cociente ')+B(okC)+t(', residu ',', resto ')+B(okR),
+t('Comprovació: D·C + R = P ✔','Comprobación: D·C + R = P ✔')]}};
+
+G.taula=()=>{const c=[pick([1,1,2]),R(-5,5),R(-6,6),R(-8,8)];const a=pick([-3,-2,-1,1,2,3]);const {p,r}=ruff(c,a);
+const steps=[];const mid=[null],bot=[r[0]];
+for(let i=1;i<4;i++){const m=mid.slice(),b=bot.slice();const tb=taula(c,a,m,b,i);
+steps.push(P1(t(`Fila de baix, casella ${i+1}: quin número va?`,`Fila de abajo, casilla ${i+1}: ¿qué número va?`)+tb,ops(MN(r[i]),[
+[MN(c[i]-p[i]),t('A Ruffini, el número de dalt i el del mig es SUMEN, no es resten.','En Ruffini, el número de arriba y el del medio se SUMAN, no se restan.')],
+[MN(c[i]+r[i-1]),t(`T'has oblidat de multiplicar per ${MN(a)}: el número de baix anterior es multiplica per ${MN(a)} i es posa al mig.`,`Te has olvidado de multiplicar por ${MN(a)}: el número de abajo anterior se multiplica por ${MN(a)} y se pone en medio.`)],
+[MN(p[i]),t(`${MN(r[i-1])}·${PM(a)} = ${MN(p[i])} és el número del mig. Falta sumar-li el de dalt (${MN(c[i])}).`,`${MN(r[i-1])}·${PM(a)} = ${MN(p[i])} es el número del medio. Falta sumarle el de arriba (${MN(c[i])}).`)],
+[MN(c[i]-a*r[i-1]===r[i]?r[i]+1:c[i]-a*r[i-1]),t(`Has usat ${MN(-a)}. Per a dividir per ${fx(a)} es posa ${MN(a)} a l'esquerra.`,`Has usado ${MN(-a)}. Para dividir entre ${fx(a)} se pone ${MN(a)} a la izquierda.`)]]),
+t(`Multiplica ${MN(r[i-1])}·${PM(a)} = ${MN(p[i])} (va al mig) i suma-ho amb ${MN(c[i])}.`,`Multiplica ${MN(r[i-1])}·${PM(a)} = ${MN(p[i])} (va en medio) y súmalo con ${MN(c[i])}.`)));
+mid.push(p[i]);bot.push(r[i])}
+const C=poli(r.slice(0,3));
+steps.push(P1(t('Taula acabada. Quin és el resultat de la divisió?','Tabla acabada. ¿Cuál es el resultado de la división?')+taula(c,a,mid,bot,-1),ops(`C(x) = ${C}, R = ${MN(r[3])}`,[
+[`C(x) = ${poli(r)}, R = ${MN(r[3])}`,t('El quocient té UN grau menys que el dividend. L\'últim número de baix és el residu, no forma part del quocient.','El cociente tiene UN grado menos que el dividendo. El último número de abajo es el resto, no forma parte del cociente.')],
+[`C(x) = ${poli(r.slice(0,3))}, R = ${MN(-r[3])}`,t('El residu és l\'últim número tal com està, amb el seu signe.','El resto es el último número tal como está, con su signo.')],
+[`C(x) = ${poli(r.slice(1))}, R = ${MN(r[0])}`,t('Els números de baix, d\'esquerra a dreta, són els coeficients del quocient; el de la dreta del tot és el residu.','Los números de abajo, de izquierda a derecha, son los coeficientes del cociente; el de la derecha del todo es el resto.')]]),
+t('Baix: coeficients del quocient (grau 2) i, a l\'últim requadre, el residu.','Abajo: coeficientes del cociente (grado 2) y, en el último recuadro, el resto.')));
+return{enun:t('Divideix per Ruffini','Divide por Ruffini')+` ${B('('+poli(c)+') : '+fx(a))}`,rally:1,passos:steps,
+sol:[t(`Dividim per ${fx(a)}: a l'esquerra posem ${MN(a)}.`,`Dividimos entre ${fx(a)}: a la izquierda ponemos ${MN(a)}.`),t(`Baixem el primer coeficient: ${MN(r[0])}.`,`Bajamos el primer coeficiente: ${MN(r[0])}.`),
+...[1,2,3].map(i=>`${MN(r[i-1])}·${PM(a)} = ${MN(p[i])} → ${MN(c[i])} + ${PM(p[i])} = ${MN(r[i])}`),taula(c,a,mid,bot,-1),t('Quocient ','Cociente ')+B(C)+t(' i residu ',' y resto ')+B(MN(r[3]))]}};
+
+G.residu=()=>{const P=[1,R(-4,4),R(-5,5),nz(-8,8)];const a=pick([-3,-2,-1,1,2,3]);const ok=pev(P,a);
+const sq=P[0]*a**3-P[1]*a*a+P[2]*a+P[3];
+return{enun:t('Sense fer la divisió, troba el residu de','Sin hacer la división, halla el resto de')+` ${B('('+poli(P)+') : '+fx(a))}`,
+passos:[P1(t('Quin és el residu?','¿Cuál es el resto?'),ops(MN(ok),[
+[MN(pev(P,-a)),t(`Teorema del residu: per a dividir per ${fx(a)} se substitueix x = ${MN(a)} (el número que anul·la el divisor), no x = ${MN(-a)}.`,`Teorema del resto: para dividir entre ${fx(a)} se sustituye x = ${MN(a)} (el número que anula el divisor), no x = ${MN(-a)}.`)],
+[MN(sq),a<0?t(`(${MN(a)})² = ${a*a}: un quadrat sempre és positiu.`,`(${MN(a)})² = ${a*a}: un cuadrado siempre es positivo.`):t('Error de càlcul: fes cada terme per separat i suma al final.','Error de cálculo: haz cada término por separado y suma al final.')],
+[MN(P[3]),t('El residu no és el terme independent: cal calcular P('+MN(a)+').','El resto no es el término independiente: hay que calcular P('+MN(a)+').')],
+['0',t('Si el residu fóra 0, '+fx(a)+' seria un factor. Calcula P('+MN(a)+').','Si el resto fuera 0, '+fx(a)+' sería un factor. Calcula P('+MN(a)+').')]]),
+t(`El residu de dividir P(x) per ${fx(a)} és P(${MN(a)}).`,`El resto de dividir P(x) entre ${fx(a)} es P(${MN(a)}).`))],
+sol:[t(`Teorema del residu: R = P(${MN(a)})`,`Teorema del resto: R = P(${MN(a)})`),`P(${MN(a)}) = (${MN(a)})³ ${P[1]<0?'−':'+'} ${Math.abs(P[1])}·(${MN(a)})² ${P[2]<0?'−':'+'} ${Math.abs(P[2])}·(${MN(a)}) ${P[3]<0?'−':'+'} ${Math.abs(P[3])}`,`= ${MN(a**3)} ${P[1]*a*a<0?'−':'+'} ${Math.abs(P[1]*a*a)} ${P[2]*a<0?'−':'+'} ${Math.abs(P[2]*a)} ${P[3]<0?'−':'+'} ${Math.abs(P[3])} = ${B(MN(ok))}`]}};
+
+G.kval=()=>{const a=pick([-2,-1,1,2]);const k=nz(-5,5),b=R(-6,6);const c=-(a**3+k*a*a+b*a);
+const cola=(b?(b<0?' − ':' + ')+(Math.abs(b)===1?'':Math.abs(b))+'x':'')+(c?(c<0?' − ':' + ')+Math.abs(c):'');
+const mk=n=>qf(n[0],n[1]);
+return{enun:t('Troba k perquè','Halla k para que')+` ${B('P(x) = x³ + kx²'+cola)} `+t('siga divisible per','sea divisible entre')+` ${B(fx(a))}`,
+passos:[P1(t('Quant val k?','¿Cuánto vale k?'),ops('k = '+MN(k),[
+['k = '+MN(-k),SIGNE()],
+['k = '+mk([a**3-b*a-c,a*a]),t(`Has substituït x = ${MN(-a)}. Divisible per ${fx(a)} vol dir P(${MN(a)}) = 0.`,`Has sustituido x = ${MN(-a)}. Divisible entre ${fx(a)} significa P(${MN(a)}) = 0.`)],
+['k = '+mk([-(a**3+b*a+c),a]),t(`k va multiplicat per (${MN(a)})² = ${a*a}, no per ${MN(a)}.`,`k va multiplicado por (${MN(a)})² = ${a*a}, no por ${MN(a)}.`)],
+['k = '+MN(k+2),t('Error en aïllar k. Repassa l\'equació pas a pas.','Error al despejar k. Repasa la ecuación paso a paso.')]]),
+t(`Divisible per ${fx(a)} ⇔ P(${MN(a)}) = 0. Planteja l'equació i aïlla k.`,`Divisible entre ${fx(a)} ⇔ P(${MN(a)}) = 0. Plantea la ecuación y despeja k.`))],
+sol:[t(`Divisible per ${fx(a)} ⇔ residu 0 ⇔ P(${MN(a)}) = 0`,`Divisible entre ${fx(a)} ⇔ resto 0 ⇔ P(${MN(a)}) = 0`),`(${MN(a)})³ + k·(${MN(a)})²${b?` ${b<0?'−':'+'} ${Math.abs(b)}·(${MN(a)})`:''}${c?` ${c<0?'−':'+'} ${Math.abs(c)}`:''} = 0`,
+`${MN(a**3)} + ${a*a===1?'':a*a}k${b?` ${b*a<0?'−':'+'} ${Math.abs(b*a)}`:''}${c?` ${c<0?'−':'+'} ${Math.abs(c)}`:''} = 0 → ${a*a===1?'':a*a}k = ${MN(-(a**3+b*a+c))}`,B('k = '+MN(k))]}};
+
+G.cand=()=>{const c=pick([4,6,8,9,10,12,15,18,20])*pick([1,-1]);const P=[1,R(-4,4),nz(-6,6),c];
+const D=divs(c);const fmt=a=>a.map(d=>'±'+d).join(', ');
+const altre=divs(P[2]).length>1?divs(P[2]):divs(c*2);
+return{enun:`P(x) = ${B(poli(P))}`,passos:[P1(t('Quines són les possibles arrels enteres de P(x)?','¿Cuáles son las posibles raíces enteras de P(x)?'),ops(fmt(D),[
+[D.join(', '),t('Les arrels poden ser negatives: cal provar els divisors amb signe + i amb signe −.','Las raíces pueden ser negativas: hay que probar los divisores con signo + y con signo −.')],
+[fmt(altre),t(`Els candidats són els divisors del TERME INDEPENDENT (${MN(c)}), no d'un altre coeficient.`,`Los candidatos son los divisores del TÉRMINO INDEPENDIENTE (${MN(c)}), no de otro coeficiente.`)],
+[fmt(divs(c*2)),t(`Sobren números: ${Math.abs(c*2)} no és divisor de ${Math.abs(c)}.`,`Sobran números: ${Math.abs(c*2)} no es divisor de ${Math.abs(c)}.`)]]),
+t('Les arrels enteres, si n\'hi ha, divideixen el terme independent.','Las raíces enteras, si las hay, dividen al término independiente.'))],
+sol:[t(`Terme independent: ${MN(c)}`,`Término independiente: ${MN(c)}`),t(`Divisors de ${Math.abs(c)}: ${D.join(', ')}`,`Divisores de ${Math.abs(c)}: ${D.join(', ')}`),t('Candidats (amb els dos signes): ','Candidatos (con los dos signos): ')+B(fmt(D)),t('Això no vol dir que totes siguen arrels: cal provar-les amb Ruffini o amb P(a).','Esto no significa que todas sean raíces: hay que probarlas con Ruffini o con P(a).')]}};
+
+function tresArrels(zero){for(;;){let r=shuffle([-4,-3,-2,-1,1,2,3,4,5]).slice(0,3);if(zero)r[2]=0;r.sort((x,y)=>x-y);const c=deRoots(r);if(Math.abs(c[3])<=30&&Math.abs(c[1])<=8&&new Set(r).size===3)return r}}
+function provaArrel(P,r){const c=P[P.length-1];const D=divs(c).flatMap(d=>[d,-d]);const no=shuffle(D.filter(d=>!r.includes(d))).slice(0,3);
+const bo=pick(r.filter(x=>x!==0));return{bo,o:ops('x = '+MN(bo),no.map(d=>['x = '+MN(d),t(`P(${MN(d)}) = ${MN(pev(P,d))} ≠ 0, així que ${MN(d)} no és arrel.`,`P(${MN(d)}) = ${MN(pev(P,d))} ≠ 0, así que ${MN(d)} no es raíz.`)]))}}
+G.arrel=()=>{const r=tresArrels();const P=deRoots(r);const {bo,o}=provaArrel(P,r);
+return{enun:`P(x) = ${B(poli(P))}`,passos:[P1(t('Quin d\'estos números és una arrel de P(x)?','¿Cuál de estos números es una raíz de P(x)?'),o,t('Una arrel és un número a amb P(a) = 0. Prova-los substituint (o amb Ruffini: residu 0).','Una raíz es un número a con P(a) = 0. Pruébalos sustituyendo (o con Ruffini: resto 0).'))],
+sol:[t('a és arrel ⇔ P(a) = 0 ⇔ el residu de dividir per (x − a) és 0.','a es raíz ⇔ P(a) = 0 ⇔ el resto de dividir entre (x − a) es 0.'),`P(${MN(bo)}) = 0 ✔ → `+B('x = '+MN(bo)),t(`(De fet, les arrels de P són ${r.map(MN).join(', ')}.)`,`(De hecho, las raíces de P son ${r.map(MN).join(', ')}.)`)]}};
+
+G.comu=()=>{const g=pick([2,3,4,5,6]),m=pick([1,2]);let A,Bc;do{A=R(1,5);Bc=nz(-7,7)}while(gcd(A,Bc)!==1);
+const E=[g*A,g*Bc].concat(Array(m).fill(0));const mono=(k,d)=>(k===1?'':k)+(d?'x'+SUP[d]:'');
+const ok=`${mono(g,m)}(${poli([A,Bc])})`;
+const inc=m===2?`${mono(g,1)}(${poli([A,Bc,0])})`:`${g}(${poli([A,Bc,0])})`;
+return{enun:t('Trau factor comú i factoritza:','Saca factor común y factoriza:')+` ${B(poli(E))}`,passos:[P1(t('Quina és la factorització completa?','¿Cuál es la factorización completa?'),ops(ok,[
+[inc,t('No és incorrecte, però no està acabada: dins del parèntesi encara hi ha un factor comú. Cal traure el MÀXIM factor comú.','No es incorrecto, pero no está acabado: dentro del paréntesis todavía hay un factor común. Hay que sacar el MÁXIMO factor común.')],
+[`${mono(g,m)}(${poli([A,-Bc])})`,t('Comprova multiplicant: el signe de dins ha de reproduir l\'expressió original.','Comprueba multiplicando: el signo de dentro tiene que reproducir la expresión original.')],
+[`${mono(g,m)}(${poli([g*A,Bc])})`,t(`Has de dividir TOTS els termes entre ${mono(g,m)}.`,`Tienes que dividir TODOS los términos entre ${mono(g,m)}.`)],
+[`${mono(g,m+1)}(${poli([A,Bc])})`,t(`La x amb menor exponent és x${SUP[m]}: no pots traure x${SUP[m+1]}.`,`La x con menor exponente es x${SUP[m]}: no puedes sacar x${SUP[m+1]}.`)]]),
+t('Busca el MCD dels coeficients i la x amb l\'exponent més menut.','Busca el MCD de los coeficientes y la x con el exponente más pequeño.'))],
+sol:[t(`MCD(${g*A}, ${Math.abs(g*Bc)}) = ${g}; x comuna amb menor exponent: x${SUP[m]}`,`MCD(${g*A}, ${Math.abs(g*Bc)}) = ${g}; x común con menor exponente: x${SUP[m]}`),t(`Factor comú: ${mono(g,m)}`,`Factor común: ${mono(g,m)}`),t(`Dividim cada terme entre ${mono(g,m)}: ${poli([g*A,0].concat(Array(m).fill(0)))} : ${mono(g,m)} = ${poli([A,0])}, ${poli([g*Bc].concat(Array(m).fill(0)))} : ${mono(g,m)} = ${MN(Bc)}`,`Dividimos cada término entre ${mono(g,m)}: ${poli([g*A,0].concat(Array(m).fill(0)))} : ${mono(g,m)} = ${poli([A,0])}, ${poli([g*Bc].concat(Array(m).fill(0)))} : ${mono(g,m)} = ${MN(Bc)}`),B(ok)]}};
+
+G.ident=()=>{const tipus=pick(['dq','dq','qp']);
+if(tipus==='dq'){let k,a;do{k=pick([1,1,2,3]);a=R(1,9)}while(gcd(k,a)!==1);const kx=poli([k,0]);const P=[k*k,0,-a*a];
+const ok=`(${kx} + ${a})(${kx} − ${a})`;
+return{enun:t('Factoritza:','Factoriza:')+` ${B(poli(P))}`,passos:[P1(t('Quina és la factorització?','¿Cuál es la factorización?'),ops(ok,[
+[`(${kx} − ${a})²`,t(`(${kx} − ${a})² = ${poli([k*k,-2*k*a,a*a])}: té terme del mig. Una diferència de quadrats és SUMA per DIFERÈNCIA.`,`(${kx} − ${a})² = ${poli([k*k,-2*k*a,a*a])}: tiene término del medio. Una diferencia de cuadrados es SUMA por DIFERENCIA.`)],
+[`(${kx} + ${a})²`,t('Això dona un + davant de l\'últim terme i un terme del mig. Ací falten tots dos.','Eso da un + delante del último término y un término del medio. Aquí faltan los dos.')],
+[`(${kx} + ${a*a})(${kx} − ${a*a})`,t(`Dins dels parèntesis van les ARRELS: √${a*a} = ${a}.`,`Dentro de los paréntesis van las RAÍCES: √${a*a} = ${a}.`)]]),
+t('a² − b² = (a + b)(a − b)','a² − b² = (a + b)(a − b)'))],
+sol:[t(`És una diferència de quadrats: ${poli([k*k,0,0])} = (${kx})² i ${a*a} = ${a}²`,`Es una diferencia de cuadrados: ${poli([k*k,0,0])} = (${kx})² y ${a*a} = ${a}²`),'a² − b² = (a + b)(a − b)',B(ok)]}}
+const a=R(1,8),s=pick([1,-1]);const P=[1,2*a*s,a*a];const ok=`(x ${s>0?'+':'−'} ${a})²`;
+return{enun:t('Factoritza:','Factoriza:')+` ${B(poli(P))}`,passos:[P1(t('Quina és la factorització?','¿Cuál es la factorización?'),ops(ok,[
+[`(x ${s>0?'−':'+'} ${a})²`,t('El signe del binomi és el del terme del mig.','El signo del binomio es el del término del medio.')],
+[`(x + ${a})(x − ${a})`,t(`(x + ${a})(x − ${a}) = x² − ${a*a}: no té terme del mig.`,`(x + ${a})(x − ${a}) = x² − ${a*a}: no tiene término del medio.`)],
+[`(x ${s>0?'+':'−'} ${2*a})²`,t(`Dins va l'arrel de l'últim terme: √${a*a} = ${a}. El terme del mig és el DOBLE producte.`,`Dentro va la raíz del último término: √${a*a} = ${a}. El término del medio es el DOBLE producto.`)]]),
+t('Mira si és un quadrat perfecte: a² ± 2ab + b² = (a ± b)².','Mira si es un cuadrado perfecto: a² ± 2ab + b² = (a ± b)².'))],
+sol:[t(`x² = (x)², ${a*a} = ${a}² i el terme del mig és 2·x·${a} = ${2*a}x → quadrat perfecte`,`x² = (x)², ${a*a} = ${a}² y el término del medio es 2·x·${a} = ${2*a}x → cuadrado perfecto`),`a² ${s>0?'+':'−'} 2ab + b² = (a ${s>0?'+':'−'} b)²`,B(ok)]}};
+
+G.trinomi=()=>{const a=pick([1,1,1,2,3]);let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);[r1,r2]=[Math.min(r1,r2),Math.max(r1,r2)];
+const P=deRoots([r1,r2],a);const pre=a===1?'':a;const ok=pre+fx(r1)+fx(r2);
+const D=P[1]*P[1]-4*P[0]*P[2];
+return{enun:t('Factoritza:','Factoriza:')+` ${B(poli(P))}`,passos:[P1(t('Quina és la factorització?','¿Cuál es la factorización?'),ops(ok,[
+[pre+fx(-r1)+fx(-r2),t(`Si x = ${MN(r1)} és arrel, el factor és (x − (${MN(r1)})) = ${fx(r1)}. El signe del factor és el CONTRARI del de l'arrel.`,`Si x = ${MN(r1)} es raíz, el factor es (x − (${MN(r1)})) = ${fx(r1)}. El signo del factor es el CONTRARIO del de la raíz.`)],
+[a===1?fx(r1)+fx(-r2):fx(r1)+fx(r2),a===1?SIGNE():t(`T'has oblidat del coeficient principal ${a}: P(x) = ${a}${fx(r1)}${fx(r2)}.`,`Te has olvidado del coeficiente principal ${a}: P(x) = ${a}${fx(r1)}${fx(r2)}.`)],
+[pre+fx(-r1)+fx(r2),SIGNE()]]),
+t('Troba les arrels amb la fórmula i després P(x) = a(x − x₁)(x − x₂).','Halla las raíces con la fórmula y después P(x) = a(x − x₁)(x − x₂).'))],
+sol:[t(`Resolem ${poli(P)} = 0: Δ = ${PM(P[1])}² − 4·${a}·${PM(P[2])} = ${D}`,`Resolvemos ${poli(P)} = 0: Δ = ${PM(P[1])}² − 4·${a}·${PM(P[2])} = ${D}`),`x = ${F(MN(-P[1])+' ± √'+D,2*a)} → x₁ = ${MN(r1)}, x₂ = ${MN(r2)}`,`a(x − x₁)(x − x₂) = `+B(ok)]}};
+
+G.completa=()=>{const z=Math.random()<.25;const r=tresArrels(z);const P=deRoots(r);
+if(z){const nzr=r.filter(x=>x!==0);const Q=deRoots(nzr);const ok='x'+facs(nzr);
+return{enun:t('Factoritza completament:','Factoriza completamente:')+` ${B(poli(P))}`,rally:1,passos:[
+P1(t('Primer pas: què fem?','Primer paso: ¿qué hacemos?'),ops(`x(${poli(Q)})`,[[`x(${poli([1,Q[1],Q[2],0])})`,t('En traure x, cada exponent baixa 1.','Al sacar x, cada exponente baja 1.')],[`x²(${poli([1,Q[1]])}) + ${poli([Q[2],0])}`,t('Només pots traure la x amb l\'exponent més menut que hi ha a TOTS els termes: x.','Solo puedes sacar la x con el exponente más pequeño que hay en TODOS los términos: x.')]]),t('No hi ha terme independent: trau factor comú x.','No hay término independiente: saca factor común x.')),
+P1(t(`Ara factoritza ${poli(Q)}:`,`Ahora factoriza ${poli(Q)}:`),ops(ok,[['x'+facs(nzr.map(v=>-v)),t('Factor (x − arrel): el signe canvia.','Factor (x − raíz): el signo cambia.')],[facs(nzr),t('No t\'oblides del factor x que has tret abans.','No te olvides del factor x que has sacado antes.')]]),t('Resol l\'equació de 2n grau del parèntesi.','Resuelve la ecuación de 2º grado del paréntesis.'))],
+sol:[t('Factor comú x: ','Factor común x: ')+`x(${poli(Q)})`,t(`Arrels de ${poli(Q)}: ${nzr.map(MN).join(' i ')}`,`Raíces de ${poli(Q)}: ${nzr.map(MN).join(' y ')}`),B(poli(P)+' = '+ok)]}}
+const {bo,o}=provaArrel(P,r);const rest=r.filter(x=>x!==bo);const Q=deRoots(rest);const mq=ruff(P,-bo).r.slice(0,3);
+return{enun:t('Factoritza completament:','Factoriza completamente:')+` ${B(poli(P))}`,rally:1,passos:[
+P1(t('Colp 1: busca una arrel entre els divisors del terme independent.','Golpe 1: busca una raíz entre los divisores del término independiente.'),o,t(`Prova divisors de ${Math.abs(P[3])}: has de trobar un a amb P(a) = 0.`,`Prueba divisores de ${Math.abs(P[3])}: tienes que encontrar un a con P(a) = 0.`)),
+P1(t(`Colp 2: divideix per Ruffini entre ${fx(bo)}. Quin quocient queda?`,`Golpe 2: divide por Ruffini entre ${fx(bo)}. ¿Qué cociente queda?`)+taula(P,bo,ruff(P,bo).p,ruff(P,bo).r,-1),ops(poli(Q),[[poli(mq),t(`Has dividit amb ${MN(-bo)}: per a ${fx(bo)} es posa ${MN(bo)}.`,`Has dividido con ${MN(-bo)}: para ${fx(bo)} se pone ${MN(bo)}.`)],[poli(ruff(P,bo).r),t('L\'últim 0 és el residu: el quocient és de grau 2.','El último 0 es el resto: el cociente es de grado 2.')]]),t('Llig els números de baix (menys l\'últim, que és el residu 0).','Lee los números de abajo (menos el último, que es el resto 0).')),
+P1(t(`Colp 3: factoritza ${poli(Q)} i escriu la factorització completa.`,`Golpe 3: factoriza ${poli(Q)} y escribe la factorización completa.`),ops(facs(r),[[facs(r.map(v=>-v)),t('Cada arrel a dona el factor (x − a): els signes van al revés.','Cada raíz a da el factor (x − a): los signos van al revés.')],[fx(bo)+'('+poli(Q)+')',t('Està bé, però no està acabada: el factor de grau 2 també es pot descompondre.','Está bien, pero no está acabada: el factor de grado 2 también se puede descomponer.')],[facs([bo,-rest[0],-rest[1]]),SIGNE()]]),t('Resol el polinomi de 2n grau igualat a 0.','Resuelve el polinomio de 2º grado igualado a 0.'))],
+sol:[t(`P(${MN(bo)}) = 0 → ${fx(bo)} és un factor`,`P(${MN(bo)}) = 0 → ${fx(bo)} es un factor`),t(`Ruffini: P(x) = ${fx(bo)}(${poli(Q)})`,`Ruffini: P(x) = ${fx(bo)}(${poli(Q)})`),t(`Arrels de ${poli(Q)}: ${rest.map(MN).join(' i ')}`,`Raíces de ${poli(Q)}: ${rest.map(MN).join(' y ')}`),B(poli(P)+' = '+facs(r))]}};
+
+G.simp=()=>{let p,q,s;do{p=nz(-5,5);q=nz(-6,6);s=nz(-6,6)}while(new Set([p,q,s]).size<3);
+const N=deRoots([p,q]),D=deRoots([p,s]);const ok=F(lin(q),lin(s));
+return{enun:t('Simplifica:','Simplifica:')+` <span class="gros">${F(poli(N),poli(D))}</span>`,passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(ok,[
+[F(poli(N.slice(1)),poli(D.slice(1))),t('Error molt típic: NO es poden tatxar sumands (els x²). Només es poden simplificar FACTORS, és a dir, coses que estan multiplicant tot el numerador i tot el denominador.','Error muy típico: NO se pueden tachar sumandos (los x²). Solo se pueden simplificar FACTORES, es decir, cosas que multiplican a todo el numerador y a todo el denominador.')],
+[F(lin(-q),lin(-s)),t(`Les arrels del numerador són ${MN(p)} i ${MN(q)}, així que els factors són ${fx(p)} i ${fx(q)}.`,`Las raíces del numerador son ${MN(p)} y ${MN(q)}, así que los factores son ${fx(p)} y ${fx(q)}.`)],
+[F(lin(p),lin(p)===lin(s)?lin(q):lin(s)),t(`El factor comú que es simplifica és ${fx(p)}: el que queda al numerador és ${fx(q)}.`,`El factor común que se simplifica es ${fx(p)}: lo que queda en el numerador es ${fx(q)}.`)],
+[F(lin(q),lin(-s)),SIGNE()]]),
+t('Factoritza numerador i denominador (busca les arrels) i simplifica el factor que es repeteix.','Factoriza numerador y denominador (busca las raíces) y simplifica el factor que se repite.'))],
+sol:[t(`Numerador: arrels ${MN(p)} i ${MN(q)} → ${fx(p)}${fx(q)}`,`Numerador: raíces ${MN(p)} y ${MN(q)} → ${fx(p)}${fx(q)}`),t(`Denominador: arrels ${MN(p)} i ${MN(s)} → ${fx(p)}${fx(s)}`,`Denominador: raíces ${MN(p)} y ${MN(s)} → ${fx(p)}${fx(s)}`),F(`<s>${fx(p)}</s>${fx(q)}`,`<s>${fx(p)}</s>${fx(s)}`)+' = '+B(ok),t(`(Vàlid per a x ≠ ${MN(p)} i x ≠ ${MN(s)}.)`,`(Válido para x ≠ ${MN(p)} y x ≠ ${MN(s)}.)`)]}};
+
+G.sumafr=()=>{let p,q,A,Bc;const op=pick([1,-1]);do{p=nz(-5,5);q=nz(-5,5);A=R(1,5);Bc=R(1,5)}while(p===q||A+op*Bc===0);
+const num=[A+op*Bc,-(A*q+op*Bc*p)];const den=fx(p)+fx(q);const sg=op>0?'+':'−';
+const ok=F(poli(num),den);
+return{enun:t('Calcula i simplifica:','Calcula y simplifica:')+` <span class="gros">${F(A,lin(p))} ${sg} ${F(Bc,lin(q))}</span>`,passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(ok,[
+[F(MN(A+op*Bc),poli(op>0?padd([1,-p],[1,-q]):padd([1,-p],[-1,q]))),t('Les fraccions NO se sumen (ni es resten) numerador amb numerador i denominador amb denominador. Cal reduir primer a denominador comú.','Las fracciones NO se suman (ni se restan) numerador con numerador y denominador con denominador. Hay que reducir primero a denominador común.')],
+[F(MN(A+op*Bc),den),t('Bé el denominador comú, però cada numerador s\'ha de multiplicar pel factor que li falta.','Bien el denominador común, pero cada numerador se tiene que multiplicar por el factor que le falta.')],
+[F(poli([A+op*Bc,-(A*p+op*Bc*q)]),den),t(`Cada numerador es multiplica pel denominador de l'ALTRA fracció: ${A}·${fx(q)} ${sg} ${Bc}·${fx(p)}.`,`Cada numerador se multiplica por el denominador de la OTRA fracción: ${A}·${fx(q)} ${sg} ${Bc}·${fx(p)}.`)],
+[op<0?F(poli([A-Bc,-(A*q-Bc*p)-2*Bc*p]),den):F(poli([A+Bc,A*q+Bc*p]),den),op<0?t(`El − davant de la segona fracció afecta a TOT el seu numerador: −${Bc}·${fx(p)} = ${poli([-Bc,Bc*p])}.`,`El − delante de la segunda fracción afecta a TODO su numerador: −${Bc}·${fx(p)} = ${poli([-Bc,Bc*p])}.`):SIGNE()]]),
+t('Denominador comú: el producte dels dos. Multiplica cada numerador pel que li falta.','Denominador común: el producto de los dos. Multiplica cada numerador por lo que le falta.'))],
+sol:[t(`Denominador comú: ${den}`,`Denominador común: ${den}`),F(`${A}${fx(q)} ${sg} ${Bc}${fx(p)}`,den),F(`${poli([A,-A*q])} ${op>0?'+':'−'} ${op>0?poli([Bc,-Bc*p]):'('+poli([Bc,-Bc*p])+')'}`,den),'= '+B(ok)]}};
+
+G.multfr=()=>{let p,q;do{p=nz(-5,5);q=nz(-5,5)}while(p===q||p===-q);const dv=Math.random()<.5;const N1=poli(deRoots([p,-p]));
+const ok=lin(-p);
+if(!dv)return{enun:t('Multiplica i simplifica:','Multiplica y simplifica:')+` <span class="gros">${F(N1,lin(q))} · ${F(lin(q),lin(p))}</span>`,passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(ok,[
+[lin(p),t(`${N1} = ${fx(p)}${fx(-p)}. Es simplifica ${fx(p)} i queda ${fx(-p)}.`,`${N1} = ${fx(p)}${fx(-p)}. Se simplifica ${fx(p)} y queda ${fx(-p)}.`)],
+[F(N1,lin(p)),t(`Encara pots simplificar: factoritza ${N1} (diferència de quadrats).`,`Todavía puedes simplificar: factoriza ${N1} (diferencia de cuadrados).`)],
+['x',t('No pots tatxar sumands. Factoritza primer.','No puedes tachar sumandos. Factoriza primero.')]]),
+t('Factoritza x² − a² = (x + a)(x − a) i simplifica.','Factoriza x² − a² = (x + a)(x − a) y simplifica.'))],
+sol:[F(N1+' · '+lin(q),lin(q)+' · '+lin(p)),'= '+F(`${fx(p)}${fx(-p)}${fx(q)}`,`${fx(q)}${fx(p)}`),t('Simplifiquem els factors repetits: ','Simplificamos los factores repetidos: ')+B(ok)]};
+return{enun:t('Divideix i simplifica:','Divide y simplifica:')+` <span class="gros">${F(N1,lin(q))} : ${F(lin(p),lin(q))}</span>`,passos:[P1(t('Quin és el resultat?','¿Cuál es el resultado?'),ops(ok,[
+[F(`${fx(p)}${fx(-p)}${fx(p)}`,fx(q)+'²'),t('Per a dividir fraccions es multiplica per la INVERSA de la segona: (a/b) : (c/d) = (a·d)/(b·c).','Para dividir fracciones se multiplica por la INVERSA de la segunda: (a/b) : (c/d) = (a·d)/(b·c).')],
+[lin(p),t(`${N1} = ${fx(p)}${fx(-p)}. Es simplifica ${fx(p)} i queda ${fx(-p)}.`,`${N1} = ${fx(p)}${fx(-p)}. Se simplifica ${fx(p)} y queda ${fx(-p)}.`)],
+[F(lin(-p),fx(q)+'²'),t(`${fx(q)} està al denominador de les dues: en invertir la segona passa al numerador i se simplifica.`,`${fx(q)} está en el denominador de las dos: al invertir la segunda pasa al numerador y se simplifica.`)]]),
+t('Inverteix la segona fracció i multiplica en creu.','Invierte la segunda fracción y multiplica en cruz.'))],
+sol:[F(N1,lin(q))+' : '+F(lin(p),lin(q))+' = '+F(`(${N1})·${fx(q)}`,`${fx(q)}·${fx(p)}`),'= '+F(`${fx(p)}${fx(-p)}${fx(q)}`,`${fx(q)}${fx(p)}`),t('Simplifiquem: ','Simplificamos: ')+B(ok)]}};
+
+G.mcm=()=>{const p=R(1,6);const d1=poli([1,0,-p*p]),d2=lin(-p),d3=pick(['x','x²']);
+const ok=`${d3}(x + ${p})(x − ${p})`;
+return{enun:t('Troba el mínim comú múltiple dels denominadors','Halla el mínimo común múltiplo de los denominadores')+` ${B(d1)}, ${B(d2)} ${t('i','y')} ${B(d3)}`,passos:[P1(t('Quin és el m.c.m.?','¿Cuál es el m.c.m.?'),ops(ok,[
+[`${d3}(x + ${p})²(x − ${p})`,t(`Cada factor s'agafa UNA sola vegada, amb l'exponent més gran: (x + ${p}) apareix com a molt amb exponent 1.`,`Cada factor se coge UNA sola vez, con el exponente más grande: (x + ${p}) aparece como mucho con exponente 1.`)],
+[`(x + ${p})(x − ${p})`,t(`Falta el factor ${d3}.`,`Falta el factor ${d3}.`)],
+[`${d3}(${d1})(x + ${p})`,t(`Primer cal factoritzar: ${d1} = (x + ${p})(x − ${p}), i ja conté (x + ${p}).`,`Primero hay que factorizar: ${d1} = (x + ${p})(x − ${p}), y ya contiene (x + ${p}).`)],
+[d3==='x²'?`x(x + ${p})(x − ${p})`:null,t('x² necessita exponent 2: s\'agafa l\'exponent més gran.','x² necesita exponente 2: se coge el exponente más grande.')]]),
+t('Factoritza cada denominador i agafa tots els factors, cadascun amb l\'exponent més gran.','Factoriza cada denominador y coge todos los factores, cada uno con el exponente más grande.'))],
+sol:[`${d1} = (x + ${p})(x − ${p})`,`${d2} = (${d2})`,`${d3} = ${d3}`,t('Factors comuns i no comuns amb el major exponent: ','Factores comunes y no comunes con el mayor exponente: ')+B(ok)]}};
+
+G.formula=()=>{const a=pick([1,1,2,3]);let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);[r1,r2]=[Math.min(r1,r2),Math.max(r1,r2)];
+const [A,Bc,C]=deRoots([r1,r2],a);const D=Bc*Bc-4*A*C;const mou=Bc!==0&&Math.random()<.5;
+const eq=mou?`${poli([A,0,C])} = ${poli([-Bc,0])}`:`${poli([A,Bc,C])} = 0`;
+const sq=Math.round(Math.sqrt(D));const sx=v=>qf(v[0],v[1]);
+const bad1=[-Bc-sq,-Bc+sq].map(n=>'x = '+sx([n,a])).join(', ');
+return{enun:t('Resol:','Resuelve:')+` ${B(eq)}`,rally:1,passos:[
+P1(t('Colp 1: identifica a, b i c (forma ax² + bx + c = 0).','Golpe 1: identifica a, b y c (forma ax² + bx + c = 0).'),ops(`a = ${A}, b = ${MN(Bc)}, c = ${MN(C)}`,[
+[`a = ${A}, b = ${MN(-Bc)}, c = ${MN(C)}`,mou?t(`Primer cal passar-ho tot a l'esquerra: ${poli([-Bc,0])} passa restant i queda ${poli([A,Bc,C])} = 0.`,`Primero hay que pasarlo todo a la izquierda: ${poli([-Bc,0])} pasa restando y queda ${poli([A,Bc,C])} = 0.`):t('b és el coeficient de x amb el seu signe.','b es el coeficiente de x con su signo.')],
+[`a = ${MN(C)}, b = ${MN(Bc)}, c = ${A}`,t('a acompanya x², c és el terme sense x.','a acompaña a x², c es el término sin x.')],
+[`a = ${A}, b = ${MN(Bc)}, c = ${MN(-C)}`,SIGNE()]]),
+mou?t('Abans de res, iguala a zero passant tots els termes a l\'esquerra.','Antes de nada, iguala a cero pasando todos los términos a la izquierda.'):t('a va amb x², b amb x i c és el número sol.','a va con x², b con x y c es el número solo.')),
+P1(t('Colp 2: calcula el discriminant Δ = b² − 4ac.','Golpe 2: calcula el discriminante Δ = b² − 4ac.'),ops('Δ = '+MN(D),[
+['Δ = '+MN(Bc*Bc+4*A*C),t(`Compte amb el signe de c: −4·${A}·${PM(C)} = ${MN(-4*A*C)}.`,`Cuidado con el signo de c: −4·${A}·${PM(C)} = ${MN(-4*A*C)}.`)],
+['Δ = '+MN(-Bc*Bc-4*A*C),t(`b² = ${PM(Bc)}² = ${Bc*Bc}, positiu sempre.`,`b² = ${PM(Bc)}² = ${Bc*Bc}, positivo siempre.`)],
+['Δ = '+MN(Bc*Bc-2*A*C),t('És 4ac, no 2ac.','Es 4ac, no 2ac.')]]),
+t(`Δ = ${PM(Bc)}² − 4·${A}·${PM(C)}`,`Δ = ${PM(Bc)}² − 4·${A}·${PM(C)}`)),
+P1(t(`Colp 3: x = (−b ± √Δ) / 2a. Quines són les solucions? (√${D} = ${sq})`,`Golpe 3: x = (−b ± √Δ) / 2a. ¿Cuáles son las soluciones? (√${D} = ${sq})`),ops(xs([r1,r2]),[
+[xs([-r1,-r2]),t(`La fórmula comença per −b: −(${MN(Bc)}) = ${MN(-Bc)}.`,`La fórmula empieza por −b: −(${MN(Bc)}) = ${MN(-Bc)}.`)],
+[a===1?xs([2*r1,2*r2]):bad1,t(a===1?'El denominador és 2a = 2: cal dividir entre 2.':`El denominador és 2a = ${2*a}, no ${a}.`,a===1?'El denominador es 2a = 2: hay que dividir entre 2.':`El denominador es 2a = ${2*a}, no ${a}.`)],
+[xs([r1,-r2]),SIGNE()]]),
+t(`x = (${MN(-Bc)} ± ${sq}) / ${2*A}`,`x = (${MN(-Bc)} ± ${sq}) / ${2*A}`))],
+sol:[`a = ${A}, b = ${MN(Bc)}, c = ${MN(C)}`,`Δ = ${PM(Bc)}² − 4·${A}·${PM(C)} = ${Bc*Bc} ${-4*A*C<0?'−':'+'} ${Math.abs(4*A*C)} = ${D}`,`x = ${F(MN(-Bc)+' ± '+sq,2*A)}`,`x₁ = ${F(MN(-Bc-sq),2*A)} = ${MN(r1)}, x₂ = ${F(MN(-Bc+sq),2*A)} = ${MN(r2)}`,t('Solucions: ','Soluciones: ')+B(xs([r1,r2]))]}};
+
+G.discr=()=>{const tipus=pick([2,1,0]);let A,Bc,C;
+if(tipus===2){let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);[A,Bc,C]=deRoots([r1,r2],pick([1,2]));if(Math.random()<.4){A=pick([1,2,3]);Bc=R(-7,7);C=-R(1,6)}}
+else if(tipus===1){const r=nz(-5,5);[A,Bc,C]=deRoots([r,r],pick([1,1,2]))}
+else{A=pick([1,2,3]);Bc=R(-5,5);C=Math.floor(Bc*Bc/(4*A))+R(1,5)}
+const D=Bc*Bc-4*A*C;const T=[t('2 solucions diferents','2 soluciones distintas'),t('1 solució (doble)','1 solución (doble)'),t('Cap solució real','Ninguna solución real')];const ok=T[2-tipus];
+const e=t(`Δ = ${PM(Bc)}² − 4·${A}·${PM(C)} = ${D}, que és ${D>0?'positiu':D===0?'zero':'negatiu'}.`,`Δ = ${PM(Bc)}² − 4·${A}·${PM(C)} = ${D}, que es ${D>0?'positivo':D===0?'cero':'negativo'}.`);
+return{enun:t('Sense resoldre-la, quantes solucions té','Sin resolverla, ¿cuántas soluciones tiene')+` ${B(poli([A,Bc,C])+' = 0')}${t('?','?')}`,passos:[P1(t('Mira el discriminant:','Mira el discriminante:'),ops(ok,T.filter(x=>x!==ok).map(x=>[x,e])),t('Δ > 0: dues; Δ = 0: una; Δ < 0: cap.','Δ > 0: dos; Δ = 0: una; Δ < 0: ninguna.'))],
+sol:[`Δ = b² − 4ac = ${PM(Bc)}² − 4·${A}·${PM(C)} = ${B(D)}`,D>0?t('Δ > 0 → √Δ existeix i ±√Δ dona dos valors.','Δ > 0 → √Δ existe y ±√Δ da dos valores.'):D===0?t('Δ = 0 → ±0 dona el mateix valor: solució doble.','Δ = 0 → ±0 da el mismo valor: solución doble.'):t('Δ < 0 → no existeix l\'arrel quadrada d\'un negatiu: cap solució real.','Δ < 0 → no existe la raíz cuadrada de un negativo: ninguna solución real.'),B(ok)]}};
+
+G.incompleta=()=>{const tipus=pick(['c','c','b','no']);const A=pick([1,2,3,4]);
+if(tipus==='c'){const m=R(1,7);const C=A*m*m;return{enun:t('Resol:','Resuelve:')+` ${B(poli([A,0,-C])+' = 0')}`,passos:[P1(t('Solucions:','Soluciones:'),ops(`x = ±${m}`,[
+[`x = ${m}`,t(`Falta la solució negativa: (−${m})² = ${m*m} també compleix l'equació.`,`Falta la solución negativa: (−${m})² = ${m*m} también cumple la ecuación.`)],
+[`x = ±${m*m}`,t('Falta fer l\'arrel quadrada: x² = '+(m*m)+' ⇒ x = ±√'+(m*m)+'.','Falta hacer la raíz cuadrada: x² = '+(m*m)+' ⇒ x = ±√'+(m*m)+'.')],
+['x = ±'+(A>1?C:m+1),t(A>1?`Abans de fer l'arrel cal dividir entre ${A}: x² = ${C}/${A} = ${m*m}.`:'Revisa l\'arrel quadrada.',A>1?`Antes de hacer la raíz hay que dividir entre ${A}: x² = ${C}/${A} = ${m*m}.`:'Revisa la raíz cuadrada.')]]),
+t('Aïlla x² i fes l\'arrel quadrada (amb ±).','Despeja x² y haz la raíz cuadrada (con ±).'))],
+sol:[`${poli([A,0,0])} = ${C}`,`x² = ${A>1?C+'/'+A+' = ':''}${m*m}`,`x = ±√${m*m} = `+B('±'+m)]}}
+if(tipus==='no'){const C=A*R(1,6)**2;return{enun:t('Resol:','Resuelve:')+` ${B(poli([A,0,C])+' = 0')}`,passos:[P1(t('Solucions:','Soluciones:'),ops(t('No té solució real','No tiene solución real'),[
+[`x = ±${Math.round(Math.sqrt(C/A))}`,t(`x² = −${C/A}: cap número al quadrat dona negatiu.`,`x² = −${C/A}: ningún número al cuadrado da negativo.`)],
+[`x = −${Math.round(Math.sqrt(C/A))}`,t(`(−${Math.round(Math.sqrt(C/A))})² és positiu, no negatiu.`,`(−${Math.round(Math.sqrt(C/A))})² es positivo, no negativo.`)],
+['x = 0',t(`Si x = 0, queda ${C} = 0, que és fals.`,`Si x = 0, queda ${C} = 0, que es falso.`)]]),
+t('Aïlla x²: pot un quadrat ser negatiu?','Despeja x²: ¿puede un cuadrado ser negativo?'))],
+sol:[`${poli([A,0,0])} = ${MN(-C)}`,`x² = ${MN(-C/A)}`,t('Un quadrat no pot ser negatiu → ','Un cuadrado no puede ser negativo → ')+B(t('no té solució real','no tiene solución real'))]}}
+let k=nz(-6,6);const Bc=-A*k;
+return{enun:t('Resol:','Resuelve:')+` ${B(poli([A,Bc,0])+' = 0')}`,passos:[P1(t('Solucions:','Soluciones:'),ops(xs([0,k]),[
+['x = '+MN(k),t('Has dividit entre x i has perdut la solució x = 0! Trau factor comú: x·(…) = 0.','¡Has dividido entre x y has perdido la solución x = 0! Saca factor común: x·(…) = 0.')],
+[xs([0,-k]),SIGNE()],
+[xs([0,Bc]),t(`Has d'aïllar x en ${poli([A,Bc])} = 0: x = ${MN(-Bc)}/${A}.`,`Tienes que despejar x en ${poli([A,Bc])} = 0: x = ${MN(-Bc)}/${A}.`)]]),
+t('Trau factor comú x. Si un producte val 0, algun factor val 0.','Saca factor común x. Si un producto vale 0, algún factor vale 0.'))],
+sol:[`x(${poli([A,Bc])}) = 0`,`x = 0  ${t('o','o')}  ${poli([A,Bc])} = 0 → x = ${MN(k)}`,B(xs([0,k]))]}};
+
+G.sumaprod=()=>{let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);const S=r1+r2,P=r1*r2;
+return{enun:t('Escriu una equació de 2n grau que tinga per solucions','Escribe una ecuación de 2º grado que tenga por soluciones')+` ${B('x = '+MN(r1))} ${t('i','y')} ${B('x = '+MN(r2))}`,passos:[P1(t('Quina és?','¿Cuál es?'),ops(poli([1,-S,P])+' = 0',[
+[poli([1,S,P])+' = 0',t(`x² − Sx + P = 0: el terme en x porta −S = ${MN(-S)}.`,`x² − Sx + P = 0: el término en x lleva −S = ${MN(-S)}.`)],
+[poli([1,-P,S])+' = 0',t('Has canviat S i P: el coeficient de x és −S (suma) i el terme independent és P (producte).','Has cambiado S y P: el coeficiente de x es −S (suma) y el término independiente es P (producto).')],
+[poli([1,-S,-P])+' = 0',SIGNE()]]),
+t('(x − x₁)(x − x₂) = 0, o bé x² − Sx + P = 0.','(x − x₁)(x − x₂) = 0, o bien x² − Sx + P = 0.'))],
+sol:[`S = ${MN(r1)} + ${PM(r2)} = ${MN(S)}, P = ${MN(r1)}·${PM(r2)} = ${MN(P)}`,`x² − Sx + P = 0 → `+B(poli([1,-S,P])+' = 0'),t(`(És el mateix que ${fx(r1)}${fx(r2)} = 0.)`,`(Es lo mismo que ${fx(r1)}${fx(r2)} = 0.)`)]}};
+
+G.pista=()=>{const x=R(6,15),d=R(2,8);const A=x*(x+d);
+return{enun:t(`Una pista d'entrenament rectangular fa ${d} m més de llarg que d'ample i té una superfície de ${A} m². Quant fa d'ample?`,`Una pista de entrenamiento rectangular mide ${d} m más de largo que de ancho y tiene una superficie de ${A} m². ¿Cuánto mide de ancho?`),rally:1,passos:[
+P1(t('Colp 1: si l\'amplària és x, quina equació plantegem?','Golpe 1: si la anchura es x, ¿qué ecuación planteamos?'),ops(poli([1,d,-A])+' = 0',[
+[poli([1,-d,-A])+' = 0',t(`El llarg és x + ${d}: x(x + ${d}) = x² + ${d}x.`,`El largo es x + ${d}: x(x + ${d}) = x² + ${d}x.`)],
+[poli([4,2*d])+' = '+A,t('Això és el perímetre (2x + 2(x + '+d+')), no la superfície.','Eso es el perímetro (2x + 2(x + '+d+')), no la superficie.')],
+[poli([1,d,A])+' = 0',t(`En passar ${A} a l'esquerra canvia de signe.`,`Al pasar ${A} a la izquierda cambia de signo.`)]]),
+t('Àrea = ample · llarg = x·(x + '+d+').','Área = ancho · largo = x·(x + '+d+').')),
+P1(t('Colp 2: resol-la. Quant fa d\'ample la pista?','Golpe 2: resuélvela. ¿Cuánto mide de ancho la pista?'),ops(x+' m',[
+[MN(-x-d)+' m',t(`L'equació té dues solucions (${x} i ${MN(-x-d)}), però una longitud no pot ser negativa: es descarta.`,`La ecuación tiene dos soluciones (${x} y ${MN(-x-d)}), pero una longitud no puede ser negativa: se descarta.`)],
+[(x+d)+' m',t('Això és el llarg. L\'ample és x.','Eso es el largo. El ancho es x.')],
+[(x+1)+' m',t(`Comprova: ${x+1}·${x+1+d} = ${(x+1)*(x+1+d)} ≠ ${A}.`,`Comprueba: ${x+1}·${x+1+d} = ${(x+1)*(x+1+d)} ≠ ${A}.`)]]),
+t('Usa la fórmula i descarta la solució que no té sentit.','Usa la fórmula y descarta la solución que no tiene sentido.'))],
+sol:[`x(x + ${d}) = ${A} → ${poli([1,d,-A])} = 0`,`Δ = ${d*d} + ${4*A} = ${d*d+4*A} → √Δ = ${2*x+d}`,`x = ${F(MN(-d)+' ± '+(2*x+d),2)} → x = ${x}, x = ${MN(-x-d)}`,t(`La negativa no té sentit. Ample = ${x} m (i llarg ${x+d} m: ${x}·${x+d} = ${A} ✔)`,`La negativa no tiene sentido. Ancho = ${x} m (y largo ${x+d} m: ${x}·${x+d} = ${A} ✔)`)]}};
+
+G.biq=()=>{let a,b;do{a=R(1,5);b=R(1,5)}while(a===b);const neg=Math.random()<.35;
+const t1=a*a,t2=neg?-b*b:b*b;const T2=MN(t2);const S=t1+t2,P=t1*t2;const sol=neg?`x = ±${a}`:`x = ±${Math.min(a,b)}, x = ±${Math.max(a,b)}`;
+return{enun:t('Resol l\'equació biquadrada:','Resuelve la ecuación bicuadrada:')+` ${B(poli([1,0,-S,0,P])+' = 0')}`,rally:1,passos:[
+P1(t('Colp 1: fem el canvi t = x². Quina equació queda?','Golpe 1: hacemos el cambio t = x². ¿Qué ecuación queda?'),ops(poli([1,-S,P],'t')+' = 0',[
+[poli([1,0,0,-S,P],'t').replace(/t⁴/,'t⁴')+' = 0',t('x⁴ = (x²)² = t², no t⁴.','x⁴ = (x²)² = t², no t⁴.')],
+[poli([1,S,P],'t')+' = 0',t('El canvi no altera els coeficients: només x⁴ → t² i x² → t.','El cambio no altera los coeficientes: solo x⁴ → t² y x² → t.')]]),
+t('x⁴ = (x²)² = t²','x⁴ = (x²)² = t²')),
+P1(t('Colp 2: resol l\'equació en t.','Golpe 2: resuelve la ecuación en t.'),ops(xs([t1,t2],'t'),[
+[xs([-t1,-t2],'t'),t('La fórmula comença per −b.','La fórmula empieza por −b.')],
+[xs([a,neg?-b:b],'t'),t('Les solucions de t són les de l\'equació de 2n grau: encara no hem fet cap arrel.','Las soluciones de t son las de la ecuación de 2º grado: todavía no hemos hecho ninguna raíz.')]]),
+t('Equació de 2n grau normal: fórmula.','Ecuación de 2º grado normal: fórmula.')),
+P1(t('Colp 3: desfés el canvi x = ±√t. Quines són les solucions?','Golpe 3: deshaz el cambio x = ±√t. ¿Cuáles son las soluciones?'),ops(sol,[
+[neg?`x = ±${a}, x = ±${b}`:`x = ${Math.min(a,b)}, x = ${Math.max(a,b)}`,neg?t(`t = ${T2} és negatiu: x² = ${T2} no té solució. Només serveix t = ${t1}.`,`t = ${T2} es negativo: x² = ${T2} no tiene solución. Solo sirve t = ${t1}.`):t('Cada t positiu dona DUES x: +√t i −√t.','Cada t positivo da DOS x: +√t y −√t.')],
+[neg?`x = ±${a}, x = ${b}`:xs([t1,t2]),t('Has de desfer el canvi: x = ±√t, no x = t.','Tienes que deshacer el cambio: x = ±√t, no x = t.')],
+[neg?`x = ${a}`:`x = ±${Math.min(a,b)}`,neg?t('Falta la negativa: x = −'+a+' també compleix.','Falta la negativa: x = −'+a+' también cumple.'):t('Falten solucions: cada t positiu en dona dues.','Faltan soluciones: cada t positivo da dos.')]]),
+t('x² = t → x = ±√t (si t ≥ 0).','x² = t → x = ±√t (si t ≥ 0).'))],
+sol:[`t = x² → ${poli([1,-S,P],'t')} = 0`,`t = ${MN(t1)}, t = ${MN(t2)}`,`x² = ${t1} → x = ±${a}`,neg?t(`x² = ${T2} → sense solució`,`x² = ${T2} → sin solución`):`x² = ${t2} → x = ±${b}`,B(sol)]}};
+
+G.grau3=()=>{const z=Math.random()<.4;const r=tresArrels(z);const P=deRoots(r);
+return{enun:t('Resol:','Resuelve:')+` ${B(poli(P)+' = 0')}`,passos:[P1(t('Quines són les solucions?','¿Cuáles son las soluciones?'),ops(xs(r),[
+[xs(r.map(v=>-v+0)),t('Has posat les arrels amb el signe dels factors: si el factor és (x − 2), la solució és x = 2.','Has puesto las raíces con el signo de los factores: si el factor es (x − 2), la solución es x = 2.')],
+[xs(r.filter(v=>v!==(z?0:r[0]))),z?t('Has dividit entre x i has perdut x = 0. Trau factor comú!','Has dividido entre x y has perdido x = 0. ¡Saca factor común!'):t('Falta una solució: una equació de grau 3 en pot tindre fins a 3.','Falta una solución: una ecuación de grado 3 puede tener hasta 3.')],
+[xs([r[0],r[1],-r[2]+0]),SIGNE()]]),
+z?t('Trau factor comú x i resol l\'equació de 2n grau que queda.','Saca factor común x y resuelve la ecuación de 2º grado que queda.'):t(`Busca una arrel entre els divisors de ${Math.abs(P[3])}, aplica Ruffini i resol el quocient.`,`Busca una raíz entre los divisores de ${Math.abs(P[3])}, aplica Ruffini y resuelve el cociente.`))],
+sol:[z?t('Factor comú x: ','Factor común x: ')+`x(${poli(deRoots(r.filter(v=>v!==0)))}) = 0`:t(`Ruffini amb x = ${MN(r[0])} (P(${MN(r[0])}) = 0): `,`Ruffini con x = ${MN(r[0])} (P(${MN(r[0])}) = 0): `)+`${fx(r[0])}(${poli(deRoots(r.slice(1)))}) = 0`,t('Factorització: ','Factorización: ')+facs(r)+' = 0',t('Cada factor igualat a 0: ','Cada factor igualado a 0: ')+B(xs(r))]}};
+
+G.prod0=()=>{let a,b,k,c;do{a=nz(-6,6);b=nz(-6,6);k=pick([2,3]);c=nz(-7,7)}while(a===b||c%k===0||a*k===c||b*k===c);
+const ok=`x = ${MN(a)}, x = ${MN(b)}, x = ${qf(c,k)}`;
+return{enun:t('Resol:','Resuelve:')+` ${B(fx(a)+fx(b)+'('+poli([k,-c])+') = 0')}`,passos:[P1(t('Solucions:','Soluciones:'),ops(ok,[
+[`x = ${MN(-a)}, x = ${MN(-b)}, x = ${qf(-c,k)}`,t(`Iguala cada factor a 0: ${lin(a)} = 0 → x = ${MN(a)}.`,`Iguala cada factor a 0: ${lin(a)} = 0 → x = ${MN(a)}.`)],
+[`x = ${MN(a)}, x = ${MN(b)}, x = ${MN(c)}`,t(`${poli([k,-c])} = 0 → ${k}x = ${MN(c)} → x = ${c}/${k}: falta dividir entre ${k}.`,`${poli([k,-c])} = 0 → ${k}x = ${MN(c)} → x = ${c}/${k}: falta dividir entre ${k}.`)],
+[`x = ${MN(a)}, x = ${MN(b)}`,t('Hi ha tres factors: tres solucions.','Hay tres factores: tres soluciones.')]]),
+t('Si un producte val 0, algun dels factors val 0. No cal multiplicar res!','Si un producto vale 0, alguno de los factores vale 0. ¡No hace falta multiplicar nada!'))],
+sol:[`${lin(a)} = 0 → x = ${MN(a)}`,`${lin(b)} = 0 → x = ${MN(b)}`,`${poli([k,-c])} = 0 → x = ${qf(c,k)}`,B(ok)]}};
+
+G.racional=()=>{let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);const S=r1+r2,P=r1*r2;
+const eq=`x ${P<0?'−':'+'} ${F(Math.abs(P),'x')} = ${MN(S)}`;
+return{enun:t('Resol:','Resuelve:')+` <span class="gros">${eq}</span>`,rally:1,passos:[
+P1(t('Colp 1: multipliquem TOT per x (x ≠ 0). Quina equació queda?','Golpe 1: multiplicamos TODO por x (x ≠ 0). ¿Qué ecuación queda?'),ops(poli([1,-S,P])+' = 0',[
+[poli([1,0,P-S])+' = 0',t(`També el ${MN(S)} de la dreta s'ha de multiplicar per x: queda ${poli([S,0])}.`,`También el ${MN(S)} de la derecha se tiene que multiplicar por x: queda ${poli([S,0])}.`)],
+[poli([1,S,P])+' = 0',t(`En passar ${poli([S,0])} a l'esquerra canvia de signe.`,`Al pasar ${poli([S,0])} a la izquierda cambia de signo.`)],
+[poli([1,-S,P,0])+' = 0',t(`${F(MN(P),'x')}·x = ${MN(P)}: la x se simplifica.`,`${F(MN(P),'x')}·x = ${MN(P)}: la x se simplifica.`)]]),
+t('x·x = x², x·('+MN(P)+'/x) = '+MN(P)+', '+MN(S)+'·x = '+poli([S,0]),'x·x = x², x·('+MN(P)+'/x) = '+MN(P)+', '+MN(S)+'·x = '+poli([S,0]))),
+P1(t('Colp 2: solucions (comprova que no anul·len cap denominador).','Golpe 2: soluciones (comprueba que no anulan ningún denominador).'),ops(xs([r1,r2]),[
+[xs([-r1,-r2]),t('La fórmula comença per −b.','La fórmula empieza por −b.')],
+[xs([0,S]),t('x = 0 no pot ser solució: anul·la el denominador.','x = 0 no puede ser solución: anula el denominador.')]]),
+t('Resol l\'equació de 2n grau.','Resuelve la ecuación de 2º grado.'))],
+sol:[t('Multipliquem per x: ','Multiplicamos por x: ')+`x² ${P<0?'−':'+'} ${Math.abs(P)} = ${poli([S,0])} → ${poli([1,-S,P])} = 0`,`x = ${MN(r1)}, x = ${MN(r2)}`,t('Cap de les dues és 0 → les dues són vàlides: ','Ninguna de las dos es 0 → las dos son válidas: ')+B(xs([r1,r2]))]}};
+
+G.irr=()=>{const d=R(0,3);const x0=R(d+2,d+6);const c=(x0-d)**2-x0;const x1=2*d+1-x0;
+const L=`√(${lin(-c)})`;const Rr=lin(d);const sqR=poli([1,-2*d,d*d]);
+return{enun:t('Resol:','Resuelve:')+` ${B(L+' = '+Rr)}`,rally:1,passos:[
+P1(t('Colp 1: elevem els dos costats al quadrat. Quina equació queda?','Golpe 1: elevamos los dos lados al cuadrado. ¿Qué ecuación queda?'),ops(`${lin(-c)} = ${sqR}`,[
+[d?`${lin(-c)} = ${poli([1,0,-d*d])}`:`${lin(-c)} = 2x`,d?t(`(x − ${d})² = x² − ${2*d}x + ${d*d}: no t'oblides del doble producte.`,`(x − ${d})² = x² − ${2*d}x + ${d*d}: no te olvides del doble producto.`):t('x² = x·x, no 2x.','x² = x·x, no 2x.')],
+[`(${lin(-c)})² = ${sqR}`,t('Elevar al quadrat una arrel quadrada la fa desaparéixer: (√A)² = A.','Elevar al cuadrado una raíz cuadrada la hace desaparecer: (√A)² = A.')],
+[d?`${lin(-c)} = ${poli([1,0,d*d])}`:`${lin(-c)} = x`,t('El costat dret també s\'ha d\'elevar al quadrat sencer.','El lado derecho también se tiene que elevar al cuadrado entero.')]]),
+t('(√A)² = A; i a la dreta, identitat notable.','(√A)² = A; y a la derecha, identidad notable.')),
+P1(t('Colp 2: ordena i resol l\'equació de 2n grau.','Golpe 2: ordena y resuelve la ecuación de 2º grado.'),ops(xs([x0,x1]),[
+[xs([-x0,-x1]),t('La fórmula comença per −b.','La fórmula empieza por −b.')],
+[xs([x0,-x1]),SIGNE()]]),
+t(`Queda ${poli([1,-(2*d+1),d*d-c])} = 0.`,`Queda ${poli([1,-(2*d+1),d*d-c])} = 0.`)),
+P1(t('Colp 3: COMPROVA-LES en l\'equació original. Quines són vàlides?','Golpe 3: COMPRUÉBALAS en la ecuación original. ¿Cuáles son válidas?'),ops(t('Només x = ','Solo x = ')+x0,[
+[xs([x0,x1]),t(`Comprova x = ${MN(x1)}: √(${MN(x1+c)}) = ${Math.abs(x1-d)}, però el costat dret val ${MN(x1-d)}. No coincideixen: és una solució falsa que apareix en elevar al quadrat.`,`Comprueba x = ${MN(x1)}: √(${MN(x1+c)}) = ${Math.abs(x1-d)}, pero el lado derecho vale ${MN(x1-d)}. No coinciden: es una solución falsa que aparece al elevar al cuadrado.`)],
+[t('Només x = ','Solo x = ')+MN(x1),t(`Al revés: x = ${x0} dona √${x0+c} = ${x0-d} ✔, i x = ${MN(x1)} dona ${Math.abs(x1-d)} ≠ ${MN(x1-d)}.`,`Al revés: x = ${x0} da √${x0+c} = ${x0-d} ✔, y x = ${MN(x1)} da ${Math.abs(x1-d)} ≠ ${MN(x1-d)}.`)],
+[t('Cap','Ninguna'),t(`x = ${x0} sí que val: √${x0+c} = ${x0-d} ✔.`,`x = ${x0} sí vale: √${x0+c} = ${x0-d} ✔.`)]]),
+t('Una arrel quadrada mai no dona un resultat negatiu.','Una raíz cuadrada nunca da un resultado negativo.'))],
+sol:[`(${L})² = (${Rr})² → ${lin(-c)} = ${sqR}`,`${poli([1,-(2*d+1),d*d-c])} = 0 → x = ${MN(x0)}, x = ${MN(x1)}`,t(`Comprovació x = ${x0}: √${x0+c} = ${x0-d} ✔`,`Comprobación x = ${x0}: √${x0+c} = ${x0-d} ✔`),t(`Comprovació x = ${MN(x1)}: √${x1+c} = ${Math.abs(x1-d)}, però ${Rr} = ${MN(x1-d)} ✘`,`Comprobación x = ${MN(x1)}: √${x1+c} = ${Math.abs(x1-d)}, pero ${Rr} = ${MN(x1-d)} ✘`),B(t('Solució: x = ','Solución: x = ')+x0)]}};
+
+G.sistema=()=>{let x0,y0,a1,b1,a2,s,k1;do{x0=nz(-5,5);y0=nz(-5,5);a1=nz(-4,4);b1=nz(-4,4);a2=nz(-4,4);s=pick([1,-1]);k1=s>0?a1+a2:a1-a2}while(k1===0||a1*(s>0?-b1:b1)-a2*b1===0);
+const b2=s>0?-b1:b1;const c1=a1*x0+b1*y0,c2=a2*x0+b2*y0;const k2=s>0?c1+c2:c1-c2;
+const op=s>0?t('sumem','sumamos'):t('restem','restamos');
+return{enun:`<div class="sist">${lin2(a1,b1,c1)}<br>${lin2(a2,b2,c2)}</div>`,rally:1,passos:[
+P1(t(`Colp 1: per reducció, ${op} les dues equacions per eliminar la y. Què queda?`,`Golpe 1: por reducción, ${op} las dos ecuaciones para eliminar la y. ¿Qué queda?`),ops(`${poli([k1,0])} = ${MN(k2)}`,[
+[`${poli([k1,0])} = ${MN(s>0?c1-c2:c1+c2)}`,t('Cal fer la MATEIXA operació als dos costats: també als termes independents.','Hay que hacer la MISMA operación a los dos lados: también a los términos independientes.')],
+[`${poli([s>0?a1-a2:a1+a2,0])} = ${MN(k2)}`,t('Error en combinar els termes en x: fes la mateixa operació que fas amb la y.','Error al combinar los términos en x: haz la misma operación que haces con la y.')]]),
+s>0?t('Els coeficients de y són oposats: si sumes, s\'anul·len.','Los coeficientes de y son opuestos: si sumas, se anulan.'):t('Els coeficients de y són iguals: si restes, s\'anul·len.','Los coeficientes de y son iguales: si restas, se anulan.')),
+P1(t('Colp 2: quant val x?','Golpe 2: ¿cuánto vale x?'),ops('x = '+MN(x0),[['x = '+MN(-x0),SIGNE()],['x = '+MN(k2-k1),t('El coeficient de x passa DIVIDINT, no restant.','El coeficiente de x pasa DIVIDIENDO, no restando.')],['x = '+qf(k1,k2),t(`${poli([k1,0])} = ${MN(k2)} → x = ${MN(k2)} / ${PM(k1)}: el número que multiplica passa DIVIDINT.`,`${poli([k1,0])} = ${MN(k2)} → x = ${MN(k2)} / ${PM(k1)}: el número que multiplica pasa DIVIDIENDO.`)]]),t('Aïlla x.','Despeja x.')),
+P1(t(`Colp 3: substitueix x = ${MN(x0)} en la 1a equació. Quant val y?`,`Golpe 3: sustituye x = ${MN(x0)} en la 1ª ecuación. ¿Cuánto vale y?`),ops('y = '+MN(y0),[['y = '+MN(-y0),SIGNE()],['y = '+qf(c1+a1*x0,b1),t(`${MN(a1)}·(${MN(x0)}) = ${MN(a1*x0)} passa a la dreta RESTANT: ${poli([b1,0],'y')} = ${MN(c1)} − (${MN(a1*x0)}).`,`${MN(a1)}·(${MN(x0)}) = ${MN(a1*x0)} pasa a la derecha RESTANDO: ${poli([b1,0],'y')} = ${MN(c1)} − (${MN(a1*x0)}).`)]]),t('Aïlla y.','Despeja y.'))],
+sol:[t(`${s>0?'Sumem':'Restem'} les equacions: `,`${s>0?'Sumamos':'Restamos'} las ecuaciones: `)+`${poli([k1,0])} = ${MN(k2)} → x = ${MN(x0)}`,`${MN(a1)}·(${MN(x0)}) ${b1<0?'−':'+'} ${Math.abs(b1)===1?'':Math.abs(b1)}y = ${MN(c1)} → ${poli([b1,0],'y')} = ${MN(c1-a1*x0)} → y = ${MN(y0)}`,B(`x = ${MN(x0)}, y = ${MN(y0)}`),t('Comprovació en la 2a: ','Comprobación en la 2ª: ')+`${MN(a2)}·(${MN(x0)}) ${b2<0?'−':'+'} ${Math.abs(b2)}·(${MN(y0)}) = ${MN(c2)} ✔`]}};
+
+G.classif=()=>{const tipus=pick(['d','i','n']);let a=nz(-4,4),b=nz(-4,4),c=R(-9,9);const k=pick([2,3,-2,-1]);let a2,b2,c2;
+if(tipus==='d'){do{a2=nz(-4,4);b2=nz(-4,4)}while(a*b2===a2*b);c2=R(-9,9)}else{a2=k*a;b2=k*b;c2=tipus==='i'?k*c:k*c+pick([1,2,-3])}
+const T={d:t('Compatible determinat: una solució (rectes que es tallen)','Compatible determinado: una solución (rectas que se cortan)'),i:t('Compatible indeterminat: infinites solucions (rectes coincidents)','Compatible indeterminado: infinitas soluciones (rectas coincidentes)'),n:t('Incompatible: cap solució (rectes paral·leles)','Incompatible: ninguna solución (rectas paralelas)')};
+const exp=tipus==='d'?t(`${MN(a)}/${MN(a2)} ≠ ${MN(b)}/${MN(b2)}: els coeficients no són proporcionals.`,`${MN(a)}/${MN(a2)} ≠ ${MN(b)}/${MN(b2)}: los coeficientes no son proporcionales.`):tipus==='i'?t(`La 2a equació és la 1a multiplicada per ${MN(k)}: és la MATEIXA recta.`,`La 2ª ecuación es la 1ª multiplicada por ${MN(k)}: es la MISMA recta.`):t(`Els coeficients de x i y de la 2a són els de la 1a per ${MN(k)}, però el terme independent no (${MN(k)}·${PM(c)} = ${MN(k*c)} ≠ ${MN(c2)}): són paral·leles.`,`Los coeficientes de x e y de la 2ª son los de la 1ª por ${MN(k)}, pero el término independiente no (${MN(k)}·${PM(c)} = ${MN(k*c)} ≠ ${MN(c2)}): son paralelas.`);
+return{enun:`<div class="sist">${lin2(a,b,c)}<br>${lin2(a2,b2,c2)}</div>`,passos:[P1(t('Com és este sistema?','¿Cómo es este sistema?'),ops(T[tipus],Object.keys(T).filter(x=>x!==tipus).map(x=>[T[x],exp])),t('Compara a/a\', b/b\' i c/c\'.','Compara a/a\', b/b\' y c/c\'.'))],
+sol:[t('Si a/a\' ≠ b/b\' → compatible determinat.','Si a/a\' ≠ b/b\' → compatible determinado.'),t('Si a/a\' = b/b\' = c/c\' → compatible indeterminat.','Si a/a\' = b/b\' = c/c\' → compatible indeterminado.'),t('Si a/a\' = b/b\' ≠ c/c\' → incompatible.','Si a/a\' = b/b\' ≠ c/c\' → incompatible.'),exp,B(T[tipus])]}};
+
+G.nolineal=()=>{let r1,r2;do{r1=nz(-5,6);r2=nz(-5,6)}while(r1===r2||r1===-r2);const S=r1+r2,P=r1*r2;
+const par=(x,y)=>`(${MN(x)}, ${MN(y)})`;const ok=t(`x = ${MN(r1)}, y = ${MN(r2)} i x = ${MN(r2)}, y = ${MN(r1)}`,`x = ${MN(r1)}, y = ${MN(r2)} y x = ${MN(r2)}, y = ${MN(r1)}`);
+return{enun:`<div class="sist">${lin2(1,1,S)}<br>x·y = ${MN(P)}</div>`,rally:1,passos:[
+P1(t('Colp 1: aïllem y = '+MN(S)+' − x en la 1a i substituïm en la 2a. Quina equació queda?','Golpe 1: despejamos y = '+MN(S)+' − x en la 1ª y sustituimos en la 2ª. ¿Qué ecuación queda?'),ops(poli([1,-S,P])+' = 0',[
+[poli([1,S,P])+' = 0',t(`x(${MN(S)} − x) = ${poli([S,0])} − x²: en passar-ho tot a un costat, revisa els signes.`,`x(${MN(S)} − x) = ${poli([S,0])} − x²: al pasarlo todo a un lado, revisa los signos.`)],
+[poli([1,-S,-P])+' = 0',SIGNE()]]),t(`x·(${MN(S)} − x) = ${MN(P)}`,`x·(${MN(S)} − x) = ${MN(P)}`)),
+P1(t('Colp 2: quines són TOTES les solucions del sistema?','Golpe 2: ¿cuáles son TODAS las soluciones del sistema?'),ops(ok,[
+[t(`Només x = ${MN(r1)}, y = ${MN(r2)}`,`Solo x = ${MN(r1)}, y = ${MN(r2)}`),t(`L'equació en x té dues solucions i cadascuna dona una parella: també x = ${MN(r2)}, y = ${MN(r1)}.`,`La ecuación en x tiene dos soluciones y cada una da una pareja: también x = ${MN(r2)}, y = ${MN(r1)}.`)],
+[t(`x = ${MN(-r1)}, y = ${MN(-r2)} i x = ${MN(-r2)}, y = ${MN(-r1)}`,`x = ${MN(-r1)}, y = ${MN(-r2)} y x = ${MN(-r2)}, y = ${MN(-r1)}`),t('Comprova: la suma ha de donar '+MN(S)+'.','Comprueba: la suma tiene que dar '+MN(S)+'.')]]),
+t('Per a cada x calcula y = '+MN(S)+' − x.','Para cada x calcula y = '+MN(S)+' − x.'))],
+sol:[`y = ${MN(S)} − x → x(${MN(S)} − x) = ${MN(P)} → ${poli([1,-S,P])} = 0`,`x = ${MN(r1)} → y = ${MN(r2)};  x = ${MN(r2)} → y = ${MN(r1)}`,B(par(r1,r2)+t(' i ',' y ')+par(r2,r1))]}};
+
+G.botiga=()=>{let p,g,a1,b1,a2,b2;do{p=R(4,9);g=R(2,6);a1=R(1,3);b1=R(1,4);a2=R(1,3);b2=R(1,4)}while(a1*b2===a2*b1||p===g);
+const c1=a1*p+b1*g,c2=a2*p+b2*g;const tub=n=>t(n===1?'1 tub de pilotes':n+' tubs de pilotes',n===1?'1 bote de pelotas':n+' botes de pelotas');const gr=n=>t(n===1?'1 grip':n+' grips',n===1?'1 grip':n+' grips');
+return{enun:t(`En una botiga d'esports, ${tub(a1)} i ${gr(b1)} costen ${c1} €, i ${tub(a2)} i ${gr(b2)} costen ${c2} €. Quant costa cada cosa?`,`En una tienda de deportes, ${tub(a1)} y ${gr(b1)} cuestan ${c1} €, y ${tub(a2)} y ${gr(b2)} cuestan ${c2} €. ¿Cuánto cuesta cada cosa?`),passos:[P1(t('Tub (x) i grip (y):','Bote (x) y grip (y):'),ops(`x = ${p} €, y = ${g} €`,[
+[`x = ${g} €, y = ${p} €`,t('Has canviat les incògnites: comprova en la 1a equació.','Has cambiado las incógnitas: comprueba en la 1ª ecuación.')],
+[`x = ${p} €, y = ${g+1} €`,t(`Comprova: ${a1}·${p} + ${b1}·${g+1} = ${a1*p+b1*(g+1)} ≠ ${c1}.`,`Comprueba: ${a1}·${p} + ${b1}·${g+1} = ${a1*p+b1*(g+1)} ≠ ${c1}.`)],
+[`x = ${p+1} €, y = ${g} €`,t(`Comprova: ${a1}·${p+1} + ${b1}·${g} = ${a1*(p+1)+b1*g} ≠ ${c1}.`,`Comprueba: ${a1}·${p+1} + ${b1}·${g} = ${a1*(p+1)+b1*g} ≠ ${c1}.`)]]),
+t(`Planteja: ${lin2(a1,b1,c1)} i ${lin2(a2,b2,c2)}.`,`Plantea: ${lin2(a1,b1,c1)} y ${lin2(a2,b2,c2)}.`))],
+sol:[`<div class="sist">${lin2(a1,b1,c1)}<br>${lin2(a2,b2,c2)}</div>`,t(`Reducció: multipliquem la 1a per ${a2} i la 2a per ${a1} i restem: ${a2*b1-a1*b2}y = ${a2*c1-a1*c2} → y = ${g}`,`Reducción: multiplicamos la 1ª por ${a2} y la 2ª por ${a1} y restamos: ${a2*b1-a1*b2}y = ${a2*c1-a1*c2} → y = ${g}`),t(`Substituïm: ${a1}x + ${b1*g} = ${c1} → x = ${p}`,`Sustituimos: ${a1}x + ${b1*g} = ${c1} → x = ${p}`),B(t(`Tub ${p} €, grip ${g} €`,`Bote ${p} €, grip ${g} €`))]}};
+
+const GIR={'<':'>','>':'<','≤':'≥','≥':'≤'};
+const ivRel=(rel,k)=>rel==='<'?iv(null,k,0,0):rel==='≤'?iv(null,k,0,1):rel==='>'?iv(k,null,0,0):iv(k,null,1,0);
+G.ineq1=()=>{const a=pick([-5,-4,-3,-2,2,3,4,5,-1]);const k=R(-6,6),b=R(-9,9);const c=a*k+b;const rel=pick(['<','≤','>','≥']);const fin=a<0?GIR[rel]:rel;
+const tanca=rel==='≤'||rel==='≥';const wb=x=>x==='<'?'≤':x==='≤'?'<':x==='>'?'≥':'>';
+return{enun:t('Resol:','Resuelve:')+` ${B(poli([a,b])+' '+rel+' '+MN(c))}`,passos:[P1(t('Solució en forma d\'interval:','Solución en forma de intervalo:'),ops(ivRel(fin,k),[
+[ivRel(a<0?rel:GIR[rel],k),a<0?t(`En dividir entre ${MN(a)} (negatiu) la desigualtat CANVIA de sentit: ${rel} passa a ${fin}.`,`Al dividir entre ${MN(a)} (negativo) la desigualdad CAMBIA de sentido: ${rel} pasa a ${fin}.`):t(`Has dividit entre ${a}, que és positiu: la desigualtat NO canvia de sentit.`,`Has dividido entre ${a}, que es positivo: la desigualdad NO cambia de sentido.`)],
+[ivRel(wb(fin),k),tanca?t(`Amb ${rel} el ${MN(k)} SÍ que entra: claudàtor [ ].`,`Con ${rel} el ${MN(k)} SÍ entra: corchete [ ].`):t(`Amb ${rel} el ${MN(k)} NO entra: parèntesi ( ).`,`Con ${rel} el ${MN(k)} NO entra: paréntesis ( ).`)],
+[ivRel(fin,-k),SIGNE()]]),
+t('Aïlla x com en una equació. Si multipliques o divideixes per un negatiu, gira el símbol.','Despeja x como en una ecuación. Si multiplicas o divides por un negativo, gira el símbolo.'))],
+sol:[`${poli([a,0])} ${rel} ${MN(c)} ${b<0?'+':'−'} ${Math.abs(b)} → ${poli([a,0])} ${rel} ${MN(c-b)}`,a<0?t(`Dividim entre ${MN(a)} (negatiu) → gira: x ${fin} ${MN(k)}`,`Dividimos entre ${MN(a)} (negativo) → gira: x ${fin} ${MN(k)}`):t(`Dividim entre ${a}: x ${fin} ${MN(k)}`,`Dividimos entre ${a}: x ${fin} ${MN(k)}`),B(ivRel(fin,k))]}};
+
+G.ineq2=()=>{let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);[r1,r2]=[Math.min(r1,r2),Math.max(r1,r2)];const a=pick([1,1,1,-1]);
+const rel=pick(['<','≤','>','≥']);const P=deRoots([r1,r2],a);const tanca=rel==='≤'||rel==='≥';
+const signes=a>0?'+ − +':'− + −';const vol=(rel==='<'||rel==='≤')?'−':'+';const dins=(a>0)===(vol==='−');
+const dinsI=iv(r1,r2,tanca,tanca);const fora=iv(null,r1,0,tanca)+' ∪ '+iv(r2,null,tanca,0);
+const ok=dins?dinsI:fora,mal=dins?fora:dinsI;const okb=dins?iv(r1,r2,!tanca,!tanca):iv(null,r1,0,!tanca)+' ∪ '+iv(r2,null,!tanca,0);
+const trams=`(−∞, ${MN(r1)}) | (${MN(r1)}, ${MN(r2)}) | (${MN(r2)}, +∞)`;
+return{enun:t('Resol:','Resuelve:')+` ${B(poli(P)+' '+rel+' 0')}`,rally:1,passos:[
+P1(t('Colp 1: on s\'anul·la? (arrels)','Golpe 1: ¿dónde se anula? (raíces)'),ops(xs([r1,r2]),[[xs([-r1,-r2]),t('La fórmula comença per −b.','La fórmula empieza por −b.')],[r1===-r2?xs([r1*r1]):xs([r1,-r2]),r1===-r2?t('Has de fer l\'arrel: x² = '+r1*r1+' → x = ±'+Math.abs(r1)+'.','Tienes que hacer la raíz: x² = '+r1*r1+' → x = ±'+Math.abs(r1)+'.'):SIGNE()]]),t('Resol '+poli(P)+' = 0.','Resuelve '+poli(P)+' = 0.')),
+P1(t(`Colp 2: signe en cada tram ${trams}:`,`Golpe 2: signo en cada tramo ${trams}:`),ops(signes,[[a>0?'− + −':'+ − +',t(`Prova un valor: per a x molt gran, ${poli(P)} té el signe de ${a>0?'x²: +':'−x²: −'}. Els signes van alternant a cada arrel.`,`Prueba un valor: para x muy grande, ${poli(P)} tiene el signo de ${a>0?'x²: +':'−x²: −'}. Los signos van alternando en cada raíz.`)],['+ + −',t('En cada arrel simple el signe canvia: no pot repetir-se en trams del costat.','En cada raíz simple el signo cambia: no puede repetirse en tramos contiguos.')]]),t(`Substitueix un número de cada tram, per exemple x = 0 → ${MN(P[2])}.`,`Sustituye un número de cada tramo, por ejemplo x = 0 → ${MN(P[2])}.`)),
+P1(t(`Colp 3: volem ${rel} 0. Solució?`,`Golpe 3: queremos ${rel} 0. ¿Solución?`),ops(ok,[
+[mal,t(`Volem els trams amb signe ${vol}, i els signes són ${signes}.`,`Queremos los tramos con signo ${vol}, y los signos son ${signes}.`)],
+[okb,tanca?t(`Amb ${rel} les arrels també compleixen (valen 0): claudàtors.`,`Con ${rel} las raíces también cumplen (valen 0): corchetes.`):t(`Amb ${rel} les arrels NO compleixen (0 no és ${rel==='<'?'menor':'major'} que 0): parèntesis.`,`Con ${rel} las raíces NO cumplen (0 no es ${rel==='<'?'menor':'mayor'} que 0): paréntesis.`)]]),
+t(`Agafa els trams amb signe ${vol}.`,`Coge los tramos con signo ${vol}.`))],
+sol:[t(`Arrels: ${MN(r1)} i ${MN(r2)}`,`Raíces: ${MN(r1)} y ${MN(r2)}`),t(`Signes: ${signes} en ${trams}`,`Signos: ${signes} en ${trams}`),t(`Volem ${rel} 0 → trams ${vol}${tanca?', amb les arrels incloses':''}`,`Queremos ${rel} 0 → tramos ${vol}${tanca?', con las raíces incluidas':''}`),B(ok)]}};
+
+G.sistineq=()=>{let k1,k2;do{k1=R(-5,4);k2=R(-4,6)}while(k1===k2);const buit=k1>k2;
+const a1=pick([2,3,-2,-3]),b1=R(-6,6);const rel1=a1>0?'>':'<';const c1=a1*k1+b1;
+const a2=pick([1,2,-1]),b2=R(-6,6);const rel2=a2>0?'≤':'≥';const c2=a2*k2+b2;
+const ok=buit?t('Cap solució (∅)','Ninguna solución (∅)'):iv(k1,k2,0,1);
+return{enun:t('Resol el sistema d\'inequacions:','Resuelve el sistema de inecuaciones:')+`<div class="sist">${poli([a1,b1])} ${rel1} ${MN(c1)}<br>${poli([a2,b2])} ${rel2} ${MN(c2)}</div>`,passos:[P1(t('Solució (la part comuna):','Solución (la parte común):'),ops(ok,buit?[
+[iv(k2,k1,1,0),t(`Una demana x > ${MN(k1)} i l'altra x ≤ ${MN(k2)}. Com ${MN(k1)} > ${MN(k2)}, no hi ha cap número que complisca les dues.`,`Una pide x > ${MN(k1)} y la otra x ≤ ${MN(k2)}. Como ${MN(k1)} > ${MN(k2)}, no hay ningún número que cumpla las dos.`)],
+[iv(null,k2,0,1)+' ∪ '+iv(k1,null,0,0),t('Un sistema demana que es complisquen LES DUES alhora: intersecció, no unió.','Un sistema pide que se cumplan LAS DOS a la vez: intersección, no unión.')]]:[
+[iv(k1,k2,1,0),t(`x > ${MN(k1)}: ${MN(k1)} no entra, parèntesi. x ≤ ${MN(k2)}: ${MN(k2)} sí entra, claudàtor.`,`x > ${MN(k1)}: ${MN(k1)} no entra, paréntesis. x ≤ ${MN(k2)}: ${MN(k2)} sí entra, corchete.`)],
+[iv(null,k1,0,1)+' ∪ '+iv(k2,null,0,0),t('Això és el que NO compleix el sistema. Volem la part comuna.','Eso es lo que NO cumple el sistema. Queremos la parte común.')],
+[iv(k1,null,0,0),t('Has de complir les DUES: també x ≤ '+MN(k2)+'.','Tienes que cumplir las DOS: también x ≤ '+MN(k2)+'.')]]),
+t('Resol cada inequació per separat i busca on se solapen sobre la recta.','Resuelve cada inecuación por separado y busca dónde se solapan sobre la recta.'))],
+sol:[`${poli([a1,b1])} ${rel1} ${MN(c1)} → ${poli([a1,0])} ${rel1} ${MN(c1-b1)} → x > ${MN(k1)}${a1<0?t(' (gira: dividim per negatiu)',' (gira: dividimos por negativo)'):''}`,`${poli([a2,b2])} ${rel2} ${MN(c2)} → ${poli([a2,0])} ${rel2} ${MN(c2-b2)} → x ≤ ${MN(k2)}${a2<0?t(' (gira)',' (gira)'):''}`,t('Part comuna: ','Parte común: ')+B(ok)]}};
+
+G.club=()=>{let q,p1,p2,K;do{p1=R(4,9);p2=p1+R(2,6);K=R(3,9);q=K*(p2-p1)}while(q>80);
+return{enun:t(`El club A cobra ${q} € de quota i ${p1} € per hora de pista. El club B no cobra quota però cobra ${p2} € per hora. A partir de quantes hores és més barat el club A?`,`El club A cobra ${q} € de cuota y ${p1} € por hora de pista. El club B no cobra cuota pero cobra ${p2} € por hora. ¿A partir de cuántas horas es más barato el club A?`),passos:[P1(t('Si h són les hores:','Si h son las horas:'),ops(t(`Més de ${K} hores (h > ${K})`,`Más de ${K} horas (h > ${K})`),[
+[t(`Menys de ${K} hores (h < ${K})`,`Menos de ${K} horas (h < ${K})`),t(`Prova h = 1: A costa ${q+p1} € i B ${p2} €. Amb poques hores B és més barat.`,`Prueba h = 1: A cuesta ${q+p1} € y B ${p2} €. Con pocas horas B es más barato.`)],
+[t(`Més de ${Math.round(q/p2)} hores`,`Más de ${Math.round(q/p2)} horas`),t(`La inequació és ${q} + ${p1}h < ${p2}h: cal passar ${p1}h a la dreta i queda ${p2-p1}h.`,`La inecuación es ${q} + ${p1}h < ${p2}h: hay que pasar ${p1}h a la derecha y queda ${p2-p1}h.`)],
+[t(`Més de ${K+2} hores`,`Más de ${K+2} horas`),t(`Comprova amb ${K+1} hores: A = ${q+p1*(K+1)} €, B = ${p2*(K+1)} €. A ja és més barat.`,`Comprueba con ${K+1} horas: A = ${q+p1*(K+1)} €, B = ${p2*(K+1)} €. A ya es más barato.`)]]),
+t(`Cost A < cost B: ${q} + ${p1}h < ${p2}h.`,`Coste A < coste B: ${q} + ${p1}h < ${p2}h.`))],
+sol:[`${q} + ${p1}h < ${p2}h`,`${q} < ${p2-p1}h → h > ${q}/${p2-p1} = ${K}`,t(`Amb exactament ${K} hores costen igual (${q+p1*K} €).`,`Con exactamente ${K} horas cuestan lo mismo (${q+p1*K} €).`),B(t(`Més de ${K} hores`,`Más de ${K} horas`))]}};
+
+const EX=(tit,passos)=>`<div class="exemple"><div class="etq">${tit}</div><ol class="passos">${passos.map(p=>`<li>${p}</li>`).join('')}</ol></div>`;
+const OJO=h=>`<div class="error"><b>⚠ ${t('Compte!','¡Ojo!')}</b> ${h}</div>`;
+const CAIXA=h=>`<div class="caixa">${h}</div>`;
+const SERV=h=>`<div class="serv"><b>🎾 ${t('Per a què serveix?','¿Para qué sirve?')}</b> ${h}</div>`;
+const EJ=()=>t('Exemple resolt','Ejemplo resuelto');
+
+const BLOCS=[
+{id:'poli',gens:['suma','prod','notable','valor','divisio'],tit:()=>t('Polinomis','Polinomios'),sub:()=>t('Operacions, identitats notables, divisió','Operaciones, identidades notables, división'),
+rival:'Al-Khwarizmi',fet:()=>t('Al-Khwarizmi va escriure a Bagdad, al segle IX, el llibre que va donar nom a l\'àlgebra («al-jabr», que vol dir «recompondre»). Del seu nom ve la paraula «algorisme».','Al-Juarismi escribió en Bagdad, en el siglo IX, el libro que dio nombre al álgebra («al-jabr», que significa «recomponer»). De su nombre viene la palabra «algoritmo».'),
+pags:()=>[
+`<h2>${t('Què és un polinomi?','¿Qué es un polinomio?')}</h2>
+<p>${t('Un <b>polinomi</b> és una suma de monomis: números multiplicats per potències de x.','Un <b>polinomio</b> es una suma de monomios: números multiplicados por potencias de x.')}</p>
+${CAIXA(`P(x) = <b>3</b>x³ − <b>2</b>x² + <b>5</b>x − <b>7</b>`)}
+<ul class="llista"><li>${t('<b>Grau</b>: l\'exponent més gran (ací, 3).','<b>Grado</b>: el exponente más grande (aquí, 3).')}</li><li>${t('<b>Coeficients</b>: els números (3, −2, 5, −7). El de la x més gran és el <b>coeficient principal</b>.','<b>Coeficientes</b>: los números (3, −2, 5, −7). El de la x más grande es el <b>coeficiente principal</b>.')}</li><li>${t('<b>Terme independent</b>: el que no porta x (−7).','<b>Término independiente</b>: el que no lleva x (−7).')}</li><li>${t('<b>Valor numèric</b> P(a): el resultat de substituir x per a.','<b>Valor numérico</b> P(a): el resultado de sustituir x por a.')}</li></ul>
+${EX(EJ()+': P(−2)',[`P(−2) = 3·(−2)³ − 2·(−2)² + 5·(−2) − 7`,`= 3·(−8) − 2·4 − 10 − 7`,`= −24 − 8 − 10 − 7 = <b>−49</b>`])}
+${OJO(t('Posa sempre els negatius entre parèntesis: (−2)² = 4, però −2² = −4.','Pon siempre los negativos entre paréntesis: (−2)² = 4, pero −2² = −4.'))}
+${SERV(t('Amb polinomis es descriuen trajectòries (l\'altura d\'una pilota és un polinomi de grau 2 en el temps), costos, àrees i volums. Són el «llenguatge» de quasi tota la resta del curs.','Con polinomios se describen trayectorias (la altura de una pelota es un polinomio de grado 2 en el tiempo), costes, áreas y volúmenes. Son el «lenguaje» de casi todo el resto del curso.'))}`,
+`<h2>${t('Sumar, restar i multiplicar','Sumar, restar y multiplicar')}</h2>
+<p>${t('<b>Sumar/restar</b>: s\'agrupen els termes del mateix grau. Per a restar, es canvia el signe de TOTS els termes del segon polinomi.','<b>Sumar/restar</b>: se agrupan los términos del mismo grado. Para restar, se cambia el signo de TODOS los términos del segundo polinomio.')}</p>
+${EX(EJ(),[`(5x² − 3x + 1) − (2x² + 4x − 6)`,t('Canviem tots els signes del segon: 5x² − 3x + 1 − 2x² − 4x + 6','Cambiamos todos los signos del segundo: 5x² − 3x + 1 − 2x² − 4x + 6'),`= <b>3x² − 7x + 7</b>`])}
+<p>${t('<b>Multiplicar</b>: cada terme del primer per cada terme del segon (propietat distributiva) i després s\'agrupa.','<b>Multiplicar</b>: cada término del primero por cada término del segundo (propiedad distributiva) y después se agrupa.')}</p>
+${EX(EJ(),[`(2x − 3)(x + 5) = 2x·x + 2x·5 − 3·x − 3·5`,`= 2x² + 10x − 3x − 15 = <b>2x² + 7x − 15</b>`])}
+<h3>${t('Identitats notables','Identidades notables')}</h3>
+${CAIXA(`(a + b)² = a² + 2ab + b²<br>(a − b)² = a² − 2ab + b²<br>(a + b)(a − b) = a² − b²`)}
+${EX(EJ(),[`(3x − 2)² = (3x)² − 2·3x·2 + 2²`,`= <b>9x² − 12x + 4</b>`])}
+${OJO(t('(a + b)² NO és a² + b². Comprova-ho amb números: (3 + 4)² = 49, però 3² + 4² = 25. Falta el doble producte 2ab.','(a + b)² NO es a² + b². Compruébalo con números: (3 + 4)² = 49, pero 3² + 4² = 25. Falta el doble producto 2ab.'))}`,
+`<h2>${t('Dividir polinomis','Dividir polinomios')}</h2>
+<p>${t('Igual que amb números: Dividend = divisor · quocient + residu. El residu sempre té grau menor que el divisor.','Igual que con números: Dividendo = divisor · cociente + resto. El resto siempre tiene grado menor que el divisor.')}</p>
+${EX(EJ()+': (2x³ + 3x² − x + 5) : (x² + x − 1)',[
+t('Divideix el primer terme del dividend entre el primer del divisor: 2x³ : x² = <b>2x</b> (primer terme del quocient).','Divide el primer término del dividendo entre el primero del divisor: 2x³ : x² = <b>2x</b> (primer término del cociente).'),
+t('Multiplica 2x·(x² + x − 1) = 2x³ + 2x² − 2x i RESTA-ho (canvia signes): queda x² + x + 5.','Multiplica 2x·(x² + x − 1) = 2x³ + 2x² − 2x y RÉSTALO (cambia signos): queda x² + x + 5.'),
+t('Repeteix: x² : x² = <b>1</b>. Multiplica 1·(x² + x − 1) = x² + x − 1 i resta: queda <b>6</b>.','Repite: x² : x² = <b>1</b>. Multiplica 1·(x² + x − 1) = x² + x − 1 y resta: queda <b>6</b>.'),
+t('Grau 0 < grau 2: s\'acaba. Quocient <b>2x + 1</b>, residu <b>6</b>.','Grado 0 < grado 2: se acaba. Cociente <b>2x + 1</b>, resto <b>6</b>.'),
+t('Comprovació: (x² + x − 1)(2x + 1) + 6 = 2x³ + 3x² − x + 5 ✔','Comprobación: (x² + x − 1)(2x + 1) + 6 = 2x³ + 3x² − x + 5 ✔')])}
+${OJO(t('Si falta algun grau al dividend (per exemple no hi ha x²), deixa un buit o posa 0x² perquè no es descol·loquen les columnes.','Si falta algún grado en el dividendo (por ejemplo no hay x²), deja un hueco o pon 0x² para que no se descoloquen las columnas.'))}`]},
+
+{id:'ruff',gens:['taula','taula','residu','kval','cand','arrel'],tit:()=>t('Ruffini i teorema del residu','Ruffini y teorema del resto'),sub:()=>t('Dividir per (x − a) en un tres i no res','Dividir entre (x − a) en un periquete'),
+rival:'Paolo Ruffini',fet:()=>t('Paolo Ruffini (1765–1822) era metge i matemàtic. A més de la seua regla, va ser el primer a defendre que les equacions de grau 5 no es poden resoldre amb una fórmula general amb arrels.','Paolo Ruffini (1765–1822) era médico y matemático. Además de su regla, fue el primero en defender que las ecuaciones de grado 5 no se pueden resolver con una fórmula general con raíces.'),
+pags:()=>[
+`<h2>${t('La regla de Ruffini','La regla de Ruffini')}</h2>
+<p>${t('Serveix per a dividir un polinomi entre un binomi de la forma <b>(x − a)</b> molt més ràpid que la divisió llarga.','Sirve para dividir un polinomio entre un binomio de la forma <b>(x − a)</b> mucho más rápido que la división larga.')}</p>
+${EX(EJ()+': (x³ − 4x² + x + 6) : (x − 2)',[
+t('Escriu els coeficients en fila (amb 0 si falta algun grau): 1, −4, 1, 6. A l\'esquerra, <b>a = 2</b> (per a (x + 2) seria −2).','Escribe los coeficientes en fila (con 0 si falta algún grado): 1, −4, 1, 6. A la izquierda, <b>a = 2</b> (para (x + 2) sería −2).'),
+t('<b>Baixa</b> el primer: 1.','<b>Baja</b> el primero: 1.'),
+t('<b>Multiplica</b> 1·2 = 2, posa-ho davall del −4 i <b>suma</b>: −4 + 2 = −2.','<b>Multiplica</b> 1·2 = 2, ponlo debajo del −4 y <b>suma</b>: −4 + 2 = −2.'),
+t('Repeteix: −2·2 = −4; 1 + (−4) = −3. Després: −3·2 = −6; 6 + (−6) = 0.','Repite: −2·2 = −4; 1 + (−4) = −3. Después: −3·2 = −6; 6 + (−6) = 0.'),
+taula([1,-4,1,6],2,[null,2,-4,-6],[1,-2,-3,0],-1),
+t('Quocient (un grau menys): <b>x² − 2x − 3</b>. Residu: <b>0</b>.','Cociente (un grado menos): <b>x² − 2x − 3</b>. Resto: <b>0</b>.')])}
+${OJO(t('Ruffini només funciona per a dividir entre (x − a). Per a (x + 3), a = −3.','Ruffini solo funciona para dividir entre (x − a). Para (x + 3), a = −3.'))}`,
+`<h2>${t('Teorema del residu','Teorema del resto')}</h2>
+${CAIXA(t('El residu de dividir P(x) entre (x − a) és <b>P(a)</b>.','El resto de dividir P(x) entre (x − a) es <b>P(a)</b>.'))}
+<p>${t('<b>Per què?</b> P(x) = (x − a)·C(x) + R. Si substituïm x = a, el primer sumand val 0, i queda P(a) = R.','<b>¿Por qué?</b> P(x) = (x − a)·C(x) + R. Si sustituimos x = a, el primer sumando vale 0, y queda P(a) = R.')}</p>
+${EX(EJ()+': '+t('residu de','resto de')+' (x³ + 2x − 5) : (x + 1)',[t('a = −1 (perquè x + 1 = x − (−1))','a = −1 (porque x + 1 = x − (−1))'),`P(−1) = (−1)³ + 2·(−1) − 5 = −1 − 2 − 5 = <b>−8</b>`])}
+<h3>${t('Arrels i divisibilitat','Raíces y divisibilidad')}</h3>
+<p>${t('Si P(a) = 0, diem que <b>a és una arrel</b> i que P(x) és <b>divisible</b> entre (x − a): el residu és 0.','Si P(a) = 0, decimos que <b>a es una raíz</b> y que P(x) es <b>divisible</b> entre (x − a): el resto es 0.')}</p>
+${EX(EJ()+': '+t('k perquè x³ + kx² − 4 siga divisible per (x − 2)','k para que x³ + kx² − 4 sea divisible entre (x − 2)'),[`P(2) = 0 → 8 + 4k − 4 = 0`,`4k = −4 → <b>k = −1</b>`])}`,
+`<h2>${t('On busque les arrels?','¿Dónde busco las raíces?')}</h2>
+${CAIXA(t('Si un polinomi amb coeficients enters té arrels enteres, són <b>divisors del terme independent</b>.','Si un polinomio con coeficientes enteros tiene raíces enteras, son <b>divisores del término independiente</b>.'))}
+${EX(EJ()+': x³ − 2x² − 5x + 6',[t('Terme independent: 6. Candidats: ±1, ±2, ±3, ±6.','Término independiente: 6. Candidatos: ±1, ±2, ±3, ±6.'),t('P(1) = 1 − 2 − 5 + 6 = 0 ✔ → x = 1 és arrel.','P(1) = 1 − 2 − 5 + 6 = 0 ✔ → x = 1 es raíz.'),t('P(−1) = −1 − 2 + 5 + 6 = 8 ✘','P(−1) = −1 − 2 + 5 + 6 = 8 ✘'),t('Es continua provant (o es fa Ruffini amb el quocient). Les arrels són 1, −2 i 3.','Se sigue probando (o se hace Ruffini con el cociente). Las raíces son 1, −2 y 3.')])}
+${OJO(t('Prova sempre els dos signes! −2 pot ser arrel encara que 2 no ho siga.','¡Prueba siempre los dos signos! −2 puede ser raíz aunque 2 no lo sea.'))}
+${SERV(t('Trobar arrels és trobar on una funció val zero: on una pilota toca a terra, on un negoci passa de perdre a guanyar diners… Ruffini és l\'eina ràpida per a fer-ho a mà.','Encontrar raíces es encontrar dónde una función vale cero: dónde una pelota toca el suelo, dónde un negocio pasa de perder a ganar dinero… Ruffini es la herramienta rápida para hacerlo a mano.'))}`]},
+
+{id:'fact',gens:['comu','ident','trinomi','completa','completa'],tit:()=>t('Factoritzar','Factorizar'),sub:()=>t('Factor comú, identitats, arrels','Factor común, identidades, raíces'),
+rival:'Emmy Noether',fet:()=>t('Emmy Noether (1882–1935) va revolucionar l\'àlgebra moderna. Einstein va dir que era el geni matemàtic més important que havia donat l\'educació superior de les dones fins aleshores.','Emmy Noether (1882–1935) revolucionó el álgebra moderna. Einstein dijo que era el genio matemático más importante que había dado la educación superior de las mujeres hasta entonces.'),
+pags:()=>[
+`<h2>${t('Què és factoritzar?','¿Qué es factorizar?')}</h2>
+<p>${t('Factoritzar és escriure un polinomi com un <b>producte</b> de polinomis més senzills, igual que 12 = 2·2·3.','Factorizar es escribir un polinomio como un <b>producto</b> de polinomios más sencillos, igual que 12 = 2·2·3.')}</p>
+${SERV(t('Un producte val 0 si algun factor val 0: amb el polinomi factoritzat, les equacions es resolen de colp. I per a simplificar fraccions algebraiques cal factoritzar sí o sí.','Un producto vale 0 si algún factor vale 0: con el polinomio factorizado, las ecuaciones se resuelven de golpe. Y para simplificar fracciones algebraicas hay que factorizar sí o sí.'))}
+<h3>${t('Ordre per a factoritzar','Orden para factorizar')}</h3>
+<ol class="passos"><li>${t('<b>Factor comú</b>: si tots els termes tenen x (o un número comú), trau-lo.','<b>Factor común</b>: si todos los términos tienen x (o un número común), sácalo.')}</li><li>${t('<b>Identitats notables</b>: a² − b², a² ± 2ab + b².','<b>Identidades notables</b>: a² − b², a² ± 2ab + b².')}</li><li>${t('<b>Grau 2</b>: fórmula → arrels x₁, x₂ → a(x − x₁)(x − x₂).','<b>Grado 2</b>: fórmula → raíces x₁, x₂ → a(x − x₁)(x − x₂).')}</li><li>${t('<b>Grau 3 o més</b>: Ruffini amb els divisors del terme independent.','<b>Grado 3 o más</b>: Ruffini con los divisores del término independiente.')}</li></ol>
+${EX(t('Factor comú','Factor común'),[`6x³ − 9x²`,t('MCD(6, 9) = 3; x amb menor exponent: x²','MCD(6, 9) = 3; x con menor exponente: x²'),`= <b>3x²(2x − 3)</b>`])}`,
+`<h2>${t('Identitats i grau 2','Identidades y grado 2')}</h2>
+${EX(t('Diferència de quadrats','Diferencia de cuadrados'),[`4x² − 25 = (2x)² − 5²`,`= <b>(2x + 5)(2x − 5)</b>`])}
+${EX(t('Quadrat perfecte','Cuadrado perfecto'),[`x² − 6x + 9: x² = (x)², 9 = 3², 6x = 2·x·3 ✔`,`= <b>(x − 3)²</b>`])}
+${EX(t('Trinomi de grau 2','Trinomio de grado 2'),[`2x² + 2x − 12 = 0 → x = ${F('−2 ± √(4 + 96)','4')} = ${F('−2 ± 10','4')}`,`x₁ = 2, x₂ = −3`,`2x² + 2x − 12 = <b>2(x − 2)(x + 3)</b>`])}
+${OJO(t('Si l\'arrel és −3, el factor és (x − (−3)) = <b>(x + 3)</b>. I no t\'oblides del coeficient principal (el 2 de davant).','Si la raíz es −3, el factor es (x − (−3)) = <b>(x + 3)</b>. Y no te olvides del coeficiente principal (el 2 de delante).'))}`,
+`<h2>${t('Grau 3: pas a pas','Grado 3: paso a paso')}</h2>
+${EX(EJ()+': x³ − 2x² − 5x + 6',[t('Candidats: divisors de 6 → ±1, ±2, ±3, ±6.','Candidatos: divisores de 6 → ±1, ±2, ±3, ±6.'),t('P(1) = 0 → (x − 1) és factor.','P(1) = 0 → (x − 1) es factor.'),t('Ruffini amb 1:','Ruffini con 1:')+taula([1,-2,-5,6],1,[null,1,-1,-6],[1,-1,-6,0],-1),t('P(x) = (x − 1)(x² − x − 6)','P(x) = (x − 1)(x² − x − 6)'),t('x² − x − 6 = 0 → x = 3, x = −2','x² − x − 6 = 0 → x = 3, x = −2'),`<b>P(x) = (x − 1)(x − 3)(x + 2)</b>`])}
+${OJO(t('Comprova sempre multiplicant (o substituint un valor, per exemple x = 0: (−1)(−3)(2) = 6 ✔).','Comprueba siempre multiplicando (o sustituyendo un valor, por ejemplo x = 0: (−1)(−3)(2) = 6 ✔).'))}`]},
+
+{id:'frac',gens:['simp','sumafr','sumafr','multfr','mcm'],tit:()=>t('Fraccions algebraiques','Fracciones algebraicas'),sub:()=>t('Simplificar, sumar, multiplicar, dividir','Simplificar, sumar, multiplicar, dividir'),
+rival:'Diofant',fet:()=>t('L\'epitafi de Diofant d\'Alexandria era un problema: «la infància li va durar 1/6 de la vida, la joventut 1/12 més, es va casar després d\'1/7 més, als 5 anys va tindre un fill que va viure la meitat que ell, i va morir 4 anys després del fill». Si ho resols, ix que va viure 84 anys.','El epitafio de Diofanto de Alejandría era un problema: «la infancia le duró 1/6 de la vida, la juventud 1/12 más, se casó tras 1/7 más, a los 5 años tuvo un hijo que vivió la mitad que él, y murió 4 años después del hijo». Si lo resuelves, sale que vivió 84 años.'),
+pags:()=>[
+`<h2>${t('Fraccions amb x','Fracciones con x')}</h2>
+<p>${t('Una fracció algebraica és una divisió de polinomis, com ','Una fracción algebraica es una división de polinomios, como ')}${F('x + 1','x² − 4')}. ${t('Funcionen com les fraccions de números, però <b>abans de res cal factoritzar</b>.','Funcionan como las fracciones de números, pero <b>antes de nada hay que factorizar</b>.')}</p>
+<h3>${t('Simplificar','Simplificar')}</h3>
+${EX(EJ(),[`${F('x² − 9','x² + x − 6')}`,t('Factoritzem: x² − 9 = (x + 3)(x − 3); x² + x − 6 = (x + 3)(x − 2)','Factorizamos: x² − 9 = (x + 3)(x − 3); x² + x − 6 = (x + 3)(x − 2)'),`${F('<s>(x + 3)</s>(x − 3)','<s>(x + 3)</s>(x − 2)')} = <b>${F('x − 3','x − 2')}</b>`])}
+${OJO(t('Només es simplifiquen FACTORS (coses que multipliquen), mai sumands. ','Solo se simplifican FACTORES (cosas que multiplican), nunca sumandos. ')+F('x² + 3','x² + 5')+t(' NO és 3/5: prova x = 1 → 4/6.',' NO es 3/5: prueba x = 1 → 4/6.'))}
+${SERV(t('Apareixen quan es reparteix alguna cosa entre una quantitat variable: temps = distància/velocitat, preu per persona = total/persones… Simplificar-les fa els càlculs molt més curts.','Aparecen cuando se reparte algo entre una cantidad variable: tiempo = distancia/velocidad, precio por persona = total/personas… Simplificarlas hace los cálculos mucho más cortos.'))}`,
+`<h2>${t('Sumar i restar','Sumar y restar')}</h2>
+<ol class="passos"><li>${t('Factoritza els denominadors.','Factoriza los denominadores.')}</li><li>${t('Troba el <b>m.c.m.</b>: tots els factors, cadascun amb l\'exponent més gran.','Halla el <b>m.c.m.</b>: todos los factores, cada uno con el exponente más grande.')}</li><li>${t('Multiplica cada numerador pel que li falta al seu denominador per a arribar al m.c.m.','Multiplica cada numerador por lo que le falta a su denominador para llegar al m.c.m.')}</li><li>${t('Suma els numeradors (compte amb els − davant de fraccions!).','Suma los numeradores (¡cuidado con los − delante de fracciones!).')}</li></ol>
+${EX(EJ(),[`${F(3,'x − 1')} − ${F(2,'x + 2')}`,t('m.c.m. = (x − 1)(x + 2)','m.c.m. = (x − 1)(x + 2)'),`${F('3(x + 2) − 2(x − 1)','(x − 1)(x + 2)')} = ${F('3x + 6 − 2x + 2','(x − 1)(x + 2)')}`,`= <b>${F('x + 8','(x − 1)(x + 2)')}</b>`])}
+${OJO(t('El − davant d\'una fracció canvia el signe de TOT el seu numerador: −2(x − 1) = −2x <b>+ 2</b>.','El − delante de una fracción cambia el signo de TODO su numerador: −2(x − 1) = −2x <b>+ 2</b>.'))}`,
+`<h2>${t('Multiplicar i dividir','Multiplicar y dividir')}</h2>
+${CAIXA(`${F('a','b')} · ${F('c','d')} = ${F('a·c','b·d')} &nbsp;&nbsp;&nbsp; ${F('a','b')} : ${F('c','d')} = ${F('a·d','b·c')}`)}
+<p>${t('Truc: no multipliques res abans d\'hora. Deixa-ho tot factoritzat, simplifica i, al final, multiplica el que quede.','Truco: no multipliques nada antes de tiempo. Déjalo todo factorizado, simplifica y, al final, multiplica lo que quede.')}</p>
+${EX(EJ(),[`${F('x² − 1','x')} : ${F('x + 1','x²')}`,`= ${F('(x² − 1)·x²','x·(x + 1)')} = ${F('(x + 1)(x − 1)·x²','x·(x + 1)')}`,t('Simplifiquem (x + 1) i una x:','Simplificamos (x + 1) y una x:')+` <b>x(x − 1)</b>`])}`]},
+
+{id:'eq2',gens:['formula','formula','discr','incompleta','sumaprod','pista'],tit:()=>t('Equacions de 2n grau','Ecuaciones de 2º grado'),sub:()=>t('Fórmula, discriminant, incompletes, problemes','Fórmula, discriminante, incompletas, problemas'),
+rival:'Bhaskara',fet:()=>t('Al Brasil i altres països la fórmula de l\'equació de 2n grau es diu «fórmula de Bhaskara», per este matemàtic indi del segle XII, tot i que ja la coneixien abans altres matemàtics indis i babilonis.','En Brasil y otros países la fórmula de la ecuación de 2º grado se llama «fórmula de Bhaskara», por este matemático indio del siglo XII, aunque ya la conocían antes otros matemáticos indios y babilonios.'),
+pags:()=>[
+`<h2>${t('La fórmula','La fórmula')}</h2>
+<p>${t('Primer, deixa-ho tot igualat a 0: <b>ax² + bx + c = 0</b>.','Primero, déjalo todo igualado a 0: <b>ax² + bx + c = 0</b>.')}</p>
+${CAIXA(`x = ${F('−b ± √(b² − 4ac)','2a')}`)}
+${EX(EJ()+': 2x² − 3 = −5x',[t('Igualem a 0: 2x² + 5x − 3 = 0 → a = 2, b = 5, c = −3','Igualamos a 0: 2x² + 5x − 3 = 0 → a = 2, b = 5, c = −3'),`Δ = 5² − 4·2·(−3) = 25 + 24 = 49`,`x = ${F('−5 ± 7','4')}`,`x₁ = ${F(2,4)} = <b>${F(1,2)}</b>, x₂ = ${F('−12',4)} = <b>−3</b>`])}
+${OJO(t('Els tres errors més típics: no igualar a 0 abans, oblidar el − de −b, i dividir només entre a (és entre <b>2a</b>).','Los tres errores más típicos: no igualar a 0 antes, olvidar el − de −b, y dividir solo entre a (es entre <b>2a</b>).'))}
+${SERV(t('Si llances una pilota cap amunt, la seua altura és h = −5t² + v·t + h₀. Saber quan toca a terra és resoldre una equació de 2n grau.','Si lanzas una pelota hacia arriba, su altura es h = −5t² + v·t + h₀. Saber cuándo toca el suelo es resolver una ecuación de 2º grado.'))}`,
+`<h2>${t('El discriminant Δ','El discriminante Δ')}</h2>
+${CAIXA(`Δ = b² − 4ac`)}
+<ul class="llista"><li>${t('Δ > 0 → <b>dues</b> solucions diferents','Δ > 0 → <b>dos</b> soluciones distintas')}</li><li>${t('Δ = 0 → <b>una</b> solució doble','Δ = 0 → <b>una</b> solución doble')}</li><li>${t('Δ < 0 → <b>cap</b> solució real (no hi ha arrel de negatius)','Δ < 0 → <b>ninguna</b> solución real (no hay raíz de negativos)')}</li></ul>
+<h3>${t('Incompletes (sense fórmula!)','Incompletas (¡sin fórmula!)')}</h3>
+${EX(t('Sense b: ax² + c = 0','Sin b: ax² + c = 0'),[`3x² − 48 = 0 → x² = 16 → <b>x = ±4</b>`,t('Si queda x² = negatiu → no té solució.','Si queda x² = negativo → no tiene solución.')])}
+${EX(t('Sense c: ax² + bx = 0','Sin c: ax² + bx = 0'),[t('Factor comú: x(2x − 6) = 0','Factor común: x(2x − 6) = 0'),`<b>x = 0</b> ${t('o','o')} 2x − 6 = 0 → <b>x = 3</b>`])}
+${OJO(t('Mai dividisques entre x: perdries la solució x = 0.','Nunca dividas entre x: perderías la solución x = 0.'))}`,
+`<h2>${t('Suma, producte i problemes','Suma, producto y problemas')}</h2>
+<p>${t('Si les solucions són x₁ i x₂, l\'equació és (x − x₁)(x − x₂) = 0, és a dir:','Si las soluciones son x₁ y x₂, la ecuación es (x − x₁)(x − x₂) = 0, es decir:')}</p>
+${CAIXA(`x² − S·x + P = 0 &nbsp; (S = x₁ + x₂, P = x₁·x₂)`)}
+<h3>${t('Com plantejar un problema','Cómo plantear un problema')}</h3>
+<ol class="passos"><li>${t('Tria què és x (escriu-ho!).','Elige qué es x (¡escríbelo!).')}</li><li>${t('Escriu les altres quantitats en funció de x.','Escribe las otras cantidades en función de x.')}</li><li>${t('Planteja l\'equació i resol-la.','Plantea la ecuación y resuélvela.')}</li><li>${t('Descarta les solucions sense sentit (longituds negatives…) i comprova.','Descarta las soluciones sin sentido (longitudes negativas…) y comprueba.')}</li></ol>
+${EX(t('Exemple: una pista fa 6 m més de llarg que d\'ample i 112 m²','Ejemplo: una pista mide 6 m más de largo que de ancho y 112 m²'),[t('Ample x, llarg x + 6 → x(x + 6) = 112','Ancho x, largo x + 6 → x(x + 6) = 112'),`x² + 6x − 112 = 0 → x = ${F('−6 ± 22','2')}`,t('x = 8 o x = −14 (no val) → <b>8 m × 14 m</b>','x = 8 o x = −14 (no vale) → <b>8 m × 14 m</b>')])}`]},
+
+{id:'eqs',gens:['biq','grau3','prod0','racional','irr','irr'],tit:()=>t('Altres equacions','Otras ecuaciones'),sub:()=>t('Biquadrades, grau 3, racionals, irracionals','Bicuadradas, grado 3, racionales, irracionales'),
+rival:'Tartaglia',fet:()=>t('En el segle XVI els matemàtics feien «duels» públics de problemes. En 1535 Niccolò Tartaglia va guanyar un duel perquè havia descobert en secret com resoldre equacions de grau 3.','En el siglo XVI los matemáticos hacían «duelos» públicos de problemas. En 1535 Niccolò Tartaglia ganó un duelo porque había descubierto en secreto cómo resolver ecuaciones de grado 3.'),
+pags:()=>[
+`<h2>${t('Biquadrades','Bicuadradas')}</h2>
+<p>${t('Són de la forma <b>ax⁴ + bx² + c = 0</b> (només x⁴, x² i número). Es resolen amb un canvi de variable.','Son de la forma <b>ax⁴ + bx² + c = 0</b> (solo x⁴, x² y número). Se resuelven con un cambio de variable.')}</p>
+${EX(EJ()+': x⁴ − 13x² + 36 = 0',[t('Canvi t = x² (i x⁴ = t²): t² − 13t + 36 = 0','Cambio t = x² (y x⁴ = t²): t² − 13t + 36 = 0'),`t = ${F('13 ± 5',2)} → t = 9, t = 4`,t('Desfem el canvi: x² = 9 → x = ±3; x² = 4 → x = ±2','Deshacemos el cambio: x² = 9 → x = ±3; x² = 4 → x = ±2'),t('<b>4 solucions: −3, −2, 2, 3</b>','<b>4 soluciones: −3, −2, 2, 3</b>')])}
+${OJO(t('Si algun t ix negatiu, x² = negatiu no té solució: eixe t es descarta.','Si algún t sale negativo, x² = negativo no tiene solución: ese t se descarta.'))}
+<h3>${t('Grau 3 o més','Grado 3 o más')}</h3>
+<p>${t('Factoritza (factor comú, Ruffini…) i iguala cada factor a 0. Si ja està factoritzada, no multipliques: (x − 2)(x + 1)(3x − 1) = 0 → x = 2, x = −1, x = 1/3.','Factoriza (factor común, Ruffini…) e iguala cada factor a 0. Si ya está factorizada, no multipliques: (x − 2)(x + 1)(3x − 1) = 0 → x = 2, x = −1, x = 1/3.')}</p>`,
+`<h2>${t('Racionals (x al denominador)','Racionales (x en el denominador)')}</h2>
+<ol class="passos"><li>${t('Apunta quins valors anul·len algun denominador: estan prohibits.','Apunta qué valores anulan algún denominador: están prohibidos.')}</li><li>${t('Multiplica TOTS els termes pel m.c.m. dels denominadors.','Multiplica TODOS los términos por el m.c.m. de los denominadores.')}</li><li>${t('Resol l\'equació que queda i descarta els valors prohibits.','Resuelve la ecuación que queda y descarta los valores prohibidos.')}</li></ol>
+${EX(EJ()+': x + '+F(6,'x')+' = 5',[t('x ≠ 0. Multipliquem per x: x² + 6 = 5x','x ≠ 0. Multiplicamos por x: x² + 6 = 5x'),`x² − 5x + 6 = 0 → <b>x = 2, x = 3</b> ${t('(cap és 0, valen les dues)','(ninguna es 0, valen las dos)')}`])}
+${SERV(t('Apareixen en problemes de «treball en equip», velocitats mitjanes o preus per persona.','Aparecen en problemas de «trabajo en equipo», velocidades medias o precios por persona.'))}`,
+`<h2>${t('Irracionals (x dins d\'una arrel)','Irracionales (x dentro de una raíz)')}</h2>
+<ol class="passos"><li>${t('Aïlla l\'arrel en un costat.','Aísla la raíz en un lado.')}</li><li>${t('Eleva els dos costats al quadrat (el de l\'altre costat, amb identitat notable).','Eleva los dos lados al cuadrado (el del otro lado, con identidad notable).')}</li><li>${t('Resol i <b>COMPROVA</b> cada solució en l\'equació original.','Resuelve y <b>COMPRUEBA</b> cada solución en la ecuación original.')}</li></ol>
+${EX(EJ()+': √(x + 6) = x',[`x + 6 = x² → x² − x − 6 = 0 → x = 3, x = −2`,t('x = 3: √9 = 3 ✔','x = 3: √9 = 3 ✔'),t('x = −2: √4 = 2, però la dreta val −2 ✘','x = −2: √4 = 2, pero la derecha vale −2 ✘'),t('<b>Solució: x = 3</b>','<b>Solución: x = 3</b>')])}
+${OJO(t('En elevar al quadrat poden aparéixer solucions falses (perquè 2² i (−2)² donen el mateix). Per això la comprovació és OBLIGATÒRIA.','Al elevar al cuadrado pueden aparecer soluciones falsas (porque 2² y (−2)² dan lo mismo). Por eso la comprobación es OBLIGATORIA.'))}`]},
+
+{id:'sist',gens:['sistema','sistema','classif','nolineal','botiga'],tit:()=>t('Sistemes d\'equacions','Sistemas de ecuaciones'),sub:()=>t('Reducció, substitució, no lineals, problemes','Reducción, sustitución, no lineales, problemas'),
+rival:'Carl F. Gauss',fet:()=>t('El mètode de reducció es diu «de Gauss» quan hi ha moltes equacions. Però un llibre xinés de fa uns 2.000 anys, «Els nou capítols», ja el feia servir amb taules de números!','El método de reducción se llama «de Gauss» cuando hay muchas ecuaciones. ¡Pero un libro chino de hace unos 2.000 años, «Los nueve capítulos», ya lo usaba con tablas de números!'),
+pags:()=>[
+`<h2>${t('Sistemes lineals 2×2','Sistemas lineales 2×2')}</h2>
+<p>${t('Dues equacions amb dues incògnites. La solució és la parella (x, y) que compleix LES DUES alhora.','Dos ecuaciones con dos incógnitas. La solución es la pareja (x, y) que cumple LAS DOS a la vez.')}</p>
+${EX(t('Reducció','Reducción'),[`<div class="sist">2x + 3y = 7<br>4x − 3y = 5</div>`,t('Els coeficients de y són oposats: sumem → 6x = 12 → <b>x = 2</b>','Los coeficientes de y son opuestos: sumamos → 6x = 12 → <b>x = 2</b>'),t('Substituïm en la 1a: 4 + 3y = 7 → <b>y = 1</b>','Sustituimos en la 1ª: 4 + 3y = 7 → <b>y = 1</b>'),t('Comprovem en la 2a: 8 − 3 = 5 ✔','Comprobamos en la 2ª: 8 − 3 = 5 ✔')])}
+<p>${t('Si no són oposats, multiplica abans una equació (o les dues) per a aconseguir-ho.','Si no son opuestos, multiplica antes una ecuación (o las dos) para conseguirlo.')}</p>
+${EX(t('Substitució','Sustitución'),[`<div class="sist">x + 2y = 4<br>3x − y = 5</div>`,t('Aïllem x de la 1a: x = 4 − 2y','Despejamos x de la 1ª: x = 4 − 2y'),t('3(4 − 2y) − y = 5 → 12 − 7y = 5 → <b>y = 1</b>, x = 4 − 2 = <b>2</b>','3(4 − 2y) − y = 5 → 12 − 7y = 5 → <b>y = 1</b>, x = 4 − 2 = <b>2</b>')])}
+${SERV(t('Sempre que hi ha dues coses desconegudes relacionades: preus, mescles, edats, velocitats… Els GPS i els videojocs resolen sistemes enormes milers de vegades per segon.','Siempre que hay dos cosas desconocidas relacionadas: precios, mezclas, edades, velocidades… Los GPS y los videojuegos resuelven sistemas enormes miles de veces por segundo.'))}`,
+`<h2>${t('Quantes solucions?','¿Cuántas soluciones?')}</h2>
+<p>${t('Cada equació lineal és una recta. La solució és on es tallen.','Cada ecuación lineal es una recta. La solución es donde se cortan.')}</p>
+<table class="taula"><tr><th>${t('Coeficients','Coeficientes')}</th><th>${t('Rectes','Rectas')}</th><th>${t('Sistema','Sistema')}</th></tr>
+<tr><td>a/a' ≠ b/b'</td><td>${t('es tallen','se cortan')}</td><td>${t('Compatible determinat (1 sol.)','Compatible determinado (1 sol.)')}</td></tr>
+<tr><td>a/a' = b/b' = c/c'</td><td>${t('coincidents','coincidentes')}</td><td>${t('Compatible indeterminat (∞)','Compatible indeterminado (∞)')}</td></tr>
+<tr><td>a/a' = b/b' ≠ c/c'</td><td>${t('paral·leles','paralelas')}</td><td>${t('Incompatible (cap)','Incompatible (ninguna)')}</td></tr></table>
+${EX(EJ(),[`<div class="sist">x + 2y = 3<br>2x + 4y = 5</div>`,`1/2 = 2/4 ≠ 3/5 → <b>${t('incompatible','incompatible')}</b>`])}`,
+`<h2>${t('Sistemes no lineals','Sistemas no lineales')}</h2>
+<p>${t('Quan alguna equació té x², xy, etc. Quasi sempre: <b>substitució</b>.','Cuando alguna ecuación tiene x², xy, etc. Casi siempre: <b>sustitución</b>.')}</p>
+${EX(EJ(),[`<div class="sist">x + y = 7<br>x·y = 12</div>`,t('y = 7 − x → x(7 − x) = 12 → x² − 7x + 12 = 0','y = 7 − x → x(7 − x) = 12 → x² − 7x + 12 = 0'),t('x = 3 → y = 4; &nbsp; x = 4 → y = 3','x = 3 → y = 4; &nbsp; x = 4 → y = 3'),t('<b>Dues solucions: (3, 4) i (4, 3)</b>','<b>Dos soluciones: (3, 4) y (4, 3)</b>')])}
+${OJO(t('Cada valor de x dona la seua y: no et quedes només amb una parella.','Cada valor de x da su y: no te quedes solo con una pareja.'))}`]},
+
+{id:'ineq',gens:['ineq1','ineq1','ineq2','ineq2','sistineq','club'],tit:()=>t('Inequacions','Inecuaciones'),sub:()=>t('1r i 2n grau, sistemes, intervals','1º y 2º grado, sistemas, intervalos'),
+rival:'Thomas Harriot',fet:()=>t('Els símbols < i > els va introduir l\'anglés Thomas Harriot en un llibre publicat en 1631. Harriot també va ser dels primers a dibuixar la Lluna amb telescopi, uns mesos abans que Galileu.','Los símbolos < y > los introdujo el inglés Thomas Harriot en un libro publicado en 1631. Harriot también fue de los primeros en dibujar la Luna con telescopio, unos meses antes que Galileo.'),
+pags:()=>[
+`<h2>${t('Intervals','Intervalos')}</h2>
+<p>${t('La solució d\'una inequació és un conjunt de números, que s\'escriu amb <b>intervals</b>:','La solución de una inecuación es un conjunto de números, que se escribe con <b>intervalos</b>:')}</p>
+<table class="taula"><tr><th>${t('Desigualtat','Desigualdad')}</th><th>${t('Interval','Intervalo')}</th></tr><tr><td>x < 3</td><td>(−∞, 3)</td></tr><tr><td>x ≤ 3</td><td>(−∞, 3]</td></tr><tr><td>x > −1</td><td>(−1, +∞)</td></tr><tr><td>−1 ≤ x < 3</td><td>[−1, 3)</td></tr></table>
+${CAIXA(t('( ) → el número NO entra (< o >). &nbsp; [ ] → SÍ entra (≤ o ≥). L\'∞ sempre amb parèntesi.','( ) → el número NO entra (< o >). &nbsp; [ ] → SÍ entra (≤ o ≥). El ∞ siempre con paréntesis.'))}
+${SERV(t('Les inequacions responen preguntes de «a partir de quan» o «com a màxim»: a partir de quantes hores compensa una quota, quina nota necessites per a aprovar, quina velocitat no has de passar…','Las inecuaciones responden preguntas de «a partir de cuándo» o «como máximo»: a partir de cuántas horas compensa una cuota, qué nota necesitas para aprobar, qué velocidad no debes pasar…'))}`,
+`<h2>${t('Inequacions de 1r grau','Inecuaciones de 1er grado')}</h2>
+<p>${t('Es resolen com una equació, amb UNA regla extra:','Se resuelven como una ecuación, con UNA regla extra:')}</p>
+${CAIXA(t('Si multipliques o divideixes per un número <b>negatiu</b>, el símbol <b>gira</b> (< passa a >).','Si multiplicas o divides por un número <b>negativo</b>, el símbolo <b>gira</b> (< pasa a >).'))}
+${EX(EJ()+': 5 − 3x ≤ 11',[`−3x ≤ 6`,t('Dividim entre −3 → gira: x ≥ −2','Dividimos entre −3 → gira: x ≥ −2'),`<b>[−2, +∞)</b>`])}
+<p>${t('<b>Per què gira?</b> 2 < 5, però si multipliquem per −1: −2 > −5.','<b>¿Por qué gira?</b> 2 < 5, pero si multiplicamos por −1: −2 > −5.')}</p>
+<h3>${t('Sistemes d\'inequacions','Sistemas de inecuaciones')}</h3>
+<p>${t('Resol cada una per separat i queda\'t amb la <b>part comuna</b> (intersecció). Si no se solapen, no hi ha solució.','Resuelve cada una por separado y quédate con la <b>parte común</b> (intersección). Si no se solapan, no hay solución.')}</p>
+${EX(EJ(),[t('x > 1 i x ≤ 4','x > 1 y x ≤ 4'),`→ <b>(1, 4]</b>`])}`,
+`<h2>${t('Inequacions de 2n grau','Inecuaciones de 2º grado')}</h2>
+<ol class="passos"><li>${t('Iguala a 0 i troba les arrels.','Iguala a 0 y halla las raíces.')}</li><li>${t('Les arrels parteixen la recta en trams. Mira el signe en cada tram (prova un número).','Las raíces parten la recta en tramos. Mira el signo en cada tramo (prueba un número).')}</li><li>${t('Tria els trams que complixen el símbol. Amb ≤ o ≥, les arrels també entren.','Elige los tramos que cumplen el símbolo. Con ≤ o ≥, las raíces también entran.')}</li></ol>
+${EX(EJ()+': x² − x − 6 < 0',[t('Arrels: x = −2, x = 3','Raíces: x = −2, x = 3'),t('Proves: x = −3 → 6 (+); x = 0 → −6 (−); x = 4 → 6 (+)','Pruebas: x = −3 → 6 (+); x = 0 → −6 (−); x = 4 → 6 (+)'),t('Volem < 0 (negatiu) → tram del mig: <b>(−2, 3)</b>','Queremos < 0 (negativo) → tramo del medio: <b>(−2, 3)</b>')])}
+${OJO(t('Si x² té coeficient positiu, la paràbola va cap amunt: els signes són + − + (positiu fora, negatiu entre les arrels). Si és negatiu, al revés.','Si x² tiene coeficiente positivo, la parábola va hacia arriba: los signos son + − + (positivo fuera, negativo entre las raíces). Si es negativo, al revés.'))}`]}
+];
+
+const NOMG={suma:()=>t('Sumar i restar','Sumar y restar'),prod:()=>t('Multiplicar','Multiplicar'),notable:()=>t('Identitats notables','Identidades notables'),valor:()=>t('Valor numèric','Valor numérico'),divisio:()=>t('Divisió de polinomis','División de polinomios'),taula:()=>t('Taula de Ruffini','Tabla de Ruffini'),residu:()=>t('Teorema del residu','Teorema del resto'),kval:()=>t('Trobar k','Hallar k'),cand:()=>t('Possibles arrels','Posibles raíces'),arrel:()=>t('Buscar una arrel','Buscar una raíz'),comu:()=>t('Factor comú','Factor común'),ident:()=>t('Factoritzar amb identitats','Factorizar con identidades'),trinomi:()=>t('Factoritzar grau 2','Factorizar grado 2'),completa:()=>t('Factoritzar grau 3','Factorizar grado 3'),simp:()=>t('Simplificar','Simplificar'),sumafr:()=>t('Sumar i restar fraccions','Sumar y restar fracciones'),multfr:()=>t('Multiplicar i dividir','Multiplicar y dividir'),mcm:()=>t('m.c.m. de polinomis','m.c.m. de polinomios'),formula:()=>t('La fórmula','La fórmula'),discr:()=>t('Discriminant','Discriminante'),incompleta:()=>t('Incompletes','Incompletas'),sumaprod:()=>t('Suma i producte','Suma y producto'),pista:()=>t('Problema','Problema'),biq:()=>t('Biquadrades','Bicuadradas'),grau3:()=>t('Grau 3','Grado 3'),prod0:()=>t('Producte igual a zero','Producto igual a cero'),racional:()=>t('Racionals','Racionales'),irr:()=>t('Irracionals','Irracionales'),sistema:()=>t('Reducció','Reducción'),classif:()=>t('Classificar sistemes','Clasificar sistemas'),nolineal:()=>t('Sistema no lineal','Sistema no lineal'),botiga:()=>t('Problema de sistemes','Problema de sistemas'),ineq1:()=>t('Inequació de 1r grau','Inecuación de 1er grado'),ineq2:()=>t('Inequació de 2n grau','Inecuación de 2º grado'),sistineq:()=>t('Sistema d\'inequacions','Sistema de inecuaciones'),club:()=>t('Problema d\'inequacions','Problema de inecuaciones')};
+const $a=()=>document.getElementById('app');
+function pinta(h){$a().innerHTML=h;window.scrollTo(0,0)}
+function llig(k,d){try{return JSON.parse(localStorage.getItem(k)||d)}catch(e){return JSON.parse(d)}}
+function desa(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function canviaIdioma(){LANG=LANG==='va'?'es':'va';try{localStorage.setItem('alg-idioma',LANG)}catch(e){}document.documentElement.lang=LANG==='va'?'ca-valencia':'es';inici()}
+let S=null;
+
+function inici(){S=null;const v=llig('alg-vict','{}');const n=BLOCS.filter(B=>v[B.id]).length;
+pinta(`<div class="cap"><div><div class="titol">Àlgebra <span>Open</span></div><div class="lema">${t('Torneig d\'àlgebra · 4t d\'ESO','Torneo de álgebra · 4º de ESO')}</div><div class="vict">🏆 <b>${n}/${BLOCS.length}</b> ${t('rondes guanyades','rondas ganadas')}</div></div><button class="idioma" onclick="canviaIdioma()">${LANG==='va'?'es':'va'}</button></div>
+<div class="intro"><b>${t('Com es juga','Cómo se juega')}</b><br>${t('Cada ronda és un tema. Primer, l\'<b>escalfament</b>: teoria amb exemples resolts. Després, el <b>partit</b> contra un matemàtic famós. Cada pregunta és un punt; algunes són un <b>rally</b> de diversos colps (els passos d\'un exercici) i has d\'encertar-los tots. Si falles, l\'<b>Ull de falcó</b> t\'explica l\'error i la solució pas a pas. Guanya 2 jocs i passes ronda.','Cada ronda es un tema. Primero, el <b>calentamiento</b>: teoría con ejemplos resueltos. Después, el <b>partido</b> contra un matemático famoso. Cada pregunta es un punto; algunas son un <b>rally</b> de varios golpes (los pasos de un ejercicio) y tienes que acertarlos todos. Si fallas, el <b>Ojo de halcón</b> te explica el error y la solución paso a paso. Gana 2 juegos y pasas de ronda.')}</div>
+${BLOCS.map((B,i)=>`<button class="bloc" onclick="obri(${i})"><span class="ic">${i+1}</span><span><b>${B.tit()}</b><span class="sub">${B.sub()} · vs. ${B.rival}</span></span><span class="rec">${v[B.id]?'🏆'+(v[B.id]>1?'×'+v[B.id]:''):''}</span></button>`).join('')}
+<div class="peu">${t('Els teus trofeus es guarden en este dispositiu.','Tus trofeos se guardan en este dispositivo.')}</div>`)}
+
+function obri(i){teoria(i,0,false)}
+function teoria(i,p,enPartit){const B=BLOCS[i];const P=B.pags();const n=P.length;
+pinta(`<div class="barra"><button onclick="${enPartit?'tornaPartit()':'inici()'}">← ${enPartit?t('Al partit','Al partido'):t('Torneig','Torneo')}</button><span>${t('Escalfament','Calentamiento')} ${p+1}/${n}</span></div>
+<div class="carta teo"><div class="ronda">${t('Ronda','Ronda')} ${i+1} · ${B.tit()}</div>${P[p]}</div>
+<div class="fila">${p>0?`<button class="sec" onclick="teoria(${i},${p-1},${enPartit})">← ${t('Anterior','Anterior')}</button>`:''}${p<n-1?`<button class="gran" onclick="teoria(${i},${p+1},${enPartit})">${t('Següent','Siguiente')} →</button>`:enPartit?`<button class="gran" onclick="tornaPartit()">${t('Tornar al partit','Volver al partido')} 🎾</button>`:`<button class="gran" onclick="partit(${i})">${t('Al partit!','¡Al partido!')} 🎾</button>`}</div>
+${!enPartit&&p<n-1?`<button class="sec" onclick="partit(${i})">${t('Saltar al partit','Saltar al partido')}</button>`:''}`)}
+
+function partit(i){S={b:i,pt:[0,0],jocs:[0,0],ratxa:0,millor:0,ult:null,serveix:0};nova()}
+function tria(){const B=BLOCS[S.b];const f=llig('alg-flojos','{}');const w=B.gens.map(g=>(g===S.ult?0.25:1)+(f[g]||0));let r=Math.random()*w.reduce((a,b)=>a+b,0);for(let k=0;k<w.length;k++){r-=w[k];if(r<=0)return B.gens[k]}return B.gens[0]}
+function anota(g,ok){const f=llig('alg-flojos','{}');f[g]=Math.max(0,Math.min(6,(f[g]||0)+(ok?-1:2)));desa('alg-flojos',f)}
+function nova(){const g=tria();S.ult=g;S.q=G[g]();S.q.g=g;S.pas=0;S.fets=[];pregunta()}
+function txtPunts(){const[a,b]=S.pt;const N=['0','15','30','40'];if(a>=3&&b>=3){if(a===b)return[t('Iguals','Iguales'),t('Iguals','Iguales')];return a>b?['AV','']:['','AV']}return[N[a],N[b]]}
+function marcador(){const p=txtPunts();const B=BLOCS[S.b];
+return`<div class="marcador"><div class="nom"><i class="${S.serveix?'':'s'}"></i>${t('Tu','Tú')}</div><div class="jocs">${S.jocs[0]}</div><div class="pts">${p[0]}</div><div class="sep"></div><div class="nom"><i class="${S.serveix?'s':''}"></i>${B.rival}</div><div class="jocs">${S.jocs[1]}</div><div class="pts">${p[1]}</div></div>`}
+function pregunta(){const Q=S.q;const P=Q.passos[S.pas];const n=Q.passos.length;
+pinta(`<div class="barra"><button onclick="inici()">✕</button><span>${t('Ronda','Ronda')} ${S.b+1} · ${t('ratxa','racha')} ${S.ratxa} 🔥</span><button onclick="teoria(${S.b},0,true)">📖 ${t('Teoria','Teoría')}</button></div>
+${marcador()}
+<div class="carta preg"><div class="tipus">${NOMG[Q.g]()}${n>1?` · <span class="rally">RALLY ${t('colp','golpe')} ${S.pas+1}/${n}</span>`:''}</div>
+<div class="enun">${Q.enun}</div>
+${S.fets.length?`<div class="fets">${S.fets.map(f=>`<div>✔ ${f}</div>`).join('')}</div>`:''}
+<div class="pas">${P.q}</div>
+<div class="opcions">${P.ops.map((o,k)=>`<button class="op" onclick="respon(${k})">${o.h}</button>`).join('')}</div>
+<button class="ajuda" onclick="pistaV()">💡 ${t('Pista','Pista')}</button><div id="pb"></div></div>`)}
+function pistaV(){document.getElementById('pb').innerHTML=`<div class="pistab">${S.q.passos[S.pas].pista}</div>`}
+function tornaPartit(){if(!S)return inici();pregunta()}
+function bota(cl){const b=document.createElement('div');b.className='pilota '+cl;document.body.appendChild(b);setTimeout(()=>b.remove(),800)}
+function respon(k){const Q=S.q;const P=Q.passos[S.pas];const o=P.ops[k];const bs=document.querySelectorAll('.op');bs.forEach(b=>b.disabled=true);
+if(o.ok){bs[k].classList.add('bo');bota('anA');if(S.pas<Q.passos.length-1){S.fets.push(o.h);S.pas++;setTimeout(pregunta,650);return}
+anota(Q.g,true);S.ratxa++;S.millor=Math.max(S.millor,S.ratxa);setTimeout(()=>punt(0,null),650)}
+else{bs[k].classList.add('mal');P.ops.forEach((x,j)=>{if(x.ok)bs[j].classList.add('bo')});bota('anB');anota(Q.g,false);S.ratxa=0;setTimeout(()=>punt(1,o),900)}}
+function punt(qui,o){S.pt[qui]++;let joc=false;const[a,b]=S.pt;if((a>=4||b>=4)&&Math.abs(a-b)>=2){S.jocs[qui]++;S.pt=[0,0];joc=true;S.serveix=1-S.serveix}
+const fi=S.jocs[0]===2||S.jocs[1]===2;const Q=S.q;const P=Q.passos[S.pas];const okH=P.ops.find(x=>x.ok).h;
+const solH=`<ol class="passos">${Q.sol.map(s=>`<li>${s}</li>`).join('')}</ol>`;
+const avis=joc?`<div class="joc">${qui===0?t('🎾 Joc per a tu!','🎾 ¡Juego para ti!'):t('Joc per a ','Juego para ')+BLOCS[S.b].rival}</div>`:'';
+const seg=`<button class="gran" onclick="${fi?'final()':'nova()'}">${fi?t('Veure el resultat','Ver el resultado'):t('Següent punt','Siguiente punto')} →</button>`;
+if(qui===0)pinta(`${marcador()}<div class="carta ull ok"><div class="etiq">${t('Punt per a tu','Punto para ti')}${S.ratxa>2?' · '+t('ratxa de ','racha de ')+S.ratxa+' 🔥':''}</div><h2>${pick([t('Bon colp!','¡Buen golpe!'),t('Directa!','¡Directa!'),t('Ace!','¡Ace!'),t('Imparable!','¡Imparable!')])}</h2>${avis}<div class="enun">${Q.enun}</div><details${Q.passos.length>1?' open':''}><summary>${t('Repassa la solució','Repasa la solución')}</summary>${solH}</details></div>${seg}`);
+else pinta(`${marcador()}<div class="carta ull"><div class="etiq">👁 ${t('Ull de falcó','Ojo de halcón')}</div><h2>${t('Fora!','¡Fuera!')}</h2>${avis}<div class="enun">${Q.enun}</div>${Q.passos.length>1?`<p class="calc">${P.q.replace(/<table[\s\S]*?<\/table>/,'')}</p>`:''}<div class="error"><b>${t('Has triat:','Has elegido:')}</b> ${o.h}<br>${o.e}</div><p><b>${t('Correcte:','Correcto:')}</b> ${okH}</p><h3>${t('Solució pas a pas','Solución paso a paso')}</h3>${solH}</div>${seg}`)}
+function final(){const B=BLOCS[S.b];const guanya=S.jocs[0]===2;if(guanya){const v=llig('alg-vict','{}');v[B.id]=(v[B.id]||0)+1;desa('alg-vict',v)}
+const f=llig('alg-flojos','{}');const fl=B.gens.filter((g,i,a)=>a.indexOf(g)===i&&(f[g]||0)>=2);
+pinta(`<div class="carta final ${guanya?'ok':''}"><div class="trofeu">${guanya?'🏆':'🎾'}</div><h2>${guanya?t('Has guanyat la ronda!','¡Has ganado la ronda!'):t('Esta vegada ha guanyat ','Esta vez ha ganado ')+B.rival}</h2><p class="res">${S.jocs[0]} – ${S.jocs[1]} · ${t('millor ratxa','mejor racha')}: ${S.millor}</p>
+${fl.length?`<p>${t('Per a repassar:','Para repasar:')} <b>${fl.map(g=>NOMG[g]()).join(', ')}</b>. ${t('Eixirà més sovint en el pròxim partit.','Saldrá más a menudo en el próximo partido.')}</p>`:''}
+<div class="dato"><b>${t('Saps qui era el teu rival?','¿Sabes quién era tu rival?')}</b><br>${B.fet()}</div></div>
+<button class="gran" onclick="partit(${S.b})">${t('Revenja','Revancha')} 🎾</button>
+<div class="fila"><button class="sec" onclick="teoria(${S.b},0,false)">📖 ${t('Teoria','Teoría')}</button>${S.b<BLOCS.length-1?`<button class="sec" onclick="obri(${S.b+1})">${t('Ronda següent','Ronda siguiente')} →</button>`:`<button class="sec" onclick="inici()">${t('Torneig','Torneo')}</button>`}</div>`)}
+document.documentElement.lang=LANG==='va'?'ca-valencia':'es';inici();
+
+</script>
+</body>
+</html>
