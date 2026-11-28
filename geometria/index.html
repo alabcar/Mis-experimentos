@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="ca-valencia">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1530">
+<title>Geo Point</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--verd:#2f6b3a;--pista:#2c5f9e;--linia:#f4f4ee;--groc:#d9f03a;--tinta:#1d2733;--paper:#fbfaf4;--bo:#1f8a4c;--mal:#c8412f;--suau:#5d6b7a}
+html,body{height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#0b1530;color:var(--tinta);overflow-x:hidden;font-size:17px;line-height:1.4}
+#fons{position:fixed;inset:0;z-index:0;pointer-events:none}
+#fons svg{width:100%;height:100%;display:block}
+#app{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100%;padding:12px 14px 28px;display:flex;flex-direction:column;gap:12px}
+.carta{background:var(--paper);border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+h1{font-size:34px;text-shadow:0 2px 6px rgba(0,0,0,.6);line-height:1.05;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25);letter-spacing:.5px}
+h1 small{display:block;font-size:15px;font-weight:500;opacity:.9;letter-spacing:0;margin-top:6px}
+h2{font-size:21px;margin-bottom:8px}
+h3{font-size:17px;margin:12px 0 6px}
+p{margin:6px 0}
+.cap{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-top:6px}
+.idioma{background:rgba(255,255,255,.18);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:10px;padding:6px 12px;font-weight:700;font-size:16px}
+button{font:inherit;cursor:pointer;border:0}
+.bloc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--paper);border-radius:14px;padding:14px;box-shadow:0 4px 12px rgba(0,0,0,.2);color:var(--tinta)}
+.bloc .ic{width:46px;height:46px;border-radius:50%;background:var(--groc);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.bloc b{display:block;font-size:17px}
+.bloc span.sub{font-size:14px;color:var(--suau)}
+.bloc .rec{margin-left:auto;font-size:13px;color:var(--bo);font-weight:700;white-space:nowrap}
+.gran{display:block;width:100%;background:var(--groc);color:var(--tinta);font-weight:800;font-size:18px;padding:14px;border-radius:14px;box-shadow:0 4px 0 #a9bd22}
+.gran:active{transform:translateY(2px);box-shadow:0 2px 0 #a9bd22}
+.sec{display:block;width:100%;background:rgba(16,24,32,.55);color:#fff;border:2px solid rgba(255,255,255,.7);font-weight:700;padding:11px;border-radius:14px}
+.carta .sec{color:var(--tinta);border-color:#c9ccd1}
+.fila{display:flex;gap:10px}
+.fila>*{flex:1}
+.marcador{display:grid;grid-template-columns:1fr auto auto;background:#101820;color:#fff;border-radius:12px;overflow:hidden;font-variant-numeric:tabular-nums;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.marcador div{padding:7px 12px;font-weight:700}
+.marcador .nom{display:flex;align-items:center;gap:8px}
+.marcador .nom i{width:9px;height:9px;border-radius:50%;background:var(--groc);visibility:hidden}
+.marcador .nom i.s{visibility:visible}
+.marcador .jocs{background:#26313d;text-align:center;min-width:40px}
+.marcador .pts{background:var(--groc);color:#101820;text-align:center;min-width:64px}
+.marcador .sep{grid-column:1/-1;height:1px;background:#2d3946;padding:0}
+.barra{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px}
+.barra button{background:rgba(255,255,255,.18);color:#fff;border-radius:10px;padding:6px 10px;font-weight:700;font-size:14px}
+.enun{font-size:18px}
+.fig{display:flex;justify-content:center;margin:10px 0 4px}
+.fig svg{max-width:100%;height:auto}
+.dades{background:#eef2e4;border-radius:10px;padding:8px 10px;font-size:15px;margin-top:8px}
+.calc{font-size:13px;color:var(--suau);margin-top:6px}
+.opcions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.op{background:#fff;border:2px solid #d6d9de;border-radius:12px;padding:12px 6px;font-size:19px;font-weight:700;min-height:62px;display:flex;align-items:center;justify-content:center;color:var(--tinta)}
+.op:active{background:#f3f6e0}
+.op.bo{border-color:var(--bo);background:#e3f4ea}
+.op.mal{border-color:var(--mal);background:#fbe6e2}
+.op[disabled]{opacity:1}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.1;margin:0 2px}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+.ull{border-left:6px solid var(--mal)}
+.ull.ok{border-left-color:var(--bo)}
+.ull h2{display:flex;align-items:center;gap:8px}
+.etiq{font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--mal)}
+.ull.ok .etiq{color:var(--bo)}
+.error{background:#fbe6e2;border-radius:10px;padding:10px;margin:8px 0}
+.passos{counter-reset:p;list-style:none;margin:6px 0}
+.passos li{counter-increment:p;position:relative;padding:6px 0 6px 34px;border-bottom:1px dashed #d8dbe0}
+.passos li:last-child{border-bottom:0}
+.passos li::before{content:counter(p);position:absolute;left:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--pista);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.exemple{background:#eef2e4;border-radius:12px;padding:10px 12px;margin:10px 0}
+.exemple .etq{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--verd)}
+.taula{border-collapse:collapse;width:100%;margin:8px 0;font-size:16px;text-align:center}
+.taula td,.taula th{border:1px solid #d6d9de;padding:6px 4px}
+.taula th{background:#eef2e4}
+.punts{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.punts i{width:8px;height:8px;border-radius:50%;background:#c9ccd1}
+.punts i.on{background:var(--pista)}
+.res{text-align:center}
+.res .gros{font-size:44px;font-weight:900;margin:6px 0}
+.pilota{position:fixed;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8de1c 60%,#9fb20f);z-index:5;pointer-events:none;box-shadow:0 2px 4px rgba(0,0,0,.35)}
+.anim-a{animation:anA .7s ease-in forwards}
+.anim-b{animation:anB .7s ease-in forwards}
+@keyframes anA{from{left:50%;top:85%;transform:scale(1)}50%{transform:scale(1.6)}to{left:62%;top:4%;transform:scale(.7)}}
+@keyframes anB{from{left:45%;top:2%;transform:scale(.7)}50%{transform:scale(1.5)}to{left:30%;top:95%;transform:scale(1)}}
+.aviso{text-align:center;color:#fff;font-weight:800;font-size:22px;text-shadow:0 2px 0 rgba(0,0,0,.3);min-height:30px}
+.ruff{border-collapse:collapse;margin:12px auto 4px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}.ruff td{min-width:44px;height:40px;text-align:center;padding:0 4px}.ruff td.esq{border-right:3px solid var(--tinta);color:var(--pista)}.ruff tr.lin td{border-top:3px solid var(--tinta)}.ruff tr.lin td.esq{border-top:0}.ruff td.resid{outline:2px solid var(--suau);outline-offset:-4px;border-radius:6px}.ruff td.cur{background:var(--groc);border-radius:8px}.ruff td.mal{background:#fbe6e2;color:var(--mal);border-radius:8px}.pas{font-size:14px;color:var(--suau);text-align:center}
+.secc{margin:10px 0 4px}.secc-t{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--pista)}.perque{font-size:14px;color:var(--suau);background:#eef0f6;border-radius:8px;padding:6px 8px;margin:6px 0}.pistab{background:#fff6c9;border-radius:10px;padding:8px 10px;margin-top:10px;font-size:15px}.ajuda{background:none;color:var(--pista);font-weight:700;font-size:15px;margin-top:10px;padding:4px 0}
+.bloc{position:relative;overflow:hidden;color:#fff;background:var(--sup);border:0;box-shadow:0 6px 16px rgba(0,0,0,.4),inset 0 0 0 3px rgba(255,255,255,.85),inset 0 0 0 7px var(--sup),inset 0 0 0 9px rgba(255,255,255,.55);padding:18px 16px}
+.bloc::after{content:"";position:absolute;right:-20px;top:0;bottom:0;width:86px;border-left:3px solid rgba(255,255,255,.5);background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 14px,transparent 14px 28px)}
+.bloc>*{position:relative;z-index:1}
+.bloc b{text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.bloc span.sub{color:rgba(255,255,255,.85)}
+.bloc .ic{box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.12);color:var(--tinta)}
+.bloc .trof{margin-left:auto;display:flex;flex-direction:column;align-items:center;font-size:12px;font-weight:800;min-width:48px}
+.bloc .trof i{font-style:normal;font-size:24px;filter:grayscale(1) opacity(.45)}
+.bloc .trof i.on{filter:none}
+.sup-tierra{--sup:#c0603a}.sup-herba{--sup:#4a8b3c}.sup-dura{--sup:#2c5f9e}.sup-indoor{--sup:#4b3f8f}.sup-verda{--sup:#2f7a64}
+.cap{padding-top:22px}.titol{font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.35),0 0 24px rgba(120,170,255,.45)}
+.titol .ii{position:relative;display:inline-block}
+.titol .ii::before{content:"";position:absolute;left:50%;top:-6px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8de1c 60%,#9fb20f);animation:bota 1.1s cubic-bezier(.3,0,.7,1) infinite alternate}
+@keyframes bota{from{transform:translateY(-26px)}to{transform:translateY(0) scale(1.15,.85)}}
+.lema{color:#cfe0ff;font-weight:600;font-size:15px;margin-top:8px}
+.vict{display:inline-flex;gap:8px;align-items:center;background:#101820;color:#fff;border-radius:8px;padding:4px 10px;font-weight:800;font-size:14px;margin-top:10px;box-shadow:0 2px 0 rgba(255,255,255,.15)}
+.vict b{background:var(--groc);color:#101820;border-radius:4px;padding:0 6px}
+.intro{background:rgba(10,20,40,.72);color:#eaf1ff;border-radius:14px;padding:12px 14px;font-size:15px;backdrop-filter:blur(3px)}
+.carta.preg{background:#0f1b2b;color:#fff;border-top:5px solid var(--groc)}
+.carta.preg .enun b{color:var(--groc)}
+.carta.preg .fig,.carta.preg .ruff,.carta.preg .dades{background:#fbfaf4;color:var(--tinta);border-radius:12px;padding:6px}
+.carta.preg .ruff{padding:0}
+.carta.preg .pas,.carta.preg .calc{color:#9fb0c6}
+.carta.preg .op{background:#fbfaf4}
+.carta.preg .ajuda{color:var(--groc)}
+.carta.preg .pistab{color:var(--tinta)}
+.peu{color:#fff;font-size:13px;text-align:center;background:rgba(0,0,0,.35);border-radius:10px;padding:6px}
+
+.sup-arena{--sup:#b8743a}.sup-gespa{--sup:#4a8b3c}.sup-blava{--sup:#2c5f9e}.sup-lila{--sup:#6a3f8f}.sup-verda2{--sup:#2f7a64}
+.teclat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.teclat button{background:#fbfaf4;color:var(--tinta);border-radius:10px;font-size:21px;font-weight:800;padding:11px 0;box-shadow:0 3px 0 #9aa3ad}
+.teclat button:active{transform:translateY(2px);box-shadow:0 1px 0 #9aa3ad}
+.teclat .ok{background:var(--groc);box-shadow:0 3px 0 #a9bd22;grid-row:span 2}
+.pantalla{display:flex;align-items:center;justify-content:flex-end;gap:8px;background:#06101c;border:2px solid #2d3946;border-radius:10px;padding:8px 12px;margin-top:12px;min-height:52px;font-size:28px;font-weight:800;color:var(--groc);font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace}
+.pantalla .u{font-size:16px;color:#9fb0c6;font-family:system-ui,sans-serif}
+.pantalla .buit{color:#3d4b5c}
+.graella{touch-action:manipulation;cursor:crosshair;width:100%;max-width:330px}
+.estat{font-size:15px;color:#cfe0ff;text-align:center;margin-top:6px;min-height:22px}
+.comprova{margin-top:10px}
+.comprova[disabled]{opacity:.45}
+.formula{background:#fff;border:2px solid #d6d9de;border-radius:10px;padding:8px 10px;margin:8px 0;text-align:center;font-size:18px;font-weight:700}
+.mini{display:flex;justify-content:center;margin:8px 0}
+.mini svg{max-width:100%;height:auto}
+.opcions.una{grid-template-columns:1fr}
+</style>
+</head>
+<body>
+<div id="fons"></div>
+<div id="app"></div>
+<script>
+(function(){
+function fons(){
+const Hh=800,W=Math.max(400,Math.round(Hh*innerWidth/innerHeight)),yh=246,A=2355,B=194,D=16,cx=W/2;
+const P=(X,Y)=>[cx+X*B/(D+Y),yh+A/(D+Y)];
+const pl=pts=>pts.map(p=>P(...p).map(v=>v.toFixed(1)).join(',')).join(' ');
+const ln=(a,b,w)=>{const p=P(...a),q=P(...b);return`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="#f4f4ee" stroke-width="${w||2}" stroke-linecap="round"/>`};
+let s=`<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="xMidYMid slice" id="esc"><defs><linearGradient id="cel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070d22"/><stop offset="1" stop-color="#1d3566"/></linearGradient><radialGradient id="llum"><stop offset="0" stop-color="#fff9d8" stop-opacity=".95"/><stop offset=".25" stop-color="#fff2b0" stop-opacity=".35"/><stop offset="1" stop-color="#fff2b0" stop-opacity="0"/></radialGradient><linearGradient id="gra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2740"/><stop offset="1" stop-color="#2a3b5c"/></linearGradient></defs>`;
+s+=`<rect width="${W}" height="${Hh}" fill="url(#cel)"/>`;
+s+=`<rect x="0" y="130" width="${W}" height="${yh-130+30}" fill="url(#gra)"/>`;
+const cols=['#e8e1d0','#c94b3c','#3d6fb5','#f0c23b','#ffffff','#5fa46a','#d9874a','#8a6bbf'];
+for(let row=0;row<9;row++){const y=140+row*11;for(let x=4+(row%2)*5;x<W;x+=10){if(Math.random()<.82)s+=`<circle cx="${x}" cy="${y}" r="3.3" fill="${cols[Math.floor(Math.random()*cols.length)]}" opacity="${.55+row*.04}"/>`}}
+s+=`<rect x="0" y="${yh-20}" width="${W}" height="16" fill="#123b2a"/><rect x="0" y="${yh-20}" width="${W}" height="3" fill="#0b5d3b"/>`;
+for(const x of [28,W-28,W*.3,W*.7].slice(0,W>700?4:2)){s+=`<rect x="${x-2}" y="20" width="4" height="120" fill="#3a4660"/><rect x="${x-16}" y="14" width="32" height="12" rx="2" fill="#dfe6f2"/><circle cx="${x}" cy="20" r="90" fill="url(#llum)"/>`}
+s+=`<rect x="0" y="${yh}" width="${W}" height="${Hh-yh}" fill="#2b6a45"/>`;
+s+=`<polygon points="${pl([[-5.485,-11.885],[5.485,-11.885],[5.485,11.885],[-5.485,11.885]])}" fill="#2c5f9e"/>`;
+const L=11.885,Sd=4.115,Db=5.485,Sv=6.4;
+s+=ln([-Db,-L],[Db,-L],3)+ln([-Db,L],[Db,L])+ln([-Db,-L],[-Db,L])+ln([Db,-L],[Db,L])+ln([-Sd,-L],[-Sd,L])+ln([Sd,-L],[Sd,L])+ln([-Sd,-Sv],[Sd,-Sv])+ln([-Sd,Sv],[Sd,Sv])+ln([0,-Sv],[0,Sv])+ln([0,-L],[0,-L+.3],3)+ln([0,L],[0,L-.3]);
+const n1=P(-6.4,0),n2=P(6.4,0);const nh=0.914*B/D;
+s+=`<rect x="${n1[0]}" y="${n1[1]-nh}" width="${n2[0]-n1[0]}" height="${nh}" fill="#0d1622" opacity=".75"/><line x1="${n1[0]}" y1="${n1[1]-nh}" x2="${n2[0]}" y2="${n2[1]-nh}" stroke="#fff" stroke-width="2"/><line x1="${n1[0]}" y1="${n1[1]}" x2="${n1[0]}" y2="${n1[1]-nh*1.15}" stroke="#c9ccd1" stroke-width="3"/><line x1="${n2[0]}" y1="${n2[1]}" x2="${n2[0]}" y2="${n2[1]-nh*1.15}" stroke="#c9ccd1" stroke-width="3"/>`;
+s+=`<rect width="${W}" height="${Hh}" fill="#000" opacity=".12"/></svg>`;
+document.getElementById('fons').innerHTML=s;
+}
+fons();let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(fons,200)});
+})();
+
+const $=s=>document.querySelector(s);
+let LANG='va';
+try{const l=localStorage.getItem('trigo-idioma');if(l==='es'||l==='va')LANG=l}catch(e){}
+const t=(va,es)=>LANG==='va'?va:es;
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const num=(x,d=2)=>{let s=(Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d);if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');if(s==='-0')s='0';return s.replace('.',',').replace('-','−')};
+const PI=Math.PI;
+const sq=x=>Math.sqrt(x);
+const P2=(x,y)=>`(${num(x)}, ${num(y)})`;
+const rq=(p,q=1)=>{if(q<0){p=-p;q=-q}const g=gcd(p,q)||1;return{p:p/g,q:q/g}};
+const rv=r=>r.p/r.q;
+const radd=(a,b)=>rq(a.p*b.q+b.p*a.q,a.q*b.q);
+const rmul=(a,b)=>rq(a.p*b.p,a.q*b.q);
+const rneg=a=>rq(-a.p,a.q);
+const fR=(r,abs)=>{let p=abs?Math.abs(r.p):r.p;const s=p<0?'−':'';p=Math.abs(p);return r.q===1?s+p:s+F(p,r.q)};
+const kR=r=>r.p+'/'+r.q;
+const eq=(m,n)=>{let s='y = ';if(m.p!==0){s+=(m.p===m.q?'':m.p===-m.q?'−':fR(m))+'x';if(n.p>0)s+=' + '+fR(n);else if(n.p<0)s+=' − '+fR(n,true)}else s+=fR(n);return s};
+const eqk=(m,n)=>'e'+kR(m)+'|'+kR(n);
+const gen3=(A,B,C)=>{let s='';const tm=(c,v,f)=>{if(c===0)return'';const a=Math.abs(c);let h=(a===1&&v?'':a)+v;if(!s)return(c<0?'−':'')+h;return(c<0?' − ':' + ')+h};s+=tm(A,'x');s+=tm(B,'y');s+=tm(C,'');return(s||'0')+' = 0'};
+const close=(a,b)=>Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.006);
+const SVGo=(w,h)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="system-ui,sans-serif" font-size="16" font-weight="700">`;
+const TX=(x,y,s,c,a)=>`<text x="${x}" y="${y}"${c?` fill="${c}"`:''}${a?` text-anchor="${a}"`:''}>${s}</text>`;
+const ST='stroke="#1d2733" stroke-width="2.5"';
+const VERM='#c8412f',BLAU='#2c5f9e',VERD='#1f8a4c',GROC='#b9cd1a';
+
+function semblSVG(a,b,a2,b2){
+let s=SVGo(320,170);
+s+=`<polygon points="50,140 120,140 66,88" fill="#dbe7f5" ${ST}/>`+TX(85,160,a,'','middle')+TX(52,108,b,BLAU,'end');
+s+=`<polygon points="140,140 300,140 180,20" fill="#f5e7c9" ${ST}/>`+TX(220,160,a2,'','middle')+TX(152,78,b2,VERM,'end');
+return s+'</svg>';
+}
+function talesSVG(x1,x2,y1,y2){
+let s=SVGo(320,190);
+s+=`<line x1="20" y1="170" x2="300" y2="30" ${ST}/><line x1="20" y1="170" x2="300" y2="150" ${ST}/>`;
+const P=[[90,135,90,165],[170,95,170,159],[260,50,260,153]];
+s+=P.map(p=>`<line x1="${p[0]-12}" y1="${p[1]-16}" x2="${p[2]+12}" y2="${p[3]+12}" stroke="${BLAU}" stroke-width="2" stroke-dasharray="5 3"/>`).join('');
+s+=TX(90,128,'A','','end')+TX(170,88,'B','','end')+TX(258,42,'C','','end')+TX(90,184,"A'",'','middle')+TX(170,180,"B'",'','middle')+TX(260,175,"C'",'','middle');
+s+=TX(122,105,x1,BLAU,'end')+TX(208,62,x2,BLAU,'end')+TX(130,172,y1,VERM,'middle')+TX(215,168,y2,VERM,'middle');
+return s+'</svg>';
+}
+function ombraSVG(h,s1,H,s2){
+let s=SVGo(310,180)+`<line x1="5" y1="150" x2="305" y2="150" stroke="#1d2733" stroke-width="2"/>`;
+s+=`<line x1="30" y1="150" x2="30" y2="112" stroke="${BLAU}" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="106" r="6" fill="${BLAU}"/><line x1="30" y1="100" x2="72" y2="150" stroke="#9aa3ad" stroke-dasharray="4 3"/>`+TX(38,96,h,BLAU)+TX(52,170,s1,'','middle');
+s+=`<rect x="150" y="40" width="10" height="110" fill="#8a5a2b"/><circle cx="155" cy="40" r="26" fill="#4a8b3c"/><line x1="155" y1="20" x2="290" y2="150" stroke="#9aa3ad" stroke-dasharray="4 3"/>`+TX(185,60,H,VERM)+TX(222,170,s2,'','middle');
+s+=`<circle cx="295" cy="22" r="12" fill="#f3c33a"/>`;
+return s+'</svg>';
+}
+function triRSVG(c1,c2,h){
+let s=SVGo(300,180)+`<polygon points="70,150 270,150 70,30" fill="#dbe7f5" ${ST}/><polyline points="70,134 86,134 86,150" fill="none" stroke="#1d2733" stroke-width="2"/>`;
+s+=TX(170,172,c1,'','middle')+TX(62,96,c2,'','end')+TX(180,82,h,VERM);
+return s+'</svg>';
+}
+function triQSVG(a,b,c){
+let s=SVGo(300,170)+`<polygon points="40,140 260,140 110,40" fill="#dbe7f5" ${ST}/>`;
+s+=TX(150,162,c,'','middle')+TX(66,84,a,'','end')+TX(196,84,b);
+return s+'</svg>';
+}
+function rectSVG(w,h,d){
+let s=SVGo(300,170)+`<rect x="30" y="30" width="230" height="110" fill="#2c5f9e" stroke="#f4f4ee" stroke-width="3"/><line x1="30" y1="140" x2="260" y2="30" stroke="#d9f03a" stroke-width="4"/>`;
+s+=TX(145,162,w,'','middle')+TX(268,90,h)+TX(130,78,d,'#fff','end');
+return s+'</svg>';
+}
+function capsaSVG(a,b,c,diag){
+const o=[70,150],ax=[150,0],ay=[60,-40],az=[0,-90];
+const p=(i,j,k)=>[o[0]+ax[0]*i+ay[0]*j+az[0]*k,o[1]+ax[1]*i+ay[1]*j+az[1]*k];
+const L=(u,v,ex)=>`<line x1="${u[0]}" y1="${u[1]}" x2="${v[0]}" y2="${v[1]}" ${ex||ST}/>`;
+let s=SVGo(300,180);
+s+=`<polygon points="${[p(0,0,0),p(1,0,0),p(1,1,0),p(0,1,0)].join(' ')}" fill="#eef2e4"/>`;
+const D='stroke="#9aa3ad" stroke-width="2" stroke-dasharray="4 3"';
+s+=L(p(0,0,0),p(0,1,0),D)+L(p(0,1,0),p(1,1,0),D)+L(p(0,1,0),p(0,1,1),D);
+s+=L(p(0,0,0),p(1,0,0))+L(p(1,0,0),p(1,1,0))+L(p(0,0,0),p(0,0,1))+L(p(1,0,0),p(1,0,1))+L(p(1,1,0),p(1,1,1))+L(p(0,0,1),p(1,0,1))+L(p(1,0,1),p(1,1,1))+L(p(0,0,1),p(0,1,1))+L(p(0,1,1),p(1,1,1));
+if(diag){s+=L(p(0,0,0),p(1,1,0),`stroke="${BLAU}" stroke-width="2.5" stroke-dasharray="6 3"`)+L(p(0,0,0),p(1,1,1),`stroke="${VERM}" stroke-width="3.5"`)}
+s+=TX(145,172,a,'','middle')+TX(252,142,b)+TX(62,108,c,'','end');
+return s+'</svg>';
+}
+function trapSVG(B,b,h){
+let s=SVGo(300,160)+`<polygon points="30,130 270,130 200,40 90,40" fill="#f5e7c9" ${ST}/><line x1="120" y1="40" x2="120" y2="130" stroke="${VERM}" stroke-width="2" stroke-dasharray="5 3"/>`;
+s+=TX(150,152,B,'','middle')+TX(145,32,b,'','middle')+TX(126,92,h,VERM);
+return s+'</svg>';
+}
+function cercleSVG(lab,sect){
+let s=SVGo(240,200);
+if(sect){const a=sect*PI/180;const x=120+80*Math.cos(-a),y=110+80*Math.sin(-a);s+=`<circle cx="120" cy="110" r="80" fill="none" stroke="#c9ccd1" stroke-width="2" stroke-dasharray="4 4"/><path d="M120,110 L200,110 A80,80 0 ${sect>180?1:0} 0 ${x},${y} Z" fill="#f5e7c9" ${ST}/>`+TX(150,130,lab,'','middle')+TX(136,104,sect+'°',VERM)}
+else s+=`<circle cx="120" cy="105" r="80" fill="#2f7a64" stroke="#f4f4ee" stroke-width="3"/><line x1="40" y1="105" x2="200" y2="105" stroke="#d9f03a" stroke-width="3"/><circle cx="120" cy="105" r="4" fill="#fff"/>`+TX(120,96,lab,'#fff','middle');
+return s+'</svg>';
+}
+function hexSVG(l,ap){
+let s=SVGo(240,210);const pts=[];for(let i=0;i<6;i++){const a=PI/3*i;pts.push([120+85*Math.cos(a),105+85*Math.sin(a)])}
+s+=`<polygon points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="#dbe7f5" ${ST}/>`;
+s+=`<line x1="120" y1="105" x2="${pts[1][0]}" y2="${pts[1][1]}" stroke="#9aa3ad" stroke-width="2" stroke-dasharray="4 3"/><line x1="120" y1="105" x2="120" y2="${105+85*Math.sqrt(3)/2}" stroke="${VERM}" stroke-width="3"/>`;
+s+=TX(120,202,l,'','middle')+TX(126,150,ap,VERM);
+return s+'</svg>';
+}
+function cilSVG(r,h){
+let s=SVGo(240,210)+`<rect x="50" y="35" width="120" height="140" fill="#dbe7f5"/><ellipse cx="110" cy="175" rx="60" ry="16" fill="#dbe7f5" ${ST}/><rect x="50" y="35" width="120" height="140" fill="#dbe7f5"/><line x1="50" y1="35" x2="50" y2="175" ${ST}/><line x1="170" y1="35" x2="170" y2="175" ${ST}/><ellipse cx="110" cy="35" rx="60" ry="16" fill="#eef2e4" ${ST}/>`;
+s+=`<line x1="110" y1="35" x2="170" y2="35" stroke="${VERM}" stroke-width="2.5"/>`+TX(140,14,r,VERM,'middle')+TX(178,110,h);
+return s+'</svg>';
+}
+function conSVG(r,h,g){
+let s=SVGo(220,210)+`<polygon points="50,170 170,170 110,30" fill="#f5e7c9" ${ST}/><ellipse cx="110" cy="170" rx="60" ry="15" fill="#f5e7c9" ${ST}/><polygon points="51,169 169,169 110,31" fill="#f5e7c9"/><line x1="50" y1="170" x2="110" y2="30" ${ST}/><line x1="170" y1="170" x2="110" y2="30" ${ST}/>`;
+s+=`<line x1="110" y1="30" x2="110" y2="170" stroke="${BLAU}" stroke-width="2" stroke-dasharray="5 3"/><line x1="110" y1="170" x2="170" y2="170" stroke="${VERM}" stroke-width="2.5"/>`;
+s+=TX(140,200,r,VERM,'middle')+TX(116,124,h,BLAU)+(g?TX(148,96,g):'');
+return s+'</svg>';
+}
+function esfSVG(r){
+let s=SVGo(220,200)+`<circle cx="110" cy="100" r="80" fill="#d9f03a" ${ST}/><path d="M48,50 C90,90 90,110 48,150" fill="none" stroke="#fff" stroke-width="4"/><path d="M172,50 C130,90 130,110 172,150" fill="none" stroke="#fff" stroke-width="4"/><line x1="110" y1="100" x2="190" y2="100" stroke="${VERM}" stroke-width="3"/><circle cx="110" cy="100" r="4" fill="#1d2733"/>`;
+s+=TX(150,92,r,VERM,'middle');
+return s+'</svg>';
+}
+function pirSVG(l,h){
+let s=SVGo(240,200)+`<polygon points="40,160 160,160 200,125 80,125" fill="#eef2e4" ${ST}/><line x1="40" y1="160" x2="120" y2="30" ${ST}/><line x1="160" y1="160" x2="120" y2="30" ${ST}/><line x1="200" y1="125" x2="120" y2="30" ${ST}/><line x1="80" y1="125" x2="120" y2="30" stroke="#9aa3ad" stroke-width="2" stroke-dasharray="4 3"/>`;
+s+=`<line x1="120" y1="30" x2="120" y2="142" stroke="${VERM}" stroke-width="2.5" stroke-dasharray="5 3"/>`;
+s+=TX(100,182,l,'','middle')+TX(126,92,h,VERM);
+return s+'</svg>';
+}
+function piscinaSVG(a,b,c){return capsaSVG(a,b,c,false).replace('fill="#eef2e4"','fill="#9fd3ef"')}
+
+const GU=22,GO=150,GX=x=>GO+GU*x,GY=y=>GO-GU*y;
+function graella(o){
+o=o||{};let s=`<svg class="graella" viewBox="0 0 300 300" font-family="system-ui,sans-serif" font-size="14" font-weight="800"><defs><clipPath id="cl"><rect x="4" y="4" width="292" height="292"/></clipPath><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker>`;
+for(const c of [BLAU,VERM,VERD,'#7a4fb0','#1d2733'])s+=`<marker id="f${c.slice(1)}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c}"/></marker>`;
+s+=`</defs><rect width="300" height="300" rx="10" fill="#fbfaf4"/>`;
+for(let i=-6;i<=6;i++){s+=`<line x1="${GX(i)}" y1="${GY(-6.6)}" x2="${GX(i)}" y2="${GY(6.6)}" stroke="#dde2e8" stroke-width="1"/><line x1="${GX(-6.6)}" y1="${GY(i)}" x2="${GX(6.6)}" y2="${GY(i)}" stroke="#dde2e8" stroke-width="1"/>`}
+s+=`<line x1="${GX(-6.6)}" y1="${GO}" x2="${GX(6.6)}" y2="${GO}" stroke="#5d6b7a" stroke-width="2"/><line x1="${GO}" y1="${GY(-6.6)}" x2="${GO}" y2="${GY(6.6)}" stroke="#5d6b7a" stroke-width="2"/>`;
+for(const i of [-6,-4,-2,2,4,6])s+=`<text x="${GX(i)}" y="${GO+15}" text-anchor="middle" font-size="10" fill="#8a95a3">${String(i).replace('-','−')}</text><text x="${GO-5}" y="${GY(i)+4}" text-anchor="end" font-size="10" fill="#8a95a3">${String(i).replace('-','−')}</text>`;
+s+=`<text x="${GX(6.5)}" y="${GO-6}" text-anchor="end" font-size="12" fill="#5d6b7a">X</text><text x="${GO+6}" y="${GY(6.4)}" font-size="12" fill="#5d6b7a">Y</text>`;
+s+='<g clip-path="url(#cl)">';
+for(const l of (o.lines||[])){const m=rv(l.m),n=rv(l.n);s+=`<line x1="${GX(-8)}" y1="${GY(m*-8+n)}" x2="${GX(8)}" y2="${GY(m*8+n)}" stroke="${l.c||BLAU}" stroke-width="3"${l.d?' stroke-dasharray="7 4"':''}/>`}
+s+='</g>';
+for(const v of (o.vecs||[])){const c=v.c||BLAU;const a=v.a,b=v.b;s+=`<line x1="${GX(a[0])}" y1="${GY(a[1])}" x2="${GX(b[0])}" y2="${GY(b[1])}" stroke="${c}" stroke-width="3.5"${v.d?' stroke-dasharray="6 4"':''} marker-end="url(#f${c.slice(1)})"/>`;if(v.n){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;s+=`<text x="${GX(mx)+8}" y="${GY(my)-6}" fill="${c}" font-size="16" font-style="italic">${v.n}</text>`}}
+for(const p of (o.pts||[])){const c=p.c||'#1d2733';s+=`<circle cx="${GX(p.p[0])}" cy="${GY(p.p[1])}" r="${p.r||5}" fill="${c}" stroke="#fff" stroke-width="1.5"/>`;if(p.n)s+=`<text x="${GX(p.p[0])+8}" y="${GY(p.p[1])-8}" fill="${c}" font-size="15">${p.n}</text>`}
+for(const p of (o.marks||[]))s+=`<circle cx="${GX(p[0])}" cy="${GY(p[1])}" r="9" fill="none" stroke="${o.mc||'#d9a400'}" stroke-width="3.5"/><circle cx="${GX(p[0])}" cy="${GY(p[1])}" r="3" fill="${o.mc||'#d9a400'}"/>`;
+return s+'</svg>';
+}
+const C=p=>`(${String(p[0]).replace('-','−')}, ${String(p[1]).replace('-','−')})`;
+const inG=p=>Math.abs(p[0])<=6&&Math.abs(p[1])<=6;
+const inG5=p=>Math.abs(p[0])<=5&&Math.abs(p[1])<=5;
+const rp=(k=5)=>[R(-k,k),R(-k,k)];
+const same=(a,b)=>a[0]===b[0]&&a[1]===b[1];
+const nz=(k)=>{let v=0;while(v===0)v=R(-k,k);return v};
+const G={};
+const U=(x,u)=>num(x)+(u?' '+u:'');
+const ARR=()=>t('Arredonix a les centèsimes.','Redondea a las centésimas.');
+
+G.raok=()=>{
+const a=pick([2,4,6]),k=pick([1.5,2,2.5,3]),a2=a*k;let b=pick([3,5,7,9]);const b2=b*k;
+return{tipus:'num',q:t(`Els dos triangles són <b>semblants</b>. Quant val el costat <b>x</b>?`,`Los dos triángulos son <b>semejantes</b>. ¿Cuánto vale el lado <b>x</b>?`),
+fig:semblSVG(a+' cm',b+' cm',a2+' cm','x'),ans:b2,u:'cm',
+errs:[[b+(a2-a),t(`Has sumat la diferència (${a2} − ${a} = ${num(a2-a)}). En figures semblants els costats no se sumen: es <b>multipliquen</b> tots per la mateixa raó k.`,`Has sumado la diferencia (${a2} − ${a} = ${num(a2-a)}). En figuras semejantes los lados no se suman: se <b>multiplican</b> todos por la misma razón k.`)],
+[b*a/a2,t(`Has fet servir la raó al revés (${a}/${a2}). El triangle de x és el <b>gran</b>, així que x ha d'eixir més gran que ${b}.`,`Has usado la razón al revés (${a}/${a2}). El triángulo de x es el <b>grande</b>, así que x tiene que salir mayor que ${b}.`)]],
+sol:[t(`Raó de semblança: k = ${F(a2,a)} = ${num(k)}`,`Razón de semejanza: k = ${F(a2,a)} = ${num(k)}`),t(`El costat corresponent es multiplica per k: x = ${b} · ${num(k)}`,`El lado correspondiente se multiplica por k: x = ${b} · ${num(k)}`),`x = <b>${num(b2)} cm</b>`],
+pista:t('Calcula primer quantes vegades és més gran el triangle gran (divideix els costats coneguts).','Calcula primero cuántas veces es más grande el triángulo grande (divide los lados conocidos).')};
+};
+G.tales=()=>{
+const x1=pick([2,3,4,5]),x2=pick([3,4,6,8].filter(v=>v!==x1)),k=pick([1.5,2,2.5]),y1=x1*k,y2=x2*k;
+return{tipus:'num',q:t(`Les rectes blaves són <b>paral·leles</b>. Calcula <b>x</b> = B'C'.`,`Las rectas azules son <b>paralelas</b>. Calcula <b>x</b> = B'C'.`),
+fig:talesSVG(x1,x2,num(y1),'x'),ans:y2,u:'',
+errs:[[x2+(y1-x1),t('Has sumat la diferència entre AB i A\'B\'. Tales diu que els segments són <b>proporcionals</b>: es multipliquen, no se sumen.','Has sumado la diferencia entre AB y A\'B\'. Tales dice que los segmentos son <b>proporcionales</b>: se multiplican, no se suman.')],
+[x2*x1/y1,t('Has invertit la proporció. Si A\'B\' és més llarg que AB, B\'C\' també ha de ser més llarg que BC.','Has invertido la proporción. Si A\'B\' es más largo que AB, B\'C\' también tiene que ser más largo que BC.')],
+[y1*x1/x2,t('Has creuat els segments malament. Posa cada segment de dalt sobre el seu company de baix: AB↔A\'B\' i BC↔B\'C\'.','Has cruzado mal los segmentos. Pon cada segmento de arriba con su compañero de abajo: AB↔A\'B\' y BC↔B\'C\'.')]],
+sol:[t(`Teorema de Tales: ${F('AB','BC')} = ${F("A'B'","B'C'")}`,`Teorema de Tales: ${F('AB','BC')} = ${F("A'B'","B'C'")}`),`${F(x1,x2)} = ${F(num(y1),'x')}`,t(`Producte en creu: x = ${F(num(y1)+' · '+x2,x1)}`,`Producto en cruz: x = ${F(num(y1)+' · '+x2,x1)}`),`x = <b>${num(y2)}</b>`],
+pista:t('Els segments d\'una recta són proporcionals als de l\'altra: AB/BC = A\'B\'/B\'C\'.','Los segmentos de una recta son proporcionales a los de la otra: AB/BC = A\'B\'/B\'C\'.')};
+};
+G.escala=()=>{
+const n=pick([25000,50000,100000,200000]),cm=pick([3,4,5,6,7,8,12]);const km=cm*n/100000;
+return{tipus:'num',q:t(`En un mapa a escala <b>1 : ${n.toLocaleString('es')}</b>, el club de tenis està a <b>${cm} cm</b> de casa. Quants <b>quilòmetres</b> hi ha en la realitat?`,`En un mapa a escala <b>1 : ${n.toLocaleString('es')}</b>, el club de tenis está a <b>${cm} cm</b> de casa. ¿Cuántos <b>kilómetros</b> hay en la realidad?`),
+fig:null,ans:km,u:'km',
+errs:[[cm*n/100,t(`Això són <b>metres</b>, no quilòmetres. ${cm}·${n} = ${(cm*n).toLocaleString('es')} cm; per passar a km cal dividir entre 100 000.`,`Eso son <b>metros</b>, no kilómetros. ${cm}·${n} = ${(cm*n).toLocaleString('es')} cm; para pasar a km hay que dividir entre 100 000.`)],[cm*n,t('Això són centímetres. Cal passar-ho a km (÷ 100 000).','Eso son centímetros. Hay que pasarlo a km (÷ 100 000).')],[cm*n/1000,t('Has dividit entre 1000, però de cm a km cal dividir entre 100 000 (1 km = 1000 m = 100 000 cm).','Has dividido entre 1000, pero de cm a km hay que dividir entre 100 000 (1 km = 1000 m = 100 000 cm).')],[cm*n/10000,t('Revisa el canvi d\'unitats: 1 km = 100 000 cm.','Revisa el cambio de unidades: 1 km = 100 000 cm.')]],
+sol:[t(`Escala 1 : ${n.toLocaleString('es')} vol dir que 1 cm del mapa són ${n.toLocaleString('es')} cm reals.`,`Escala 1 : ${n.toLocaleString('es')} significa que 1 cm del mapa son ${n.toLocaleString('es')} cm reales.`),`${cm} · ${n.toLocaleString('es')} = ${(cm*n).toLocaleString('es')} cm`,t(`De cm a km: ÷ 100 000 → <b>${num(km)} km</b>`,`De cm a km: ÷ 100 000 → <b>${num(km)} km</b>`)],
+pista:t('Multiplica pel número de l\'escala i després passa de cm a km.','Multiplica por el número de la escala y después pasa de cm a km.')};
+};
+G.areak=()=>{
+const k=pick([2,3,1.5,0.5]),A=pick([12,20,36,8,40]);const big=k>1;
+return{tipus:'num',q:t(`Una pista té <b>${A} m²</b> de superfície. En fem una altra <b>semblant</b> amb raó <b>k = ${num(k)}</b> (${big?'més gran':'més xicoteta'}). Quina àrea té?`,`Una pista tiene <b>${A} m²</b> de superficie. Hacemos otra <b>semejante</b> con razón <b>k = ${num(k)}</b> (${big?'más grande':'más pequeña'}). ¿Qué área tiene?`),
+fig:null,ans:A*k*k,u:'m²',
+errs:[[A*k,t(`Has multiplicat per k. Però les àrees tenen dues dimensions (llarg i ample), i <b>cadascuna</b> es multiplica per k: l'àrea es multiplica per <b>k²</b>.`,`Has multiplicado por k. Pero las áreas tienen dos dimensiones (largo y ancho), y <b>cada una</b> se multiplica por k: el área se multiplica por <b>k²</b>.`)],[A*k*k*k,t('Has fet servir k³, que és per als volums. Per a àrees és k².','Has usado k³, que es para los volúmenes. Para áreas es k².')]],
+sol:[t('Si les longituds es multipliquen per k, les àrees es multipliquen per k².','Si las longitudes se multiplican por k, las áreas se multiplican por k².'),`k² = ${num(k)}² = ${num(k*k)}`,`A' = ${A} · ${num(k*k)} = <b>${num(A*k*k)} m²</b>`],
+pista:t('Àrea → k². Volum → k³.','Área → k². Volumen → k³.')};
+};
+G.volk=()=>{
+const k=pick([2,3,0.5]),V=pick([4,10,12,16,24]);
+return{tipus:'num',q:t(`Un pot de pilotes té <b>${V} dm³</b> de volum. Un altre pot <b>semblant</b> té les mesures multiplicades per <b>${num(k)}</b>. Quin volum té?`,`Un bote de pelotas tiene <b>${V} dm³</b> de volumen. Otro bote <b>semejante</b> tiene las medidas multiplicadas por <b>${num(k)}</b>. ¿Qué volumen tiene?`),
+fig:null,ans:V*k*k*k,u:'dm³',
+errs:[[V*k,t('Has multiplicat per k. El volum té tres dimensions (llarg, ample i alt): es multiplica per <b>k³</b>.','Has multiplicado por k. El volumen tiene tres dimensiones (largo, ancho y alto): se multiplica por <b>k³</b>.')],[V*k*k,t('k² és per a àrees. Per a volums és k³.','k² es para áreas. Para volúmenes es k³.')]],
+sol:[t('Longituds × k → volums × k³.','Longitudes × k → volúmenes × k³.'),`k³ = ${num(k)}³ = ${num(k*k*k,3)}`,`V' = ${V} · ${num(k*k*k,3)} = <b>${num(V*k*k*k)} dm³</b>`],
+pista:t('Pensa en un cub d\'1 dm: si dobles el costat, quants cubs xicotets hi caben?','Piensa en un cubo de 1 dm: si doblas el lado, ¿cuántos cubos pequeños caben?')};
+};
+G.ombra=()=>{
+const h=pick([1.5,1.6,1.8]),s=pick([2,2.5,1.2]),k=pick([4,5,6,7.5]);const S=s*k,H=h*k;
+return{tipus:'num',q:t(`A la mateixa hora, Luca (<b>${num(h)} m</b>) fa una ombra de <b>${num(s)} m</b> i un arbre fa una ombra de <b>${num(S)} m</b>. Quant fa d'alt l'arbre?`,`A la misma hora, Luca (<b>${num(h)} m</b>) hace una sombra de <b>${num(s)} m</b> y un árbol hace una sombra de <b>${num(S)} m</b>. ¿Cuánto mide de alto el árbol?`),
+fig:ombraSVG(num(h)+' m',num(s)+' m','H?',num(S)+' m'),ans:H,u:'m',
+errs:[[h+(S-s),t('Has sumat la diferència d\'ombres. Els dos triangles són semblants (els raigs del sol arriben amb el mateix angle): cal <b>multiplicar</b>.','Has sumado la diferencia de sombras. Los dos triángulos son semejantes (los rayos del sol llegan con el mismo ángulo): hay que <b>multiplicar</b>.')],[s*S/h,t('Has posat la proporció al revés. Altura/ombra ha de ser igual en els dos: H/'+num(S)+' = '+num(h)+'/'+num(s)+'.','Has puesto la proporción al revés. Altura/sombra tiene que ser igual en los dos: H/'+num(S)+' = '+num(h)+'/'+num(s)+'.')]],
+sol:[t('Els triangles persona-ombra i arbre-ombra són semblants (posició de Tales).','Los triángulos persona-sombra y árbol-sombra son semejantes (posición de Tales).'),`${F('H',num(S))} = ${F(num(h),num(s))}`,`H = ${F(num(h)+' · '+num(S),num(s))} = <b>${num(H)} m</b>`],
+pista:t('Altura ÷ ombra dona el mateix per a Luca i per a l\'arbre.','Altura ÷ sombra da lo mismo para Luca y para el árbol.')};
+};
+
+const TRIP=[[3,4,5],[6,8,10],[5,12,13],[8,15,17],[9,12,15],[7,24,25],[20,21,29],[12,16,20]];
+G.hip=()=>{
+let a,b;if(Math.random()<.5){[a,b]=pick(TRIP)}else{a=R(2,12);b=R(2,12)}
+const c=sq(a*a+b*b);
+return{tipus:'num',q:t(`Calcula la <b>hipotenusa</b> del triangle rectangle. ${Number.isInteger(c)?'':ARR}`,`Calcula la <b>hipotenusa</b> del triángulo rectángulo. ${Number.isInteger(c)?'':ARR}`),
+fig:triRSVG(a+' cm',b+' cm','h?'),ans:c,u:'cm',calc:true,
+errs:[[a+b,t('Has sumat els catets. Pitàgores suma els <b>quadrats</b>: h² = a² + b².','Has sumado los catetos. Pitágoras suma los <b>cuadrados</b>: h² = a² + b².')],[a*a+b*b,t(`Això és h², no h. Et falta fer l'<b>arrel quadrada</b>: h = √${a*a+b*b}.`,`Eso es h², no h. Te falta hacer la <b>raíz cuadrada</b>: h = √${a*a+b*b}.`)],[sq(Math.abs(a*a-b*b)),t('Has restat els quadrats. Per a la hipotenusa (el costat més llarg) se <b>sumen</b>.','Has restado los cuadrados. Para la hipotenusa (el lado más largo) se <b>suman</b>.')]],
+sol:[`h² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${a*a+b*b}`,`h = √${a*a+b*b} = <b>${num(c)} cm</b>`],
+pista:t('Eleva cada catet al quadrat, suma i fes l\'arrel.','Eleva cada cateto al cuadrado, suma y haz la raíz.')};
+};
+G.catet=()=>{
+let a,c;if(Math.random()<.6){const T=pick(TRIP);a=T[Math.random()<.5?0:1];c=T[2]}else{c=R(8,15);a=R(3,c-2)}
+const b=sq(c*c-a*a);
+return{tipus:'num',q:t(`Calcula el <b>catet</b> que falta. ${Number.isInteger(b)?'':ARR}`,`Calcula el <b>cateto</b> que falta. ${Number.isInteger(b)?'':ARR}`),
+fig:triRSVG(a+' m','x',c+' m'),ans:b,u:'m',calc:true,
+errs:[[sq(c*c+a*a),t(`Has sumat els quadrats. Però ${c} és la hipotenusa (el costat llarg, davant de l'angle recte): per a un catet cal <b>restar</b>, x² = ${c}² − ${a}².`,`Has sumado los cuadrados. Pero ${c} es la hipotenusa (el lado largo, frente al ángulo recto): para un cateto hay que <b>restar</b>, x² = ${c}² − ${a}².`)],[c-a,t('Has restat els costats directament. Cal restar els quadrats i fer l\'arrel.','Has restado los lados directamente. Hay que restar los cuadrados y hacer la raíz.')],[c*c-a*a,t(`Això és x². Et falta l'arrel: x = √${c*c-a*a}.`,`Eso es x². Te falta la raíz: x = √${c*c-a*a}.`)]],
+sol:[`${c}² = ${a}² + x²`,`x² = ${c*c} − ${a*a} = ${c*c-a*a}`,`x = √${c*c-a*a} = <b>${num(b)} m</b>`],
+pista:t('La hipotenusa és el costat oposat a l\'angle recte. Catet² = hipotenusa² − l\'altre catet².','La hipotenusa es el lado opuesto al ángulo recto. Cateto² = hipotenusa² − el otro cateto².')};
+};
+G.classif=()=>{
+const tipus=pick(['ac','rect','obt']);let a,b,c;
+if(tipus==='rect'){[a,b,c]=pick(TRIP)}else{do{a=R(3,10);b=R(a,12);c=R(b,Math.min(a+b-1,16))}while(c*c===a*a+b*b||(tipus==='ac')!==(c*c<a*a+b*b))}
+const s=a*a+b*b,c2=c*c;
+const nom={ac:t('Acutangle','Acutángulo'),rect:t('Rectangle','Rectángulo'),obt:t('Obtusangle','Obtusángulo')};
+const cmpTxt=c2===s?'=':c2<s?'<':'>';
+const why={ac:t(`Seria acutangle si ${c}² fora <b>menor</b> que ${a}² + ${b}².`,`Sería acutángulo si ${c}² fuera <b>menor</b> que ${a}² + ${b}².`),rect:t(`Seria rectangle només si ${c}² fora <b>igual</b> a ${a}² + ${b}². Ací ${c2} ${cmpTxt} ${s}.`,`Sería rectángulo solo si ${c}² fuera <b>igual</b> a ${a}² + ${b}². Aquí ${c2} ${cmpTxt} ${s}.`),obt:t(`Seria obtusangle si ${c}² fora <b>major</b> que ${a}² + ${b}².`,`Sería obtusángulo si ${c}² fuera <b>mayor</b> que ${a}² + ${b}².`)};
+return{tipus:'test',q:t(`Un triangle té costats <b>${a}</b>, <b>${b}</b> i <b>${c}</b>. Com és?`,`Un triángulo tiene lados <b>${a}</b>, <b>${b}</b> y <b>${c}</b>. ¿Cómo es?`),fig:triQSVG(a,b,c),
+ans:{h:nom[tipus],k:tipus},wrong:['ac','rect','obt'].filter(x=>x!==tipus).map(x=>({h:nom[x],k:x,why:why[x]})),una:true,
+sol:[t(`Agafa el costat més llarg (${c}) i compara el seu quadrat amb la suma dels altres dos.`,`Coge el lado más largo (${c}) y compara su cuadrado con la suma de los otros dos.`),`${c}² = ${c2} &nbsp; · &nbsp; ${a}² + ${b}² = ${a*a} + ${b*b} = ${s}`,`${c2} ${cmpTxt} ${s} → <b>${nom[tipus]}</b>`],
+pista:t('= rectangle · < acutangle · > obtusangle (comparant el quadrat del costat gran).','= rectángulo · < acutángulo · > obtusángulo (comparando el cuadrado del lado grande).')};
+};
+G.diag=()=>{
+const op=pick([[23.77,10.97,t('una pista de tennis de dobles','una pista de tenis de dobles')],[23.77,8.23,t('una pista de tennis d\'individuals','una pista de tenis de individuales')],[105,68,t('un camp de futbol','un campo de fútbol')],[20,10,t('una pista de pàdel','una pista de pádel')],[28,15,t('una pista de bàsquet','una pista de baloncesto')]]);
+const [l,w,nm]=op;const d=sq(l*l+w*w);
+return{tipus:'num',q:t(`Quant mesura la <b>diagonal</b> de ${nm} (${num(l)} m × ${num(w)} m)? ${ARR()}`,`¿Cuánto mide la <b>diagonal</b> de ${nm} (${num(l)} m × ${num(w)} m)? ${ARR()}`),
+fig:rectSVG(num(l)+' m',num(w)+' m','d?'),ans:d,u:'m',calc:true,
+errs:[[l+w,t('Has sumat els costats. La diagonal és la hipotenusa d\'un triangle rectangle: d² = l² + a².','Has sumado los lados. La diagonal es la hipotenusa de un triángulo rectángulo: d² = l² + a².')],[l*l+w*w,t('Això és d². Falta l\'arrel quadrada.','Eso es d². Falta la raíz cuadrada.')]],
+sol:[t('La diagonal parteix el rectangle en dos triangles rectangles: la diagonal és la hipotenusa.','La diagonal parte el rectángulo en dos triángulos rectángulos: la diagonal es la hipotenusa.'),`d² = ${num(l)}² + ${num(w)}² = ${num(l*l)} + ${num(w*w)} = ${num(l*l+w*w)}`,`d = √${num(l*l+w*w)} ≈ <b>${num(d)} m</b>`],
+pista:t('Dibuixa la diagonal: quin triangle et queda?','Dibuja la diagonal: ¿qué triángulo te queda?')};
+};
+G.diag3d=()=>{
+const T=pick([[3,4,12],[2,3,6],[1,4,8],[2,6,9],[4,4,7],[2,10,11],[R(2,6),R(2,6),R(3,9)]]);const [a,b,c]=T;const d=sq(a*a+b*b+c*c);
+return{tipus:'num',q:t(`Volem ficar una raqueta en una caixa de <b>${a} × ${b} × ${c} dm</b>. Quant mesura la <b>diagonal</b> de la caixa (la línia roja)? ${Number.isInteger(d)?'':ARR}`,`Queremos meter una raqueta en una caja de <b>${a} × ${b} × ${c} dm</b>. ¿Cuánto mide la <b>diagonal</b> de la caja (la línea roja)? ${Number.isInteger(d)?'':ARR}`),
+fig:capsaSVG(a+' dm',b+' dm',c+' dm',true),ans:d,u:'dm',calc:true,
+errs:[[sq(a*a+b*b),t(`Això és la diagonal de la <b>base</b> (la línia blava). Ara cal un segon Pitàgores amb l'altura ${c}: D² = base² + ${c}².`,`Eso es la diagonal de la <b>base</b> (la línea azul). Ahora hace falta un segundo Pitágoras con la altura ${c}: D² = base² + ${c}².`)],[a+b+c,t('Has sumat les tres arestes. Cal sumar els seus quadrats i fer l\'arrel.','Has sumado las tres aristas. Hay que sumar sus cuadrados y hacer la raíz.')],[a*a+b*b+c*c,t('Això és D². Falta l\'arrel.','Eso es D². Falta la raíz.')]],
+sol:[t(`Diagonal de la base (blava): d² = ${a}² + ${b}² = ${a*a+b*b}`,`Diagonal de la base (azul): d² = ${a}² + ${b}² = ${a*a+b*b}`),t(`La diagonal roja és la hipotenusa d'un triangle amb catets d i ${c}: D² = ${a*a+b*b} + ${c}² = ${a*a+b*b+c*c}`,`La diagonal roja es la hipotenusa de un triángulo con catetos d y ${c}: D² = ${a*a+b*b} + ${c}² = ${a*a+b*b+c*c}`),`D = √${a*a+b*b+c*c} ≈ <b>${num(d)} dm</b> &nbsp;(D = √(a² + b² + c²))`],
+pista:t('Primer la diagonal de la base; després un altre Pitàgores amb l\'altura.','Primero la diagonal de la base; después otro Pitágoras con la altura.')};
+};
+G.equil=()=>{
+const l=pick([4,6,8,10,12,5,7]);const h=l*sq(3)/2;
+return{tipus:'num',q:t(`Calcula l'<b>altura</b> d'un triangle equilàter de costat <b>${l} cm</b>. ${ARR()}`,`Calcula la <b>altura</b> de un triángulo equilátero de lado <b>${l} cm</b>. ${ARR()}`),
+fig:(()=>{let s=SVGo(260,190)+`<polygon points="30,170 230,170 130,(Y)" fill="#dbe7f5" ${ST}/>`.replace('(Y)',String(170-200*Math.sqrt(3)/2))+`<line x1="130" y1="${170-200*Math.sqrt(3)/2}" x2="130" y2="170" stroke="${VERM}" stroke-width="2.5" stroke-dasharray="5 3"/>`+TX(80,186,num(l/2)+' cm','','middle')+TX(72,96,l+' cm','','end')+TX(136,120,'h?',VERM);return s+'</svg>'})(),
+ans:h,u:'cm',calc:true,
+errs:[[sq(l*l+(l/2)**2),t('Has sumat els quadrats. El costat '+l+' és la hipotenusa del triangle de mitja figura: cal restar.','Has sumado los cuadrados. El lado '+l+' es la hipotenusa del triángulo de media figura: hay que restar.')],[l*l-(l/2)**2,t('Això és h². Falta l\'arrel.','Eso es h². Falta la raíz.')]],
+sol:[t(`L'altura parteix el triangle en dos triangles rectangles amb hipotenusa ${l} i catet ${num(l/2)}.`,`La altura parte el triángulo en dos triángulos rectángulos con hipotenusa ${l} y cateto ${num(l/2)}.`),`h² = ${l}² − ${num(l/2)}² = ${l*l} − ${num(l*l/4)} = ${num(l*l*3/4)}`,`h = √${num(l*l*3/4)} ≈ <b>${num(h)} cm</b>`],
+pista:t('L\'altura cau just al mig de la base.','La altura cae justo en el medio de la base.')};
+};
+
+G.trapezi=()=>{
+const b=R(3,8),B=b+R(2,8),h=R(3,9);const A=(B+b)*h/2;
+return{tipus:'num',q:t('Calcula l\'<b>àrea</b> del trapezi.','Calcula el <b>área</b> del trapecio.'),fig:trapSVG(B+' cm',b+' cm',h+' cm'),ans:A,u:'cm²',
+errs:[[(B+b)*h,t('T\'has oblidat de dividir entre 2. El trapezi és la mitjana de les bases per l\'altura: (B + b)/2 · h.','Te has olvidado de dividir entre 2. El trapecio es la media de las bases por la altura: (B + b)/2 · h.')],[B*b*h/2,t('Les bases se <b>sumen</b>, no es multipliquen.','Las bases se <b>suman</b>, no se multiplican.')],[B*h,t('Has fet servir només la base gran, com si fora un rectangle.','Has usado solo la base grande, como si fuera un rectángulo.')]],
+sol:[`A = ${F('(B + b) · h','2')}`,`A = ${F(`(${B} + ${b}) · ${h}`,'2')} = ${F((B+b)*h,2)}`,`A = <b>${num(A)} cm²</b>`],
+pista:t('Imagina dos trapezis iguals, un del revés: junts fan un paral·lelogram de base B + b.','Imagina dos trapecios iguales, uno del revés: juntos forman un paralelogramo de base B + b.')};
+};
+G.cercle=()=>{
+const d=pick([4,6,8,10,12,14,20]);const r=d/2;const A=PI*r*r;
+return{tipus:'num',q:t(`Una diana circular fa <b>${d} m de diàmetre</b>. Quina <b>àrea</b> té? ${ARR()}`,`Una diana circular mide <b>${d} m de diámetro</b>. ¿Qué <b>área</b> tiene? ${ARR()}`),fig:cercleSVG('d = '+d+' m'),ans:A,u:'m²',calc:true,
+errs:[[PI*d*d,t(`Has fet servir el diàmetre com a radi. El radi és la meitat: r = ${num(r)} m.`,`Has usado el diámetro como radio. El radio es la mitad: r = ${num(r)} m.`)],[PI*d,t('Això és la <b>longitud</b> de la circumferència (2πr = πd), no l\'àrea.','Eso es la <b>longitud</b> de la circunferencia (2πr = πd), no el área.')],[2*PI*r*r,t('L\'àrea és πr², sense el 2.','El área es πr², sin el 2.')]],
+sol:[t(`Radi = diàmetre ÷ 2 = ${num(r)} m`,`Radio = diámetro ÷ 2 = ${num(r)} m`),`A = π · r² = π · ${num(r)}² = π · ${num(r*r)}`,`A ≈ <b>${num(A)} m²</b>`],
+pista:t('Primer el radi; després π · r².','Primero el radio; después π · r².')};
+};
+G.sector=()=>{
+const r=pick([3,4,5,6,9,10]),a=pick([30,45,60,90,120,135,150,270]);const A=PI*r*r*a/360;
+return{tipus:'num',q:t(`Calcula l'àrea del <b>sector circular</b> de radi ${r} cm i ${a}°. ${ARR()}`,`Calcula el área del <b>sector circular</b> de radio ${r} cm y ${a}°. ${ARR()}`),fig:cercleSVG('r = '+r,a),ans:A,u:'cm²',calc:true,
+errs:[[PI*r*r*a/180,t('Has dividit entre 180. El cercle sencer té 360°: el sector és la fracció α/360 del cercle.','Has dividido entre 180. El círculo entero tiene 360°: el sector es la fracción α/360 del círculo.')],[2*PI*r*a/360,t('Això és la longitud de l\'<b>arc</b> (2πr · α/360), no l\'àrea.','Eso es la longitud del <b>arco</b> (2πr · α/360), no el área.')],[PI*r*r,t('Això és el cercle sencer. Només en tens una part: '+a+'/360.','Eso es el círculo entero. Solo tienes una parte: '+a+'/360.')]],
+sol:[t(`El sector és ${F(a,360)} del cercle.`,`El sector es ${F(a,360)} del círculo.`),`A = π · ${r}² · ${F(a,360)} = ${num(PI*r*r)} · ${num(a/360,4)}`,`A ≈ <b>${num(A)} cm²</b>`],
+pista:t('Quina fracció de la volta (360°) és el sector?','¿Qué fracción de la vuelta (360°) es el sector?')};
+};
+G.hexa=()=>{
+const l=pick([4,6,8,10]);const ap=l*sq(3)/2;const apr=Math.round(ap*100)/100;const A=6*l*apr/2;
+return{tipus:'num',q:t(`Calcula l'<b>àrea</b> de l'hexàgon regular de costat ${l} cm i apotema ${num(apr)} cm.`,`Calcula el <b>área</b> del hexágono regular de lado ${l} cm y apotema ${num(apr)} cm.`),fig:hexSVG(l+' cm','ap = '+num(apr)),ans:A,u:'cm²',calc:true,
+errs:[[6*l*apr,t('Falta dividir entre 2: A = perímetre · apotema / 2 (són 6 triangles de base l i altura ap).','Falta dividir entre 2: A = perímetro · apotema / 2 (son 6 triángulos de base l y altura ap).')],[l*apr/2,t('Això és només <b>un</b> dels 6 triangles. Cal el perímetre sencer.','Eso es solo <b>uno</b> de los 6 triángulos. Hace falta el perímetro entero.')]],
+sol:[t(`Perímetre: P = 6 · ${l} = ${6*l} cm`,`Perímetro: P = 6 · ${l} = ${6*l} cm`),`A = ${F('P · ap','2')} = ${F(`${6*l} · ${num(apr)}`,'2')}`,`A = <b>${num(A)} cm²</b>`],
+pista:t('Un polígon regular són triangles iguals des del centre. A = P · ap / 2.','Un polígono regular son triángulos iguales desde el centro. A = P · ap / 2.')};
+};
+G.cilindre=()=>{
+const d=pick([7,6.6,8,10]),h=pick([25,24,20,30]);const r=d/2;const V=PI*r*r*h;
+return{tipus:'num',q:t(`Un pot de pilotes cilíndric fa <b>${num(d)} cm de diàmetre</b> i <b>${h} cm d'alt</b>. Quin <b>volum</b> té? ${ARR()}`,`Un bote de pelotas cilíndrico mide <b>${num(d)} cm de diámetro</b> y <b>${h} cm de alto</b>. ¿Qué <b>volumen</b> tiene? ${ARR()}`),fig:cilSVG('r = '+num(r),h+' cm'),ans:V,u:'cm³',calc:true,
+errs:[[PI*d*d*h,t('Has fet servir el diàmetre com si fora el radi.','Has usado el diámetro como si fuera el radio.')],[2*PI*r*h,t('Això és l\'àrea <b>lateral</b> (2πrh), no el volum.','Eso es el área <b>lateral</b> (2πrh), no el volumen.')],[PI*r*r*h/3,t('Has dividit entre 3, però això és per a cons i piràmides. El cilindre és àrea de la base × altura.','Has dividido entre 3, pero eso es para conos y pirámides. El cilindro es área de la base × altura.')]],
+sol:[`r = ${num(d)} ÷ 2 = ${num(r)} cm`,t(`Àrea de la base: π · ${num(r)}² ≈ ${num(PI*r*r)} cm²`,`Área de la base: π · ${num(r)}² ≈ ${num(PI*r*r)} cm²`),`V = A<sub>base</sub> · h = ${num(PI*r*r)} · ${h} ≈ <b>${num(V)} cm³</b>`],
+pista:t('Prismes i cilindres: àrea de la base × altura.','Prismas y cilindros: área de la base × altura.')};
+};
+G.con=()=>{
+const r=pick([3,4,5,6]),h=pick([6,8,9,10,12]);const V=PI*r*r*h/3;
+return{tipus:'num',q:t(`Calcula el <b>volum</b> d'un con (com els de l'entrenament) de radi ${r} cm i altura ${h} cm. ${ARR()}`,`Calcula el <b>volumen</b> de un cono (como los del entrenamiento) de radio ${r} cm y altura ${h} cm. ${ARR()}`),fig:conSVG(r+' cm',h+' cm'),ans:V,u:'cm³',calc:true,
+errs:[[PI*r*r*h,t('T\'has oblidat del ÷3. Un con és un terç del cilindre que el conté.','Te has olvidado del ÷3. Un cono es un tercio del cilindro que lo contiene.')],[PI*r*h/3,t('El radi va al <b>quadrat</b>: π · r².','El radio va al <b>cuadrado</b>: π · r².')]],
+sol:[`V = ${F('π · r² · h','3')}`,`V = ${F(`π · ${r}² · ${h}`,'3')} = ${F(num(PI*r*r*h),'3')}`,`V ≈ <b>${num(V)} cm³</b>`],
+pista:t('Con = cilindre ÷ 3.','Cono = cilindro ÷ 3.')};
+};
+G.esfera=()=>{
+const op=pick([[3.35,t('una pilota de tennis','una pelota de tenis')],[11,t('una pilota de futbol','un balón de fútbol')],[2,t('una pilota de pàdel xicoteta','una pelota pequeña')],[12,t('una pilota de bàsquet','un balón de baloncesto')]]);const [r,nm]=op;const V=4/3*PI*r**3;
+return{tipus:'num',q:t(`Calcula el <b>volum</b> de ${nm} de radi <b>${num(r)} cm</b>. ${ARR()}`,`Calcula el <b>volumen</b> de ${nm} de radio <b>${num(r)} cm</b>. ${ARR()}`),fig:esfSVG('r = '+num(r)),ans:V,u:'cm³',calc:true,
+errs:[[4*PI*r*r,t('Això és la <b>superfície</b> de l\'esfera (4πr²), no el volum.','Eso es la <b>superficie</b> de la esfera (4πr²), no el volumen.')],[4/3*PI*r*r,t('El radi va al <b>cub</b>: r³.','El radio va al <b>cubo</b>: r³.')],[PI*r**3,t('Falta el 4/3: V = 4/3 · π · r³.','Falta el 4/3: V = 4/3 · π · r³.')]],
+sol:[`V = ${F(4,3)} · π · r³`,`r³ = ${num(r)}³ = ${num(r**3,3)}`,`V = ${F(4,3)} · π · ${num(r**3,3)} ≈ <b>${num(V)} cm³</b>`],
+pista:'V = 4/3 · π · r³'};
+};
+G.piramide=()=>{
+const l=pick([3,4,5,6,9,10]),h=pick([4,6,7,9,12]);const V=l*l*h/3;
+return{tipus:'num',q:t(`Calcula el <b>volum</b> d'una piràmide de base quadrada de costat ${l} m i altura ${h} m.`,`Calcula el <b>volumen</b> de una pirámide de base cuadrada de lado ${l} m y altura ${h} m.`),fig:pirSVG(l+' m',h+' m'),ans:V,u:'m³',
+errs:[[l*l*h,t('Falta el ÷3: la piràmide és un terç del prisma amb la mateixa base i altura.','Falta el ÷3: la pirámide es un tercio del prisma con la misma base y altura.')],[l*h/3,t('La base és un quadrat: la seua àrea és l², no l.','La base es un cuadrado: su área es l², no l.')],[4*l*h/3,t('Has fet servir el perímetre de la base en lloc de l\'àrea.','Has usado el perímetro de la base en lugar del área.')]],
+sol:[t(`Àrea de la base: ${l}² = ${l*l} m²`,`Área de la base: ${l}² = ${l*l} m²`),`V = ${F('A<sub>base</sub> · h','3')} = ${F(`${l*l} · ${h}`,3)}`,`V = <b>${num(V)} m³</b>`],
+pista:t('Piràmides i cons: (àrea base · altura) ÷ 3.','Pirámides y conos: (área base · altura) ÷ 3.')};
+};
+G.areacil=()=>{
+const r=pick([2,3,4,5]),h=pick([6,8,10,12]);const A=2*PI*r*r+2*PI*r*h;
+return{tipus:'num',q:t(`Quanta llanda cal per fer un pot <b>tancat</b> cilíndric de radi ${r} cm i altura ${h} cm? (àrea total) ${ARR()}`,`¿Cuánta chapa hace falta para un bote <b>cerrado</b> cilíndrico de radio ${r} cm y altura ${h} cm? (área total) ${ARR()}`),fig:cilSVG('r = '+r,h+' cm'),ans:A,u:'cm²',calc:true,
+errs:[[2*PI*r*h,t('Només has calculat la part lateral. Si el pot està tancat, falten les <b>dues tapes</b> (2 · πr²).','Solo has calculado la parte lateral. Si el bote está cerrado, faltan las <b>dos tapas</b> (2 · πr²).')],[PI*r*r+2*PI*r*h,t('Hi ha <b>dues</b> tapes (dalt i baix).','Hay <b>dos</b> tapas (arriba y abajo).')],[PI*r*r*h,t('Això és el volum. Es demana la superfície.','Eso es el volumen. Se pide la superficie.')]],
+sol:[t(`Si desplegues el cilindre: un rectangle de ${num(2*PI*r)} × ${h} (la base fa 2πr) i dos cercles.`,`Si despliegas el cilindro: un rectángulo de ${num(2*PI*r)} × ${h} (la base mide 2πr) y dos círculos.`),`A<sub>lat</sub> = 2π · ${r} · ${h} ≈ ${num(2*PI*r*h)} ; A<sub>tapes</sub> = 2 · π · ${r}² ≈ ${num(2*PI*r*r)}`,`A<sub>total</sub> ≈ <b>${num(A)} cm²</b>`],
+pista:t('Desplega el pot: rectangle + 2 cercles.','Despliega el bote: rectángulo + 2 círculos.')};
+};
+G.conlat=()=>{
+const T=pick([[3,4],[6,8],[5,12],[9,12],[8,15]]);const [r,h]=Math.random()<.5?T:[T[0],T[1]];const g=sq(r*r+h*h);const A=PI*r*g;
+return{tipus:'num',q:t(`Un con té radi ${r} cm i altura ${h} cm. Calcula la <b>generatriu g</b> i després l'<b>àrea lateral</b> (π·r·g). ${ARR()}`,`Un cono tiene radio ${r} cm y altura ${h} cm. Calcula la <b>generatriz g</b> y después el <b>área lateral</b> (π·r·g). ${ARR()}`),fig:conSVG(r+' cm',h+' cm','g?'),ans:A,u:'cm²',calc:true,
+errs:[[PI*r*h,t('Has fet servir l\'altura en lloc de la generatriu. La generatriu és la línia inclinada: g² = r² + h².','Has usado la altura en lugar de la generatriz. La generatriz es la línea inclinada: g² = r² + h².')],[PI*r*g+PI*r*r,t('Això és l\'àrea <b>total</b> (amb la base). Es demana només la lateral.','Eso es el área <b>total</b> (con la base). Se pide solo la lateral.')],[PI*r*(r+h),t('La generatriu no és r + h: cal Pitàgores.','La generatriz no es r + h: hace falta Pitágoras.')]],
+sol:[t(`Generatriu (Pitàgores): g² = ${r}² + ${h}² = ${r*r+h*h} → g = ${num(g)} cm`,`Generatriz (Pitágoras): g² = ${r}² + ${h}² = ${r*r+h*h} → g = ${num(g)} cm`),`A<sub>lat</sub> = π · ${r} · ${num(g)}`,`A<sub>lat</sub> ≈ <b>${num(A)} cm²</b>`],
+pista:t('r, h i g formen un triangle rectangle: g és la hipotenusa.','r, h y g forman un triángulo rectángulo: g es la hipotenusa.')};
+};
+G.litres=()=>{
+const a=pick([8,10,12,25]),b=pick([4,5,6]),c=pick([1.5,2,1.2]);const V=a*b*c;const L=V*1000;
+return{tipus:'num',q:t(`Una piscina té forma de prisma de <b>${a} m × ${b} m × ${num(c)} m</b>. Quants <b>litres</b> d'aigua hi caben?`,`Una piscina tiene forma de prisma de <b>${a} m × ${b} m × ${num(c)} m</b>. ¿Cuántos <b>litros</b> de agua caben?`),fig:piscinaSVG(a+' m',b+' m',num(c)+' m'),ans:L,u:'L',
+errs:[[V,t(`Això són m³. 1 m³ = 1000 L: cal multiplicar per 1000.`,`Eso son m³. 1 m³ = 1000 L: hay que multiplicar por 1000.`)],[V*100,t('1 m³ són 1000 litres, no 100.','1 m³ son 1000 litros, no 100.')],[V*1000000,t('Has passat a cm³ (1 m³ = 1 000 000 cm³), però 1 L = 1 dm³ = 1000 cm³.','Has pasado a cm³ (1 m³ = 1 000 000 cm³), pero 1 L = 1 dm³ = 1000 cm³.')]],
+sol:[`V = ${a} · ${b} · ${num(c)} = ${num(V)} m³`,t('1 m³ = 1000 dm³ = 1000 L','1 m³ = 1000 dm³ = 1000 L'),`${num(V)} · 1000 = <b>${L.toLocaleString('es')} L</b>`],
+pista:t('1 litre = 1 dm³. Quants dm³ té 1 m³?','1 litro = 1 dm³. ¿Cuántos dm³ tiene 1 m³?')};
+};
+
+G.comp=()=>{
+let A,B;do{A=rp(5);B=rp(5)}while(same(A,B)||A[0]===B[0]||A[1]===B[1]||Math.abs(B[0]-A[0])===Math.abs(B[1]-A[1]));
+const v=[B[0]-A[0],B[1]-A[1]];
+const W=[[[-v[0],-v[1]],t('Has fet origen menys final (A − B). El vector AB és <b>final menys origen</b>: B − A.','Has hecho origen menos final (A − B). El vector AB es <b>final menos origen</b>: B − A.')],[[v[1],v[0]],t('Has canviat l\'ordre: la primera component és el moviment <b>horitzontal</b> (x) i la segona el <b>vertical</b> (y).','Has cambiado el orden: la primera componente es el movimiento <b>horizontal</b> (x) y la segunda el <b>vertical</b> (y).')],[[A[0]+B[0],A[1]+B[1]],t('Has sumat les coordenades. Les components són la <b>resta</b> B − A.','Has sumado las coordenadas. Las componentes son la <b>resta</b> B − A.')],[[v[0],-v[1]],t('Revisa el signe de la segona component: si puja és positiva, si baixa negativa.','Revisa el signo de la segunda componente: si sube es positiva, si baja negativa.')]];
+return{tipus:'test',q:t(`Quines són les components del vector <b>AB</b>?`,`¿Cuáles son las componentes del vector <b>AB</b>?`),fig:graella({vecs:[{a:A,b:B,c:BLAU}],pts:[{p:A,n:'A'+C(A)},{p:B,n:'B'+C(B)}]}),
+ans:{h:C(v),k:v.join()},wrong:W.map(w=>({h:C(w[0]),k:w[0].join(),why:w[1]})),
+sol:[t('Vector AB = final − origen = B − A','Vector AB = final − origen = B − A'),`AB = (${B[0]} − (${A[0]}), ${B[1]} − (${A[1]}))`.replace(/-/g,'−'),`AB = <b>${C(v)}</b>`,t(`Comprova-ho en la graella: des d'A, ${Math.abs(v[0])} ${v[0]>0?'a la dreta':'a l\'esquerra'} i ${Math.abs(v[1])} ${v[1]>0?'amunt':'avall'}.`,`Compruébalo en la cuadrícula: desde A, ${Math.abs(v[0])} a la ${v[0]>0?'derecha':'izquierda'} y ${Math.abs(v[1])} hacia ${v[1]>0?'arriba':'abajo'}.`)],
+pista:t('Compta quadrets: quant es mou en horitzontal i quant en vertical per anar d\'A a B?','Cuenta cuadritos: ¿cuánto se mueve en horizontal y cuánto en vertical para ir de A a B?')};
+};
+G.extrem=()=>{
+let A,v,B;do{A=rp(4);v=[nz(4),nz(4)];B=[A[0]+v[0],A[1]+v[1]]}while(!inG5(B)||same(v,A));
+return{tipus:'punt',need:1,q:t(`Des del punt <b>A${C(A)}</b> apliquem el vector <b>v = ${C(v)}</b>. Toca el punt <b>B</b> on arribem.`,`Desde el punto <b>A${C(A)}</b> aplicamos el vector <b>v = ${C(v)}</b>. Toca el punto <b>B</b> al que llegamos.`),
+o:{pts:[{p:A,n:'A'}]},ok:p=>same(p[0],B),ans:B,
+errPts:[[[A[0]-v[0],A[1]-v[1]],t('Has anat en sentit contrari (A − v). Per aplicar el vector se <b>suma</b>: B = A + v.','Has ido en sentido contrario (A − v). Para aplicar el vector se <b>suma</b>: B = A + v.')],[v,t('Has dibuixat el vector des de l\'origen (0, 0). Cal començar en A.','Has dibujado el vector desde el origen (0, 0). Hay que empezar en A.')],[[A[0]+v[1],A[1]+v[0]],t('Has canviat x i y del vector: primer moviment horitzontal, després vertical.','Has cambiado x e y del vector: primero movimiento horizontal, después vertical.')]],
+fin:{vecs:[{a:A,b:B,c:VERD,n:'v'}],pts:[{p:A,n:'A'},{p:B,n:'B',c:VERD}]},
+sol:[`B = A + v`,`B = (${A[0]} + (${v[0]}), ${A[1]} + (${v[1]}))`.replace(/-/g,'−'),`B = <b>${C(B)}</b>`],
+pista:t(`Des d'A: ${Math.abs(v[0])} quadrets ${v[0]>0?'a la dreta':'a l\'esquerra'} i ${Math.abs(v[1])} ${v[1]>0?'amunt':'avall'}.`,`Desde A: ${Math.abs(v[0])} cuadritos a la ${v[0]>0?'derecha':'izquierda'} y ${Math.abs(v[1])} hacia ${v[1]>0?'arriba':'abajo'}.`)};
+};
+G.origen=()=>{
+let A,v,B;do{A=rp(4);v=[nz(4),nz(4)];B=[A[0]+v[0],A[1]+v[1]]}while(!inG5(B)||!inG([B[0]+v[0],B[1]+v[1]]));
+return{tipus:'punt',need:1,q:t(`El vector <b>AB = ${C(v)}</b> acaba en <b>B${C(B)}</b>. Toca on comença, el punt <b>A</b>.`,`El vector <b>AB = ${C(v)}</b> termina en <b>B${C(B)}</b>. Toca dónde empieza, el punto <b>A</b>.`),
+o:{pts:[{p:B,n:'B'}]},ok:p=>same(p[0],A),ans:A,
+errPts:[[[B[0]+v[0],B[1]+v[1]],t('Has sumat el vector a B: aixó és on aniries <b>després</b> de B. Per trobar l\'origen cal <b>restar</b>: A = B − v.','Has sumado el vector a B: eso es adonde irías <b>después</b> de B. Para encontrar el origen hay que <b>restar</b>: A = B − v.')],[[-v[0],-v[1]],t('Has dibuixat −v des de l\'origen de coordenades. Cal partir de B.','Has dibujado −v desde el origen de coordenadas. Hay que partir de B.')]],
+fin:{vecs:[{a:A,b:B,c:VERD}],pts:[{p:A,n:'A',c:VERD},{p:B,n:'B'}]},
+sol:[t('Si AB = B − A, aleshores A = B − AB.','Si AB = B − A, entonces A = B − AB.'),`A = (${B[0]} − (${v[0]}), ${B[1]} − (${v[1]}))`.replace(/-/g,'−'),`A = <b>${C(A)}</b>`],
+pista:t('Fes el camí al revés: des de B, mou-te en sentit contrari al vector.','Haz el camino al revés: desde B, muévete en sentido contrario al vector.')};
+};
+G.modul=()=>{
+let v;if(Math.random()<.5){const T=pick([[3,4],[6,8],[5,12],[4,3],[8,6]]);v=[T[0]*pick([1,-1]),T[1]*pick([1,-1])]}else v=[nz(6),nz(6)];
+const m=sq(v[0]**2+v[1]**2);
+return{tipus:'num',q:t(`Calcula el <b>mòdul</b> del vector <b>v = ${C(v)}</b>. ${Number.isInteger(m)?'':ARR}`,`Calcula el <b>módulo</b> del vector <b>v = ${C(v)}</b>. ${Number.isInteger(m)?'':ARR}`),fig:graella({vecs:[{a:[0,0],b:v,c:BLAU,n:'v'}]}),ans:m,u:'',calc:true,
+errs:[[Math.abs(v[0])+Math.abs(v[1]),t('Has sumat les components. El mòdul és la <b>llargària</b> de la fletxa: la hipotenusa d\'un triangle amb catets |x| i |y|.','Has sumado las componentes. El módulo es la <b>longitud</b> de la flecha: la hipotenusa de un triángulo con catetos |x| e |y|.')],[v[0]**2+v[1]**2,t('Això és |v|². Falta l\'arrel.','Eso es |v|². Falta la raíz.')],[v[0]+v[1],t('Has sumat les components. Cal Pitàgores: √(x² + y²).','Has sumado las componentes. Hace falta Pitágoras: √(x² + y²).')],[sq(Math.abs(v[0]**2-v[1]**2)),t('Els quadrats se sumen, no es resten.','Los cuadrados se suman, no se restan.')]],
+sol:[`|v| = √(x² + y²)`,`|v| = √((${v[0]})² + (${v[1]})²) = √(${v[0]**2} + ${v[1]**2}) = √${v[0]**2+v[1]**2}`.replace(/-/g,'−'),`|v| = <b>${num(m)}</b>`,t('Recorda: un número negatiu al quadrat dona positiu.','Recuerda: un número negativo al cuadrado da positivo.')],
+pista:t('El mòdul és Pitàgores amb les components.','El módulo es Pitágoras con las componentes.')};
+};
+G.suma=()=>{
+let u,v,s;do{u=[nz(4),nz(4)];v=[nz(4),nz(4)];s=[u[0]+v[0],u[1]+v[1]]}while(!inG5(s)||same(s,[0,0])||same(u,v));
+const resta=Math.random()<.35;const r=resta?[u[0]-v[0],u[1]-v[1]]:s;if(resta&&(!inG5(r)||same(r,[0,0])))return G.suma();
+return{tipus:'punt',need:1,q:resta?t(`Toca l'extrem del vector <b>u − v</b> dibuixat des de l'origen.`,`Toca el extremo del vector <b>u − v</b> dibujado desde el origen.`):t(`Toca l'extrem del vector <b>u + v</b> dibuixat des de l'origen.`,`Toca el extremo del vector <b>u + v</b> dibujado desde el origen.`),
+o:{vecs:[{a:[0,0],b:u,c:BLAU,n:'u'},{a:[0,0],b:v,c:'#7a4fb0',n:'v'}]},ok:p=>same(p[0],r),ans:r,
+errPts:[[resta?s:[u[0]-v[0],u[1]-v[1]],resta?t('Això és u + v. Per restar, suma l\'oposat: u + (−v).','Eso es u + v. Para restar, suma el opuesto: u + (−v).'):t('Això és u − v. Cal sumar component a component.','Eso es u − v. Hay que sumar componente a componente.')],[[v[0]-u[0],v[1]-u[1]],t('Això és v − u, l\'ordre importa en la resta.','Eso es v − u, el orden importa en la resta.')]],
+fin:{vecs:[{a:[0,0],b:u,c:BLAU,n:'u'},{a:u,b:r,c:'#7a4fb0',d:true},{a:[0,0],b:r,c:VERD,n:resta?'u−v':'u+v'}]},
+sol:[`u = ${C(u)}, v = ${C(v)}`,resta?`u − v = (${u[0]} − (${v[0]}), ${u[1]} − (${v[1]})) = <b>${C(r)}</b>`.replace(/(\d|\)) − \(/g,'$1 − (').replace(/\(-/g,'(−'):`u + v = (${u[0]} + (${v[0]}), ${u[1]} + (${v[1]})) = <b>${C(r)}</b>`.replace(/\(-/g,'(−'),t('Gràficament: a continuació d\'u posem '+(resta?'−v':'v')+' (fletxa discontínua).','Gráficamente: a continuación de u ponemos '+(resta?'−v':'v')+' (flecha discontinua).')],
+pista:t('Opera component a component: x amb x, y amb y.','Opera componente a componente: x con x, y con y.')};
+};
+G.escalar=()=>{
+let v,k,r;do{v=[nz(3),nz(3)];k=pick([2,3,-1,-2]);r=[k*v[0],k*v[1]]}while(!inG(r));
+return{tipus:'punt',need:1,q:t(`Toca l'extrem del vector <b>${k===-1?'−':k}v</b> dibuixat des de l'origen.`,`Toca el extremo del vector <b>${k===-1?'−':k}v</b> dibujado desde el origen.`),
+o:{vecs:[{a:[0,0],b:v,c:BLAU,n:'v'}]},ok:p=>same(p[0],r),ans:r,
+errPts:[[[-r[0],-r[1]],t('El signe! Si k és negatiu, el vector canvia de <b>sentit</b>; si és positiu, manté el sentit.','¡El signo! Si k es negativo, el vector cambia de <b>sentido</b>; si es positivo, mantiene el sentido.')],[[v[0]+k,v[1]+k],t('Has sumat k a cada component. Cal <b>multiplicar</b>.','Has sumado k a cada componente. Hay que <b>multiplicar</b>.')],[[k*v[0],v[1]],t('Has multiplicat només la x. Les dues components es multipliquen per k.','Has multiplicado solo la x. Las dos componentes se multiplican por k.')]],
+fin:{vecs:[{a:[0,0],b:r,c:VERD,n:(k===-1?'−':k)+'v'},{a:[0,0],b:v,c:BLAU,n:'v'}]},
+sol:[`${k}·v = (${k}·${v[0]}, ${k}·${v[1]})`.replace(/-/g,'−'),`= <b>${C(r)}</b>`,t(`Mateixa direcció que v; mòdul ${Math.abs(k)} vegades; ${k<0?'sentit contrari':'mateix sentit'}.`,`Misma dirección que v; módulo ${Math.abs(k)} veces; ${k<0?'sentido contrario':'mismo sentido'}.`)],
+pista:t('Multiplica cada component per k.','Multiplica cada componente por k.')};
+};
+G.mitja=()=>{
+let A,B;do{A=rp(5);B=rp(5)}while(same(A,B)||(A[0]+B[0])%2||(A[1]+B[1])%2);
+const M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+return{tipus:'punt',need:1,q:t(`Toca el <b>punt mitjà</b> del segment AB, amb A${C(A)} i B${C(B)}.`,`Toca el <b>punto medio</b> del segmento AB, con A${C(A)} y B${C(B)}.`),
+o:{pts:[{p:A,n:'A'},{p:B,n:'B'}],vecs:[]},ok:p=>same(p[0],M),ans:M,
+errPts:[[[(B[0]-A[0])/2,(B[1]-A[1])/2],t('Has fet (B − A)/2: això és la meitat del <b>vector</b>, dibuixada des de l\'origen. El punt mitjà és la <b>mitjana</b> de les coordenades: (A + B)/2.','Has hecho (B − A)/2: eso es la mitad del <b>vector</b>, dibujada desde el origen. El punto medio es la <b>media</b> de las coordenadas: (A + B)/2.')],[[A[0]+B[0],A[1]+B[1]],t('Has sumat però no has dividit entre 2.','Has sumado pero no has dividido entre 2.')]],
+fin:{pts:[{p:A,n:'A'},{p:B,n:'B'},{p:M,n:'M',c:VERD}],vecs:[{a:A,b:B,c:'#9aa3ad'}]},
+sol:[`M = ${F('A + B','2')} = (${F(A[0]+' + '+B[0],2)}, ${F(A[1]+' + '+B[1],2)})`.replace(/\+ -/g,'+ (−').replace(/-/g,'−'),`M = <b>${C(M)}</b>`],
+pista:t('Fes la mitjana de les x i la mitjana de les y.','Haz la media de las x y la media de las y.')};
+};
+G.dist=()=>{
+let A,B;do{A=rp(5);B=rp(5)}while(A[0]===B[0]||A[1]===B[1]);
+const dx=B[0]-A[0],dy=B[1]-A[1];const d=sq(dx*dx+dy*dy);
+return{tipus:'num',q:t(`Calcula la <b>distància</b> entre A${C(A)} i B${C(B)}. ${Number.isInteger(d)?'':ARR}`,`Calcula la <b>distancia</b> entre A${C(A)} y B${C(B)}. ${Number.isInteger(d)?'':ARR}`),fig:graella({pts:[{p:A,n:'A'},{p:B,n:'B'}]}),ans:d,u:'',calc:true,
+errs:[[Math.abs(dx)+Math.abs(dy),t('Has comptat quadrets en horitzontal i en vertical. La distància és la línia recta: Pitàgores.','Has contado cuadritos en horizontal y en vertical. La distancia es la línea recta: Pitágoras.')],[dx*dx+dy*dy,t('Això és d². Falta l\'arrel.','Eso es d². Falta la raíz.')],[sq((A[0]+B[0])**2+(A[1]+B[1])**2),t('Has sumat les coordenades. Cal restar-les (vector AB) i fer el mòdul.','Has sumado las coordenadas. Hay que restarlas (vector AB) y hacer el módulo.')]],
+sol:[`AB = B − A = ${C([dx,dy])}`,`d = |AB| = √(${dx*dx} + ${dy*dy}) = √${dx*dx+dy*dy}`,`d = <b>${num(d)}</b>`],
+pista:t('Distància entre dos punts = mòdul del vector que els uneix.','Distancia entre dos puntos = módulo del vector que los une.')};
+};
+G.simetric=()=>{
+let A,M,S;do{A=rp(4);M=rp(3);S=[2*M[0]-A[0],2*M[1]-A[1]]}while(same(A,M)||!inG5(S));
+return{tipus:'punt',need:1,q:t(`Toca el punt <b>simètric</b> de A${C(A)} respecte de M${C(M)} (M ha de quedar al mig).`,`Toca el punto <b>simétrico</b> de A${C(A)} respecto de M${C(M)} (M tiene que quedar en el medio).`),
+o:{pts:[{p:A,n:'A'},{p:M,n:'M',c:BLAU}]},ok:p=>same(p[0],S),ans:S,
+errPts:[[[M[0]-A[0],M[1]-A[1]],t('Has calculat el vector AM, no un punt. Des de M cal tornar a aplicar el vector AM: A\' = M + AM.','Has calculado el vector AM, no un punto. Desde M hay que volver a aplicar el vector AM: A\' = M + AM.')],[[2*A[0]-M[0],2*A[1]-M[1]],t('Has fet el simètric de M respecte d\'A. Ha de ser M qui queda al mig.','Has hecho el simétrico de M respecto de A. Tiene que ser M quien queda en el medio.')]],
+fin:{pts:[{p:A,n:'A'},{p:M,n:'M',c:BLAU},{p:S,n:"A'",c:VERD}],vecs:[{a:A,b:M,c:'#9aa3ad'},{a:M,b:S,c:VERD}]},
+sol:[t(`Vector AM = M − A = ${C([M[0]-A[0],M[1]-A[1]])}`,`Vector AM = M − A = ${C([M[0]-A[0],M[1]-A[1]])}`),`A' = M + AM = <b>${C(S)}</b>`,t(`Comprova: el punt mitjà d'A i A' és M. (o directament A' = 2M − A)`,`Comprueba: el punto medio de A y A' es M. (o directamente A' = 2M − A)`)],
+pista:t('Mou-te d\'A a M, i fes el mateix salt una altra vegada.','Muévete de A a M, y haz el mismo salto otra vez.')};
+};
+const MS=[rq(1),rq(2),rq(3),rq(-1),rq(-2),rq(-3),rq(1,2),rq(-1,2)];
+const onL=(p,m,n)=>p[1]*m.q*n.q===m.p*n.q*p[0]+n.p*m.q;
+const fP=p=>C(p);
+function ptsLine(m,n){const r=[];for(let x=-6;x<=6;x++){const y=rv(m)*x+rv(n);if(Number.isInteger(Math.round(y*1e9)/1e9)&&Math.abs(y)<=6)r.push([x,Math.round(y)])}return r}
+
+G.pendent=()=>{
+let A,B,dx,dy;do{A=rp(5);B=rp(5);dx=B[0]-A[0];dy=B[1]-A[1]}while(dx===0||dy===0||Math.abs(dx)===Math.abs(dy)&&Math.random()<.5);
+const m=rq(dy,dx);
+return{tipus:'num',frac:true,q:t(`Calcula la <b>pendent</b> de la recta que passa per A${C(A)} i B${C(B)}. (Pots escriure una fracció amb la tecla /)`,`Calcula la <b>pendiente</b> de la recta que pasa por A${C(A)} y B${C(B)}. (Puedes escribir una fracción con la tecla /)`),
+fig:graella({lines:[{m,n:radd(rq(A[1]),rneg(rmul(m,rq(A[0]))))}],pts:[{p:A,n:'A'},{p:B,n:'B'}]}),ans:rv(m),ansH:fR(m),u:'',
+errs:[[dx/dy,t('Has posat Δx dalt. La pendent és <b>pujada / avanç</b>: m = Δy / Δx.','Has puesto Δx arriba. La pendiente es <b>subida / avance</b>: m = Δy / Δx.')],[-dy/dx,t(`Revisa el signe. La recta ${rv(m)>0?'puja':'baixa'} d'esquerra a dreta, així que la pendent és ${rv(m)>0?'positiva':'negativa'}.`,`Revisa el signo. La recta ${rv(m)>0?'sube':'baja'} de izquierda a derecha, así que la pendiente es ${rv(m)>0?'positiva':'negativa'}.`)],[dy,t('Has posat només Δy. Cal dividir entre Δx.','Has puesto solo Δy. Hay que dividir entre Δx.')]],
+sol:[`m = ${F('y<sub>B</sub> − y<sub>A</sub>','x<sub>B</sub> − x<sub>A</sub>')} = ${F(`${B[1]} − (${A[1]})`,`${B[0]} − (${A[0]})`)}`.replace(/\(-/g,'(−').replace(/>-/g,'>−'),`m = ${F(dy,dx).replace(/-/g,'−')} = <b>${fR(m)}</b>${m.q!==1?' ≈ '+num(rv(m)):''}`,t(`${rv(m)>0?'Positiva: la recta puja.':'Negativa: la recta baixa.'}`,`${rv(m)>0?'Positiva: la recta sube.':'Negativa: la recta baja.'}`)],
+pista:t('m = (diferència de y) / (diferència de x), en el mateix ordre.','m = (diferencia de y) / (diferencia de x), en el mismo orden.')};
+};
+G.graf=()=>{
+let m,n;do{m=pick(MS);n=rq(nz(4))}while(rv(m)===rv(n)||ptsLine(m,n).length<2);
+const ops=[[m,n],[n,m],[rneg(m),n],[m,rneg(n)]];
+const why=[null,t('Has canviat la pendent i l\'ordenada en l\'origen. L\'ordenada n és on la recta talla l\'eix Y; la pendent és quant puja per cada pas a la dreta.','Has cambiado la pendiente y la ordenada en el origen. La ordenada n es donde la recta corta el eje Y; la pendiente es cuánto sube por cada paso a la derecha.'),t(`El signe de la pendent: la recta ${rv(m)>0?'puja':'baixa'}, així que m és ${rv(m)>0?'positiva':'negativa'}.`,`El signo de la pendiente: la recta ${rv(m)>0?'sube':'baja'}, así que m es ${rv(m)>0?'positiva':'negativa'}.`),t(`Mira on talla l'eix Y: en y = ${fR(n)}, no en ${fR(rneg(n))}.`,`Mira dónde corta el eje Y: en y = ${fR(n)}, no en ${fR(rneg(n))}.`)];
+return{tipus:'test',q:t('Quina és l\'equació d\'aquesta recta?','¿Cuál es la ecuación de esta recta?'),fig:graella({lines:[{m,n}]}),
+ans:{h:eq(m,n),k:eqk(m,n)},wrong:ops.slice(1).map((o,i)=>({h:eq(...o),k:eqk(...o),why:why[i+1]})),una:true,
+sol:[t(`Talla l'eix Y en (0, ${fR(n)}): n = ${fR(n)}`,`Corta el eje Y en (0, ${fR(n)}): n = ${fR(n)}`),t(`Per cada ${m.q} ${m.q===1?'quadret':'quadrets'} a la dreta, ${rv(m)>0?'puja':'baixa'} ${Math.abs(m.p)}: m = ${fR(m)}`,`Por cada ${m.q} ${m.q===1?'cuadrito':'cuadritos'} a la derecha, ${rv(m)>0?'sube':'baja'} ${Math.abs(m.p)}: m = ${fR(m)}`),`<b>${eq(m,n)}</b>`],
+pista:t('Primer mira on talla l\'eix Y (això és n).','Primero mira dónde corta el eje Y (eso es n).')};
+};
+G.dibuixa=()=>{
+let m,n;do{m=pick(MS);n=rq(R(-3,3))}while(ptsLine(m,n).length<3);
+return{tipus:'punt',need:2,q:t(`Toca <b>dos punts</b> de la recta <b>${eq(m,n)}</b>.`,`Toca <b>dos puntos</b> de la recta <b>${eq(m,n)}</b>.`),
+o:{},ok:p=>p.length===2&&!same(p[0],p[1])&&onL(p[0],m,n)&&onL(p[1],m,n),ans:null,
+fin:{lines:[{m,n,c:VERD}],pts:ptsLine(m,n).map(p=>({p,c:VERD,r:3.5}))},
+diag:p=>{const b=p.filter(q=>!onL(q,m,n));if(!b.length)return t('Has tocat dues vegades el mateix punt.','Has tocado dos veces el mismo punto.');const q=b[0];const y=rv(m)*q[0]+rv(n);return t(`El punt ${C(q)} no és de la recta: si x = ${q[0]}, y = ${fR(m)}·(${q[0]}) ${n.p<0?'−':'+'} ${Math.abs(n.p)} = ${num(y)}, no ${q[1]}.`.replace('(-','(−'),`El punto ${C(q)} no es de la recta: si x = ${q[0]}, y = ${fR(m)}·(${q[0]}) ${n.p<0?'−':'+'} ${Math.abs(n.p)} = ${num(y)}, no ${q[1]}.`.replace('(-','(−'))},
+sol:[t(`Dona valors a x i calcula y. Per exemple x = 0 → y = ${fR(n)}: punt (0, ${fR(n)}).`,`Da valores a x y calcula y. Por ejemplo x = 0 → y = ${fR(n)}: punto (0, ${fR(n)}).`),t(`x = ${m.q} → y = ${num(rv(m)*m.q+rv(n))}: punt (${m.q}, ${num(rv(m)*m.q+rv(n))}).`,`x = ${m.q} → y = ${num(rv(m)*m.q+rv(n))}: punto (${m.q}, ${num(rv(m)*m.q+rv(n))}).`),t('Tots els punts verds són de la recta.','Todos los puntos verdes son de la recta.')],
+pista:t(`Comença amb x = 0: quant val y? Després prova x = ${m.q}.`,`Empieza con x = 0: ¿cuánto vale y? Después prueba x = ${m.q}.`)};
+};
+G.tall=()=>{
+let P,m1,m2;do{P=rp(4);m1=nz(3);m2=nz(3)}while(m1===m2);
+const n1=P[1]-m1*P[0],n2=P[1]-m2*P[0];if(Math.abs(n1)>8||Math.abs(n2)>8)return G.tall();
+const e1=eq(rq(m1),rq(n1)),e2=eq(rq(m2),rq(n2));
+return{tipus:'punt',need:1,q:t(`Resol el sistema i toca el <b>punt de tall</b> de les rectes<br><b>r: ${e1}</b><br><b>s: ${e2}</b>`,`Resuelve el sistema y toca el <b>punto de corte</b> de las rectas<br><b>r: ${e1}</b><br><b>s: ${e2}</b>`),
+o:{},ok:p=>same(p[0],P),ans:P,
+errPts:[[[P[1],P[0]],t('Has canviat x i y. Primer la x (horitzontal), després la y.','Has cambiado x e y. Primero la x (horizontal), después la y.')]],
+fin:{lines:[{m:rq(m1),n:rq(n1),c:BLAU},{m:rq(m2),n:rq(n2),c:'#7a4fb0'}],pts:[{p:P,n:C(P),c:VERD}]},
+sol:[t('Iguala les dues y (mètode d\'igualació):','Iguala las dos y (método de igualación):')+` ${e1.slice(4)} = ${e2.slice(4)}`,`${m1-m2}x = ${n2-n1} → x = ${F(n2-n1,m1-m2)} = ${P[0]}`.replace(/-/g,'−'),t(`Substitueix: y = ${m1}·(${P[0]}) ${n1<0?'−':'+'} ${Math.abs(n1)} = ${P[1]}`,`Sustituye: y = ${m1}·(${P[0]}) ${n1<0?'−':'+'} ${Math.abs(n1)} = ${P[1]}`).replace(/-/g,'−').replace('−−','−'),t(`Punt de tall: <b>${C(P)}</b>`,`Punto de corte: <b>${C(P)}</b>`)],
+pista:t('Si les dues són y = …, iguala les parts de la dreta i troba x.','Si las dos son y = …, iguala las partes de la derecha y halla x.')};
+};
+G.eixos=()=>{
+let m,n,x0;do{m=nz(3);x0=nz(4);n=-m*x0}while(Math.abs(n)>6);
+const eY=Math.random()<.5;const r=eY?[0,n]:[x0,0];
+return{tipus:'punt',need:1,q:eY?t(`Toca el punt on la recta <b>${eq(rq(m),rq(n))}</b> talla l'<b>eix Y</b>.`,`Toca el punto donde la recta <b>${eq(rq(m),rq(n))}</b> corta el <b>eje Y</b>.`):t(`Toca el punt on la recta <b>${eq(rq(m),rq(n))}</b> talla l'<b>eix X</b>.`,`Toca el punto donde la recta <b>${eq(rq(m),rq(n))}</b> corta el <b>eje X</b>.`),
+o:{},ok:p=>same(p[0],r),ans:r,
+errPts:[[eY?[n,0]:[0,x0],t('Has posat el valor en l\'eix equivocat. En l\'eix Y, x = 0: el punt és (0, y). En l\'eix X, y = 0: el punt és (x, 0).','Has puesto el valor en el eje equivocado. En el eje Y, x = 0: el punto es (0, y). En el eje X, y = 0: el punto es (x, 0).')],[eY?[x0,0]:[0,n],eY?t('Aquest és el tall amb l\'eix X. Es demanava l\'eix Y (el vertical).','Este es el corte con el eje X. Se pedía el eje Y (el vertical).'):t('Aquest és el tall amb l\'eix Y. Es demanava l\'eix X (l\'horitzontal).','Este es el corte con el eje Y. Se pedía el eje X (el horizontal).')],[eY?[0,-n]:[-x0,0],t('Revisa el signe.','Revisa el signo.')]],
+fin:{lines:[{m:rq(m),n:rq(n),c:BLAU}],pts:[{p:r,n:C(r),c:VERD}]},
+sol:eY?[t('Eix Y → x = 0.','Eje Y → x = 0.'),`y = ${m}·0 ${n<0?'−':'+'} ${Math.abs(n)} = ${n}`.replace(/-/g,'−'),`<b>${C(r)}</b>`]:[t('Eix X → y = 0.','Eje X → y = 0.'),`0 = ${m}x ${n<0?'−':'+'} ${Math.abs(n)} → x = ${F(-n,m)} = ${x0}`.replace(/-/g,'−'),`<b>${C(r)}</b>`],
+pista:eY?t('En l\'eix Y, quant val x?','En el eje Y, ¿cuánto vale x?'):t('En l\'eix X, quant val y?','En el eje X, ¿cuánto vale y?')};
+};
+G.puntpend=()=>{
+let P,m;do{P=rp(4);m=pick(MS)}while(P[0]===0);
+const n=radd(rq(P[1]),rneg(rmul(m,rq(P[0]))));
+const W=[[m,radd(rq(P[1]),rmul(m,rq(P[0]))),t('Error de signe en desfer el parèntesi: −m·(x − x₀) dona −m·x₀ amb signe canviat. Fes-ho a poc a poc.','Error de signo al quitar el paréntesis: −m·(x − x₀) da −m·x₀ con el signo cambiado. Hazlo poco a poco.')],[m,rq(P[1]),t('Has posat n = y₀, però això només val si el punt té x₀ = 0. Cal partir de y − y₀ = m(x − x₀).','Has puesto n = y₀, pero eso solo vale si el punto tiene x₀ = 0. Hay que partir de y − y₀ = m(x − x₀).')],[m,radd(rq(P[0]),rneg(rmul(m,rq(P[1])))),t('Has canviat les coordenades del punt: x₀ = '+P[0]+' i y₀ = '+P[1]+'.','Has cambiado las coordenadas del punto: x₀ = '+P[0]+' e y₀ = '+P[1]+'.')],[rneg(m),n,t('El signe de la pendent no canvia.','El signo de la pendiente no cambia.')]];
+return{tipus:'test',q:t(`Quina és l'equació de la recta que passa per <b>P${C(P)}</b> amb pendent <b>m = ${fR(m)}</b>?`,`¿Cuál es la ecuación de la recta que pasa por <b>P${C(P)}</b> con pendiente <b>m = ${fR(m)}</b>?`),fig:null,
+ans:{h:eq(m,n),k:eqk(m,n)},wrong:W.map(w=>({h:eq(w[0],w[1]),k:eqk(w[0],w[1]),why:w[2]})),una:true,
+sol:[t('Equació punt-pendent: y − y₀ = m(x − x₀)','Ecuación punto-pendiente: y − y₀ = m(x − x₀)'),`y − (${P[1]}) = ${fR(m)}·(x − (${P[0]}))`.replace(/\(-/g,'(−'),t(`Aïlla y: y = ${fR(m)}x ${rv(rneg(rmul(m,rq(P[0]))))<0?'−':'+'} ${fR(rmul(m,rq(P[0])),true)} ${P[1]<0?'−':'+'} ${Math.abs(P[1])}`,`Despeja y: y = ${fR(m)}x ${rv(rneg(rmul(m,rq(P[0]))))<0?'−':'+'} ${fR(rmul(m,rq(P[0])),true)} ${P[1]<0?'−':'+'} ${Math.abs(P[1])}`),`<b>${eq(m,n)}</b>`,t(`Comprova: si x = ${P[0]}, dona y = ${P[1]}. ✔`,`Comprueba: si x = ${P[0]}, da y = ${P[1]}. ✔`)],
+pista:t('Escriu y − y₀ = m(x − x₀) i aïlla la y.','Escribe y − y₀ = m(x − x₀) y despeja la y.')};
+};
+G.general=()=>{
+const m=nz(4),n=nz(5);
+const ok=gen3(m,-1,n);
+const W=[[gen3(m,1,n),t('Quan passes la y a l\'altre costat canvia de signe: queda −y.','Cuando pasas la y al otro lado cambia de signo: queda −y.')],[gen3(m,-1,-n),t('Has canviat el signe de n sense motiu. Només passa la y: mx − y + n = 0.','Has cambiado el signo de n sin motivo. Solo pasa la y: mx − y + n = 0.')],[gen3(1,-m,n),t('Has posat la pendent amb la y. La m acompanya la x.','Has puesto la pendiente con la y. La m acompaña a la x.')]];
+return{tipus:'test',q:t(`Passa a forma <b>general</b> (Ax + By + C = 0) la recta <b>${eq(rq(m),rq(n))}</b>.`,`Pasa a forma <b>general</b> (Ax + By + C = 0) la recta <b>${eq(rq(m),rq(n))}</b>.`),fig:null,
+ans:{h:ok,k:ok},wrong:W.map(w=>({h:w[0],k:w[0],why:w[1]})),una:true,
+sol:[t('Passa-ho tot al mateix costat, de manera que a l\'altre quede 0.','Pásalo todo al mismo lado, de forma que en el otro quede 0.'),`0 = ${eq(rq(m),rq(n)).slice(4)} − y`,`<b>${ok}</b> &nbsp; (A = ${m}, B = −1, C = ${n})`.replace(/= -/g,'= −'),t('Comprova: m = −A/B = '+num(m)+'.','Comprueba: m = −A/B = '+num(m)+'.')],
+pista:t('Resta y a tots dos costats.','Resta y a los dos lados.')};
+};
+G.paral=()=>{
+const perp=Math.random()<.5;const m=perp?pick([rq(2),rq(3),rq(-2),rq(-3),rq(1,2),rq(-1,3),rq(2,3)]):pick(MS);const c=nz(4);
+if(!perp){
+let P;do{P=rp(3)}while(onL(P,m,rq(c)));
+const n=radd(rq(P[1]),rneg(rmul(m,rq(P[0]))));
+const pm=rq(-m.q,m.p);const npm=radd(rq(P[1]),rneg(rmul(pm,rq(P[0]))));
+const W=[[pm,npm,t('Aquesta és la <b>perpendicular</b>. Les paral·leles tenen la <b>mateixa</b> pendent.','Esa es la <b>perpendicular</b>. Las paralelas tienen la <b>misma</b> pendiente.')],[m,rq(c),t('Aquesta és la mateixa recta r. No passa per P.','Esa es la misma recta r. No pasa por P.')],[m,rq(P[1]),t('n no és y₀ (llevat que x₀ = 0). Fes servir punt-pendent.','n no es y₀ (salvo que x₀ = 0). Usa punto-pendiente.')],[rneg(m),radd(rq(P[1]),rmul(m,rq(P[0]))),t('Les paral·leles tenen la mateixa pendent, amb el mateix signe.','Las paralelas tienen la misma pendiente, con el mismo signo.')]];
+return{tipus:'test',q:t(`Quina recta és <b>paral·lela</b> a r: ${eq(m,rq(c))} i passa per <b>P${C(P)}</b>?`,`¿Qué recta es <b>paralela</b> a r: ${eq(m,rq(c))} y pasa por <b>P${C(P)}</b>?`),fig:graella({lines:[{m,n:rq(c),c:'#9aa3ad'}],pts:[{p:P,n:'P'}]}),
+ans:{h:eq(m,n),k:eqk(m,n)},wrong:W.map(w=>({h:eq(w[0],w[1]),k:eqk(w[0],w[1]),why:w[2]})),una:true,
+sol:[t(`Paral·lela → mateixa pendent: m = ${fR(m)}`,`Paralela → misma pendiente: m = ${fR(m)}`),`y − (${P[1]}) = ${fR(m)}(x − (${P[0]}))`.replace(/\(-/g,'(−'),`<b>${eq(m,n)}</b>`],
+pista:t('Paral·leles: mateixa m.','Paralelas: misma m.')};
+}
+const pm=rq(-m.q,m.p);
+const W=[[rq(m.q,m.p),t('Has fet la inversa però t\'has oblidat de canviar el signe. Perpendiculars: m′ = −1/m.','Has hecho la inversa pero te has olvidado de cambiar el signo. Perpendiculares: m′ = −1/m.')],[rneg(m),t('Has canviat el signe però no has fet la inversa. m′ = −1/m.','Has cambiado el signo pero no has hecho la inversa. m′ = −1/m.')],[m,t('Mateixa pendent → paral·leles, no perpendiculars.','Misma pendiente → paralelas, no perpendiculares.')]];
+return{tipus:'test',q:t(`Quina és la pendent d'una recta <b>perpendicular</b> a <b>${eq(m,rq(c))}</b>?`,`¿Cuál es la pendiente de una recta <b>perpendicular</b> a <b>${eq(m,rq(c))}</b>?`),fig:null,
+ans:{h:fR(pm),k:kR(pm)},wrong:W.map(w=>({h:fR(w[0]),k:kR(w[0]),why:w[1]})),
+sol:[t('Dues rectes són perpendiculars si m · m′ = −1, és a dir, m′ = −1/m.','Dos rectas son perpendiculares si m · m′ = −1, es decir, m′ = −1/m.'),`m′ = −1 / (${fR(m)}) = <b>${fR(pm)}</b>`,t(`Comprova: ${fR(m)} · ${fR(pm)} = −1 ✔`,`Comprueba: ${fR(m)} · ${fR(pm)} = −1 ✔`)],
+pista:t('Gira la fracció i canvia el signe.','Da la vuelta a la fracción y cambia el signo.')};
+};
+G.director=()=>{
+let A,B,dx,dy;do{A=rp(4);B=rp(4);dx=B[0]-A[0];dy=B[1]-A[1]}while(dx===0||dy===0||Math.abs(dx)===Math.abs(dy));
+const W=[[[dy,dx],t('Has canviat l\'ordre de les components: primer Δx, després Δy.','Has cambiado el orden de las componentes: primero Δx, después Δy.')],[[dx,-dy],t('Revisa el signe de la segona component.','Revisa el signo de la segunda componente.')],[[A[0]+B[0],A[1]+B[1]],t('Has sumat els punts. El vector director és B − A.','Has sumado los puntos. El vector director es B − A.')]];
+const v=[dx,dy];
+return{tipus:'test',q:t(`Quin és un <b>vector director</b> de la recta que passa per A${C(A)} i B${C(B)}? Amb ell, escriu l'equació <b>vectorial</b>.`,`¿Cuál es un <b>vector director</b> de la recta que pasa por A${C(A)} y B${C(B)}? Con él, escribe la ecuación <b>vectorial</b>.`),fig:graella({pts:[{p:A,n:'A'},{p:B,n:'B'}]}),
+ans:{h:C(v),k:v.join()},wrong:W.filter(w=>!(w[0][0]*dy===w[0][1]*dx)).map(w=>({h:C(w[0]),k:w[0].join(),why:w[1]})),
+sol:[t('Un vector director és qualsevol vector que va d\'un punt de la recta a un altre: AB = B − A.','Un vector director es cualquier vector que va de un punto de la recta a otro: AB = B − A.'),`v = ${C(B)} − ${C(A)} = <b>${C(v)}</b>`,t(`Equació vectorial: (x, y) = ${C(A)} + λ·${C(v)}`,`Ecuación vectorial: (x, y) = ${C(A)} + λ·${C(v)}`),t(`Pendent: m = ${F(dy,dx)} ${rq(dy,dx).q!==dx?'= '+fR(rq(dy,dx)):''}. Qualsevol múltiple, com ${C([-dx,-dy])}, també és director.`,`Pendiente: m = ${F(dy,dx)} ${rq(dy,dx).q!==dx?'= '+fR(rq(dy,dx)):''}. Cualquier múltiplo, como ${C([-dx,-dy])}, también es director.`).replace(/>-/g,'>−')],
+pista:t('Vector de A a B: final − origen.','Vector de A a B: final − origen.')};
+};
+G.param=()=>{
+let P,v,k,Q;do{P=rp(3);v=[nz(2),nz(2)];k=pick([2,-1,3,-2]);Q=[P[0]+k*v[0],P[1]+k*v[1]]}while(!inG5(Q));
+return{tipus:'punt',need:1,q:t(`La recta <b>(x, y) = ${C(P)} + λ·${C(v)}</b>. Toca el punt que s'obté amb <b>λ = ${k}</b>.`,`La recta <b>(x, y) = ${C(P)} + λ·${C(v)}</b>. Toca el punto que se obtiene con <b>λ = ${k}</b>.`).replace('λ = -','λ = −'),
+o:{},ok:p=>same(p[0],Q),ans:Q,
+errPts:[[[P[0]+v[0],P[1]+v[1]],t(`Això és λ = 1. Has de multiplicar el vector per ${k}.`,`Eso es λ = 1. Tienes que multiplicar el vector por ${k}.`)],[[k*v[0],k*v[1]],t(`Has oblidat de sumar el punt ${C(P)}.`,`Has olvidado sumar el punto ${C(P)}.`)],[[k*P[0]+v[0],k*P[1]+v[1]],t('Has multiplicat el punt en lloc del vector. λ multiplica el <b>vector director</b>.','Has multiplicado el punto en lugar del vector. λ multiplica el <b>vector director</b>.')]],
+fin:{lines:[{m:rq(v[1],v[0]),n:radd(rq(P[1]),rneg(rmul(rq(v[1],v[0]),rq(P[0])))),c:'#9aa3ad'}],vecs:[{a:P,b:Q,c:VERD}],pts:[{p:P,n:'P'},{p:Q,n:'λ='+k,c:VERD}]},
+sol:[`(x, y) = ${C(P)} + ${k}·${C(v)}`.replace(/ -/,' −'),`= ${C(P)} + ${C([k*v[0],k*v[1]])}`,`= <b>${C(Q)}</b>`,t('Paramètriques: x = x₀ + λ·v₁ , y = y₀ + λ·v₂','Paramétricas: x = x₀ + λ·v₁ , y = y₀ + λ·v₂')],
+pista:t('Multiplica el vector per λ i suma-li el punt.','Multiplica el vector por λ y súmale el punto.')};
+};
+const BLOCS=[
+{id:'sembl',sup:'arena',ic:'≈',nom:()=>t('Semblança i Tales','Semejanza y Tales'),sub:()=>t('Raó k, escales, ombres','Razón k, escalas, sombras'),gens:['raok','tales','escala','areak','volk','ombra']},
+{id:'pita',sup:'gespa',ic:'⊿',nom:()=>t('Pitàgores','Pitágoras'),sub:()=>t('En el pla i en l\'espai','En el plano y en el espacio'),gens:['hip','catet','classif','diag','diag3d','equil']},
+{id:'arees',sup:'blava',ic:'◔',nom:()=>t('Àrees i volums','Áreas y volúmenes'),sub:()=>t('Figures planes i cossos','Figuras planas y cuerpos'),gens:['trapezi','cercle','sector','hexa','cilindre','con','esfera','piramide','areacil','conlat','litres']},
+{id:'vect',sup:'lila',ic:'→',nom:()=>t('Vectors','Vectores'),sub:()=>t('Components, mòdul, operacions','Componentes, módulo, operaciones'),gens:['comp','extrem','origen','modul','suma','escalar','mitja','dist','simetric']},
+{id:'rect',sup:'verda2',ic:'╱',nom:()=>t('Rectes','Rectas'),sub:()=>t('Pendent, equacions, posicions','Pendiente, ecuaciones, posiciones'),gens:['pendent','graf','dibuixa','eixos','puntpend','general','paral','tall','director','param']}
+];
+const EX=(h)=>`<div class="exemple"><div class="etq">${t('Exemple resolt','Ejemplo resuelto')}</div>${h}</div>`;
+const FO=h=>`<div class="formula">${h}</div>`;
+const PQ=h=>`<div class="perque">🤔 ${h}</div>`;
+const MI=s=>`<div class="mini">${s}</div>`;
+
+const PERQUE={
+sembl:()=>({h:t('Per a què serveix la semblança?','¿Para qué sirve la semejanza?'),b:`<p>${t('Dues figures són <b>semblants</b> quan una és una còpia ampliada o reduïda de l\'altra: la mateixa forma, diferent grandària. És el que fa una fotocòpia al 200%, un mapa o el zoom del mòbil.','Dos figuras son <b>semejantes</b> cuando una es una copia ampliada o reducida de la otra: la misma forma, distinto tamaño. Es lo que hace una fotocopia al 200%, un mapa o el zoom del móvil.')}</p><p>${t('Serveix per mesurar coses que no podem mesurar directament: l\'altura d\'un arbre amb la seua ombra, la distància real en un mapa, o quanta pintura necessita una maqueta.','Sirve para medir cosas que no podemos medir directamente: la altura de un árbol con su sombra, la distancia real en un mapa, o cuánta pintura necesita una maqueta.')}</p><p>${t('<b>En aquest bloc:</b> raó de semblança, teorema de Tales, escales, i com canvien les àrees (k²) i els volums (k³).','<b>En este bloque:</b> razón de semejanza, teorema de Tales, escalas, y cómo cambian las áreas (k²) y los volúmenes (k³).')}</p>`}),
+pita:()=>({h:t('Per a què serveix Pitàgores?','¿Para qué sirve Pitágoras?'),b:`<p>${t('El teorema de Pitàgores relaciona els tres costats de qualsevol triangle rectangle. Com que gairebé tot es pot partir en triangles rectangles, serveix per a calcular <b>distàncies en diagonal</b>: la diagonal d\'una pista, d\'una pantalla de televisió (les polzades!), d\'una caixa, la generatriu d\'un con…','El teorema de Pitágoras relaciona los tres lados de cualquier triángulo rectángulo. Como casi todo se puede partir en triángulos rectángulos, sirve para calcular <b>distancias en diagonal</b>: la diagonal de una pista, de una pantalla de televisión (¡las pulgadas!), de una caja, la generatriz de un cono…')}</p><p>${t('<b>En aquest bloc:</b> hipotenusa i catets, saber si un triangle és acutangle, rectangle o obtusangle, i Pitàgores en l\'espai.','<b>En este bloque:</b> hipotenusa y catetos, saber si un triángulo es acutángulo, rectángulo u obtusángulo, y Pitágoras en el espacio.')}</p>`}),
+arees:()=>({h:t('Per a què serveixen àrees i volums?','¿Para qué sirven áreas y volúmenes?'),b:`<p>${t('L\'<b>àrea</b> diu quanta superfície ocupa una cosa (m², cm²): quanta gespa per a una pista, quanta llanda per a un pot. El <b>volum</b> diu quant d\'espai ocupa (m³, litres): quanta aigua cap en una piscina, quant d\'aire porta una pilota.','El <b>área</b> dice cuánta superficie ocupa algo (m², cm²): cuánto césped para una pista, cuánta chapa para un bote. El <b>volumen</b> dice cuánto espacio ocupa (m³, litros): cuánta agua cabe en una piscina, cuánto aire lleva una pelota.')}</p><p>${t('No cal memoritzar cada fórmula a cegues: quasi totes vénen de tres idees (base × altura, dividir entre 2 o entre 3, i π per a les coses redones).','No hace falta memorizar cada fórmula a ciegas: casi todas vienen de tres ideas (base × altura, dividir entre 2 o entre 3, y π para las cosas redondas).')}</p>`}),
+vect:()=>({h:t('Per a què serveixen els vectors?','¿Para qué sirven los vectores?'),b:`<p>${t('Un número sol diu "quant". Un <b>vector</b> diu "quant i cap on": és una fletxa. Amb vectors es descriuen moviments, velocitats i forces: el colp a una pilota, el vent, la trajectòria d\'un jugador, els moviments d\'un videojoc o del GPS.','Un número solo dice "cuánto". Un <b>vector</b> dice "cuánto y hacia dónde": es una flecha. Con vectores se describen movimientos, velocidades y fuerzas: el golpe a una pelota, el viento, la trayectoria de un jugador, los movimientos de un videojuego o del GPS.')}</p><p>${t('<b>En aquest bloc</b> jugaràs sobre una graella: toca els punts per a respondre.','<b>En este bloque</b> jugarás sobre una cuadrícula: toca los puntos para responder.')}</p>`}),
+rect:()=>({h:t('Per a què serveixen les rectes?','¿Para qué sirven las rectas?'),b:`<p>${t('Una recta en uns eixos és la forma més simple de relacionar dues coses que creixen al mateix ritme: el preu segons els minuts de pista, la distància segons el temps a velocitat constant… La <b>pendent</b> diu com de ràpid creix.','Una recta en unos ejes es la forma más simple de relacionar dos cosas que crecen al mismo ritmo: el precio según los minutos de pista, la distancia según el tiempo a velocidad constante… La <b>pendiente</b> dice lo rápido que crece.')}</p><p>${t('<b>En aquest bloc:</b> pendent, equacions (explícita, punt-pendent, general, vectorial i paramètrica), rectes paral·leles i perpendiculars, i punts de tall.','<b>En este bloque:</b> pendiente, ecuaciones (explícita, punto-pendiente, general, vectorial y paramétrica), rectas paralelas y perpendiculares, y puntos de corte.')}</p>`})
+};
+
+const TEORIA={
+sembl:()=>[
+{h:t('1. Figures semblants i raó k','1. Figuras semejantes y razón k'),b:`<p>${t('Dues figures són <b>semblants</b> si tenen els <b>angles iguals</b> i els <b>costats proporcionals</b>: tots els costats de la segona s\'obtenen multiplicant els de la primera pel mateix número <b>k</b>, la <b>raó de semblança</b>.','Dos figuras son <b>semejantes</b> si tienen los <b>ángulos iguales</b> y los <b>lados proporcionales</b>: todos los lados de la segunda se obtienen multiplicando los de la primera por el mismo número <b>k</b>, la <b>razón de semejanza</b>.')}</p>${FO(`k = ${F(t('costat de la còpia','lado de la copia'),t('costat corresponent de l\'original','lado correspondiente del original'))}`)}<p>${t('Si k > 1 és una ampliació; si k < 1, una reducció.','Si k > 1 es una ampliación; si k < 1, una reducción.')}</p>${MI(semblSVG('4 cm','5 cm','6 cm','x'))}${EX(t('Els costats 4 i 6 es corresponen: k = 6/4 = 1,5. Aleshores x = 5 · 1,5 = <b>7,5 cm</b>.','Los lados 4 y 6 se corresponden: k = 6/4 = 1,5. Entonces x = 5 · 1,5 = <b>7,5 cm</b>.'))}${PQ(t('Error típic: pensar "de 4 a 6 sumem 2, doncs de 5 a 7". No! En semblança es <b>multiplica</b>. Si sumes, la forma es deforma.','Error típico: pensar "de 4 a 6 sumamos 2, pues de 5 a 7". ¡No! En semejanza se <b>multiplica</b>. Si sumas, la forma se deforma.'))}<p>${t('Dos triangles són semblants només que tinguen <b>dos angles iguals</b> (el tercer ja és igual, perquè sumen 180°).','Dos triángulos son semejantes con solo tener <b>dos ángulos iguales</b> (el tercero ya es igual, porque suman 180°).')}</p>`},
+{h:t('2. Teorema de Tales','2. Teorema de Tales'),b:`<p>${t('Si dues rectes són tallades per diverses rectes <b>paral·leles</b>, els segments que queden en una són <b>proporcionals</b> als que queden en l\'altra.','Si dos rectas son cortadas por varias rectas <b>paralelas</b>, los segmentos que quedan en una son <b>proporcionales</b> a los que quedan en la otra.')}</p>${MI(talesSVG('AB','BC',"A'B'","B'C'"))}${FO(`${F('AB','BC')} = ${F("A'B'","B'C'")}`)}${EX(t(`AB = 3, BC = 6, A'B' = 4,5. Llavors ${F(3,6)} = ${F('4,5','x')} → x = ${F('4,5 · 6',3)} = <b>9</b>.`,`AB = 3, BC = 6, A'B' = 4,5. Entonces ${F(3,6)} = ${F('4,5','x')} → x = ${F('4,5 · 6',3)} = <b>9</b>.`))}<h3>${t('Triangles en posició de Tales','Triángulos en posición de Tales')}</h3><p>${t('Si tallem un triangle amb una recta paral·lela a un costat, el triangle xicotet és <b>semblant</b> al gran. Així funciona el problema de les ombres: el sol fa raigs paral·lels, i la persona i l\'arbre amb les seues ombres formen triangles semblants.','Si cortamos un triángulo con una recta paralela a un lado, el triángulo pequeño es <b>semejante</b> al grande. Así funciona el problema de las sombras: el sol da rayos paralelos, y la persona y el árbol con sus sombras forman triángulos semejantes.')}</p>${MI(ombraSVG('1,6 m','2 m','H','10 m'))}${EX(t(`${F('H',10)} = ${F('1,6',2)} → H = ${F('1,6 · 10',2)} = <b>8 m</b>.`,`${F('H',10)} = ${F('1,6',2)} → H = ${F('1,6 · 10',2)} = <b>8 m</b>.`))}`},
+{h:t('3. Escales, àrees i volums','3. Escalas, áreas y volúmenes'),b:`<p>${t('Una <b>escala 1 : n</b> vol dir que 1 unitat del plànol són n unitats reals (de la mateixa unitat). Després passem a la unitat que ens interesse.','Una <b>escala 1 : n</b> significa que 1 unidad del plano son n unidades reales (de la misma unidad). Después pasamos a la unidad que nos interese.')}</p><table class="taula"><tr><th>km</th><th>hm</th><th>dam</th><th>m</th><th>dm</th><th>cm</th></tr><tr><td colspan="6">${t('cada pas ×10 cap a la dreta · 1 km = 100 000 cm','cada paso ×10 hacia la derecha · 1 km = 100 000 cm')}</td></tr></table>${EX(t('Mapa 1 : 50 000. Mesures 7 cm → 7 · 50 000 = 350 000 cm = <b>3,5 km</b>.','Mapa 1 : 50 000. Mides 7 cm → 7 · 50 000 = 350 000 cm = <b>3,5 km</b>.'))}<h3>${t('Àrees i volums de figures semblants','Áreas y volúmenes de figuras semejantes')}</h3>${FO(t('longituds × k &nbsp;·&nbsp; àrees × k² &nbsp;·&nbsp; volums × k³','longitudes × k &nbsp;·&nbsp; áreas × k² &nbsp;·&nbsp; volúmenes × k³'))}<p>${t('Per què? Una àrea és llarg × ample: si cadascun es multiplica per k, l\'àrea es multiplica per k · k. Un volum és llarg × ample × alt: k · k · k.','¿Por qué? Un área es largo × ancho: si cada uno se multiplica por k, el área se multiplica por k · k. Un volumen es largo × ancho × alto: k · k · k.')}</p>${EX(t('Un cub de 1 cm de costat té 1 cm³. Si dobles el costat (k = 2), té 2·2·2 = <b>8 cm³</b>: hi caben 8 cubs xicotets, no 2.','Un cubo de 1 cm de lado tiene 1 cm³. Si doblas el lado (k = 2), tiene 2·2·2 = <b>8 cm³</b>: caben 8 cubos pequeños, no 2.'))}`}
+],
+pita:()=>[
+{h:t('1. El teorema de Pitàgores','1. El teorema de Pitágoras'),b:`<p>${t('En un <b>triangle rectangle</b> (amb un angle de 90°), el costat oposat a l\'angle recte és la <b>hipotenusa</b> (el més llarg) i els altres dos són els <b>catets</b>.','En un <b>triángulo rectángulo</b> (con un ángulo de 90°), el lado opuesto al ángulo recto es la <b>hipotenusa</b> (el más largo) y los otros dos son los <b>catetos</b>.')}</p>${MI(triRSVG('b','c','a'))}${FO('a² = b² + c²')}<p>${t('Per a la hipotenusa se <b>sumen</b> els quadrats; per a un catet es <b>resten</b>:','Para la hipotenusa se <b>suman</b> los cuadrados; para un cateto se <b>restan</b>:')}</p>${FO('a = √(b² + c²) &nbsp;&nbsp;·&nbsp;&nbsp; b = √(a² − c²)')}${EX(t('Catets 6 i 8: a² = 36 + 64 = 100 → a = <b>10</b>.<br>Hipotenusa 13 i catet 5: b² = 169 − 25 = 144 → b = <b>12</b>.','Catetos 6 y 8: a² = 36 + 64 = 100 → a = <b>10</b>.<br>Hipotenusa 13 y cateto 5: b² = 169 − 25 = 144 → b = <b>12</b>.'))}${PQ(t('Per què funciona? Si dibuixes un quadrat damunt de cada costat, l\'àrea del quadrat gran és igual a la suma dels dos xicotets. Per això parlem de "quadrats".','¿Por qué funciona? Si dibujas un cuadrado sobre cada lado, el área del cuadrado grande es igual a la suma de los dos pequeños. Por eso hablamos de "cuadrados".'))}<p>${t('Errors típics: sumar els costats (6 + 8 = 14 ✘) o oblidar l\'arrel (100 ✘).','Errores típicos: sumar los lados (6 + 8 = 14 ✘) u olvidar la raíz (100 ✘).')}</p>`},
+{h:t('2. Classificar triangles i figures planes','2. Clasificar triángulos y figuras planas'),b:`<p>${t('Amb els tres costats (c el més gran) podem saber com és el triangle sense dibuixar-lo:','Con los tres lados (c el mayor) podemos saber cómo es el triángulo sin dibujarlo:')}</p><table class="taula"><tr><th>c² = a² + b²</th><th>c² &lt; a² + b²</th><th>c² &gt; a² + b²</th></tr><tr><td>${t('rectangle','rectángulo')}</td><td>${t('acutangle','acutángulo')}</td><td>${t('obtusangle','obtusángulo')}</td></tr></table>${EX(t('Costats 5, 6, 8: 8² = 64; 5² + 6² = 61. Com 64 > 61, és <b>obtusangle</b>.','Lados 5, 6, 8: 8² = 64; 5² + 6² = 61. Como 64 > 61, es <b>obtusángulo</b>.'))}<h3>${t('Pitàgores dins d\'altres figures','Pitágoras dentro de otras figuras')}</h3><p>${t('<b>Diagonal d\'un rectangle:</b> d = √(l² + a²). Pista de tennis 23,77 × 10,97 → d ≈ 26,18 m.','<b>Diagonal de un rectángulo:</b> d = √(l² + a²). Pista de tenis 23,77 × 10,97 → d ≈ 26,18 m.')}</p><p>${t('<b>Altura d\'un triangle equilàter</b> de costat l: l\'altura cau al mig, així que h = √(l² − (l/2)²). Amb l = 6: h = √(36 − 9) = √27 ≈ 5,20.','<b>Altura de un triángulo equilátero</b> de lado l: la altura cae en el medio, así que h = √(l² − (l/2)²). Con l = 6: h = √(36 − 9) = √27 ≈ 5,20.')}</p><p>${t('<b>Apotema d\'un hexàgon regular:</b> l\'hexàgon són 6 triangles equilàters, el radi és igual al costat, i l\'apotema és l\'altura d\'un d\'eixos triangles.','<b>Apotema de un hexágono regular:</b> el hexágono son 6 triángulos equiláteros, el radio es igual al lado, y la apotema es la altura de uno de esos triángulos.')}</p>`},
+{h:t('3. Pitàgores en l\'espai','3. Pitágoras en el espacio'),b:`<p>${t('La diagonal d\'una caixa (ortoedre) d\'arestes a, b, c es calcula en dos passos:','La diagonal de una caja (ortoedro) de aristas a, b, c se calcula en dos pasos:')}</p>${MI(capsaSVG('a','b','c',true))}<ol class="passos"><li>${t('Diagonal de la base (blava): d² = a² + b²','Diagonal de la base (azul): d² = a² + b²')}</li><li>${t('Diagonal de la caixa (roja): és la hipotenusa del triangle amb catets d i c → D² = d² + c²','Diagonal de la caja (roja): es la hipotenusa del triángulo con catetos d y c → D² = d² + c²')}</li></ol>${FO('D = √(a² + b² + c²)')}${EX(t('Caixa 3 × 4 × 12: D = √(9 + 16 + 144) = √169 = <b>13</b>.','Caja 3 × 4 × 12: D = √(9 + 16 + 144) = √169 = <b>13</b>.'))}<h3>${t('En el con','En el cono')}</h3><p>${t('El radi r, l\'altura h i la <b>generatriu</b> g (la línia inclinada) formen un triangle rectangle: <b>g² = r² + h²</b>. La necessitaràs per a l\'àrea lateral del con.','El radio r, la altura h y la <b>generatriz</b> g (la línea inclinada) forman un triángulo rectángulo: <b>g² = r² + h²</b>. La necesitarás para el área lateral del cono.')}</p>${MI(conSVG('r','h','g'))}`}
+],
+arees:()=>[
+{h:t('1. Àrees de figures planes','1. Áreas de figuras planas'),b:`<table class="taula"><tr><th>${t('Figura','Figura')}</th><th>${t('Àrea','Área')}</th></tr><tr><td>${t('Rectangle','Rectángulo')}</td><td>b · h</td></tr><tr><td>${t('Triangle','Triángulo')}</td><td>${F('b · h',2)}</td></tr><tr><td>${t('Trapezi','Trapecio')}</td><td>${F('(B + b) · h',2)}</td></tr><tr><td>${t('Rombe','Rombo')}</td><td>${F('D · d',2)}</td></tr><tr><td>${t('Polígon regular','Polígono regular')}</td><td>${F(t('Perímetre · ap','Perímetro · ap'),2)}</td></tr><tr><td>${t('Cercle','Círculo')}</td><td>π · r²</td></tr><tr><td>${t('Sector de α°','Sector de α°')}</td><td>π · r² · ${F('α',360)}</td></tr></table><p>${t('<b>Longitud</b> de la circumferència: L = 2πr. No la confongues amb l\'àrea!','<b>Longitud</b> de la circunferencia: L = 2πr. ¡No la confundas con el área!')}</p>${PQ(t('Per què el triangle divideix entre 2? Perquè dos triangles iguals fan un paral·lelogram. I el polígon regular és un grapat de triangles iguals amb altura = apotema.','¿Por qué el triángulo divide entre 2? Porque dos triángulos iguales forman un paralelogramo. Y el polígono regular es un puñado de triángulos iguales con altura = apotema.'))}${EX(t(`Trapezi amb B = 10, b = 6, h = 4: A = ${F('(10 + 6) · 4',2)} = ${F(64,2)} = <b>32</b>.<br>Sector de radi 6 i 60°: A = π · 36 · ${F(60,360)} = 6π ≈ <b>18,85</b>.`,`Trapecio con B = 10, b = 6, h = 4: A = ${F('(10 + 6) · 4',2)} = ${F(64,2)} = <b>32</b>.<br>Sector de radio 6 y 60°: A = π · 36 · ${F(60,360)} = 6π ≈ <b>18,85</b>.`))}`},
+{h:t('2. Volums','2. Volúmenes'),b:`<p>${t('Tres famílies:','Tres familias:')}</p><table class="taula"><tr><th>${t('Cos','Cuerpo')}</th><th>${t('Volum','Volumen')}</th></tr><tr><td>${t('Prisma, cilindre','Prisma, cilindro')}</td><td>A<sub>base</sub> · h</td></tr><tr><td>${t('Piràmide, con','Pirámide, cono')}</td><td>${F('A<sub>base</sub> · h',3)}</td></tr><tr><td>${t('Esfera','Esfera')}</td><td>${F(4,3)} · π · r³</td></tr></table><p>${t('Cilindre: V = π r² h. Con: V = π r² h / 3. Una piràmide o un con és exactament <b>un terç</b> del prisma o cilindre amb la mateixa base i altura (si l\'omplis d\'aigua tres vegades, omples el cilindre).','Cilindro: V = π r² h. Cono: V = π r² h / 3. Una pirámide o un cono es exactamente <b>un tercio</b> del prisma o cilindro con la misma base y altura (si lo llenas de agua tres veces, llenas el cilindro).')}</p>${MI(cilSVG('r','h'))}${EX(t('Pot de pilotes: diàmetre 7 cm → r = 3,5 cm; h = 25 cm. V = π · 3,5² · 25 = π · 306,25 ≈ <b>962,11 cm³</b>.<br>Una pilota de radi 3,35 cm: V = 4/3 · π · 3,35³ ≈ <b>157,48 cm³</b>.','Bote de pelotas: diámetro 7 cm → r = 3,5 cm; h = 25 cm. V = π · 3,5² · 25 = π · 306,25 ≈ <b>962,11 cm³</b>.<br>Una pelota de radio 3,35 cm: V = 4/3 · π · 3,35³ ≈ <b>157,48 cm³</b>.'))}${PQ(t('Atenció al radi: si et donen el <b>diàmetre</b>, divideix entre 2 abans de començar.','Atención al radio: si te dan el <b>diámetro</b>, divide entre 2 antes de empezar.'))}`},
+{h:t('3. Àrees de cossos i unitats','3. Áreas de cuerpos y unidades'),b:`<p>${t('L\'àrea d\'un cos és la de totes les seues cares. Imagina que el desplegues:','El área de un cuerpo es la de todas sus caras. Imagina que lo despliegas:')}</p><table class="taula"><tr><th>${t('Cos','Cuerpo')}</th><th>${t('Àrea lateral','Área lateral')}</th><th>${t('Àrea total','Área total')}</th></tr><tr><td>${t('Cilindre','Cilindro')}</td><td>2π r h</td><td>2π r h + 2π r²</td></tr><tr><td>Con</td><td>π r g</td><td>π r g + π r²</td></tr><tr><td>Esfera</td><td colspan="2">4 π r²</td></tr><tr><td>Prisma</td><td>${t('perímetre base · h','perímetro base · h')}</td><td>${t('lateral + 2 bases','lateral + 2 bases')}</td></tr></table><p>${t('El lateral del cilindre desplegat és un rectangle: d\'ample la circumferència (2πr) i d\'alt h. En el con, g és la generatriu (g² = r² + h²).','El lateral del cilindro desplegado es un rectángulo: de ancho la circunferencia (2πr) y de alto h. En el cono, g es la generatriz (g² = r² + h²).')}</p><h3>${t('Unitats de volum i capacitat','Unidades de volumen y capacidad')}</h3>${FO('1 m³ = 1000 dm³ = 1000 L &nbsp;·&nbsp; 1 dm³ = 1 L &nbsp;·&nbsp; 1 cm³ = 1 mL')}${EX(t('Piscina 10 × 5 × 2 m: V = 100 m³ = <b>100 000 L</b>.<br>Cilindre r = 3, h = 10, tancat: A = 2π·3·10 + 2π·9 = 60π + 18π = 78π ≈ <b>245,04 cm²</b>.','Piscina 10 × 5 × 2 m: V = 100 m³ = <b>100 000 L</b>.<br>Cilindro r = 3, h = 10, cerrado: A = 2π·3·10 + 2π·9 = 60π + 18π = 78π ≈ <b>245,04 cm²</b>.'))}`}
+],
+vect:()=>[
+{h:t('1. Vectors i components','1. Vectores y componentes'),b:`<p>${t('Un <b>vector</b> AB és una fletxa que va del punt A (<b>origen</b>) al punt B (<b>extrem</b>). Té:','Un <b>vector</b> AB es una flecha que va del punto A (<b>origen</b>) al punto B (<b>extremo</b>). Tiene:')}</p><ul style="margin-left:20px"><li>${t('<b>mòdul</b>: la llargària','<b>módulo</b>: la longitud')}</li><li>${t('<b>direcció</b>: la recta sobre la qual està','<b>dirección</b>: la recta sobre la que está')}</li><li>${t('<b>sentit</b>: cap a on apunta la fletxa','<b>sentido</b>: hacia dónde apunta la flecha')}</li></ul>${FO(t('AB = B − A = (x<sub>B</sub> − x<sub>A</sub> , y<sub>B</sub> − y<sub>A</sub>) &nbsp; <small>final − origen</small>','AB = B − A = (x<sub>B</sub> − x<sub>A</sub> , y<sub>B</sub> − y<sub>A</sub>) &nbsp; <small>final − origen</small>'))}${MI(graella({vecs:[{a:[1,2],b:[4,-1],c:BLAU}],pts:[{p:[1,2],n:'A(1, 2)'},{p:[4,-1],n:'B(4, −1)'}]}))}${EX(t('A(1, 2), B(4, −1): AB = (4 − 1, −1 − 2) = <b>(3, −3)</b>. Vol dir: 3 a la dreta i 3 avall.','A(1, 2), B(4, −1): AB = (4 − 1, −1 − 2) = <b>(3, −3)</b>. Significa: 3 a la derecha y 3 hacia abajo.'))}<h3>${t('Mòdul','Módulo')}</h3>${FO('|v| = √(v₁² + v₂²)')}<p>${t('És Pitàgores: les components són els catets i el vector la hipotenusa. |(3, −4)| = √(9 + 16) = 5.','Es Pitágoras: las componentes son los catetos y el vector la hipotenusa. |(3, −4)| = √(9 + 16) = 5.')}</p>`},
+{h:t('2. Operacions amb vectors','2. Operaciones con vectores'),b:`<p>${t('<b>Suma i resta:</b> component a component.','<b>Suma y resta:</b> componente a componente.')}</p>${FO('u + v = (u₁ + v₁ , u₂ + v₂)')}<p>${t('Gràficament, es posa v a continuació d\'u (on acaba u, comença v); la suma va de l\'inici d\'u al final de v.','Gráficamente, se pone v a continuación de u (donde acaba u, empieza v); la suma va del inicio de u al final de v.')}</p>${MI(graella({vecs:[{a:[0,0],b:[3,1],c:BLAU,n:'u'},{a:[3,1],b:[4,4],c:'#7a4fb0',n:'v',d:true},{a:[0,0],b:[4,4],c:VERD,n:'u+v'}]}))}${EX('u = (3, 1), v = (1, 3) → u + v = <b>(4, 4)</b> ; u − v = <b>(2, −2)</b>')}<p>${t('<b>Producte per un número k:</b> k·v = (k·v₁ , k·v₂). Mateixa direcció; el mòdul es multiplica per |k|; si k < 0, canvia el sentit.','<b>Producto por un número k:</b> k·v = (k·v₁ , k·v₂). Misma dirección; el módulo se multiplica por |k|; si k < 0, cambia el sentido.')}</p><p>${t('<b>Aplicar un vector a un punt:</b> si partim d\'A i ens movem segons v, arribem a <b>B = A + v</b>. I a l\'inrevés, l\'origen és A = B − v.','<b>Aplicar un vector a un punto:</b> si partimos de A y nos movemos según v, llegamos a <b>B = A + v</b>. Y al revés, el origen es A = B − v.')}</p>`},
+{h:t('3. Punt mitjà, distància i simètric','3. Punto medio, distancia y simétrico'),b:`${FO(t('Punt mitjà: M = ( (x<sub>A</sub> + x<sub>B</sub>)/2 , (y<sub>A</sub> + y<sub>B</sub>)/2 )','Punto medio: M = ( (x<sub>A</sub> + x<sub>B</sub>)/2 , (y<sub>A</sub> + y<sub>B</sub>)/2 )'))}<p>${t('És la mitjana de les coordenades.','Es la media de las coordenadas.')}</p>${EX(t('A(−2, 1), B(4, 5): M = (2/2, 6/2) = <b>(1, 3)</b>.','A(−2, 1), B(4, 5): M = (2/2, 6/2) = <b>(1, 3)</b>.'))}${FO(t('Distància: d(A, B) = |AB| = √((x<sub>B</sub> − x<sub>A</sub>)² + (y<sub>B</sub> − y<sub>A</sub>)²)','Distancia: d(A, B) = |AB| = √((x<sub>B</sub> − x<sub>A</sub>)² + (y<sub>B</sub> − y<sub>A</sub>)²)'))}${EX(t('A(1, 1), B(4, 5): AB = (3, 4), d = √(9 + 16) = <b>5</b>.','A(1, 1), B(4, 5): AB = (3, 4), d = √(9 + 16) = <b>5</b>.'))}<p>${t('<b>Simètric</b> d\'A respecte de M: és el punt A\' tal que M és el punt mitjà d\'A i A\'. Es calcula fent el mateix salt d\'A a M una altra vegada: <b>A\' = M + AM = 2M − A</b>.','<b>Simétrico</b> de A respecto de M: es el punto A\' tal que M es el punto medio de A y A\'. Se calcula haciendo el mismo salto de A a M otra vez: <b>A\' = M + AM = 2M − A</b>.')}</p>${EX(t('A(1, 2), M(3, 1): AM = (2, −1) → A\' = (3 + 2, 1 − 1) = <b>(5, 0)</b>.','A(1, 2), M(3, 1): AM = (2, −1) → A\' = (3 + 2, 1 − 1) = <b>(5, 0)</b>.'))}`}
+],
+rect:()=>[
+{h:t('1. La pendent','1. La pendiente'),b:`<p>${t('La <b>pendent</b> m d\'una recta diu quant puja (o baixa) per cada unitat que avancem cap a la dreta.','La <b>pendiente</b> m de una recta dice cuánto sube (o baja) por cada unidad que avanzamos hacia la derecha.')}</p>${FO(`m = ${F('y₂ − y₁','x₂ − x₁')} = ${F(t('pujada','subida'),t('avanç','avance'))}`)}<ul style="margin-left:20px"><li>${t('m > 0: la recta puja','m > 0: la recta sube')}</li><li>${t('m < 0: la recta baixa','m < 0: la recta baja')}</li><li>${t('m = 0: horitzontal (y = n)','m = 0: horizontal (y = n)')}</li><li>${t('recta vertical (x = k): no té pendent','recta vertical (x = k): no tiene pendiente')}</li></ul>${MI(graella({lines:[{m:rq(2,3),n:rq(-1,3)}],pts:[{p:[-1,-1],n:'(−1, −1)'},{p:[2,1],n:'(2, 1)'}]}))}${EX(t(`Per (−1, −1) i (2, 1): m = ${F('1 − (−1)','2 − (−1)')} = ${F(2,3)}. Per cada 3 a la dreta, puja 2.`,`Por (−1, −1) y (2, 1): m = ${F('1 − (−1)','2 − (−1)')} = ${F(2,3)}. Por cada 3 a la derecha, sube 2.`))}<p>${t('<b>Vector director</b>: qualsevol vector que va d\'un punt de la recta a un altre, v = (v₁, v₂). La pendent és m = v₂ / v₁.','<b>Vector director</b>: cualquier vector que va de un punto de la recta a otro, v = (v₁, v₂). La pendiente es m = v₂ / v₁.')}</p>`},
+{h:t('2. Les equacions de la recta','2. Las ecuaciones de la recta'),b:`<p>${t('La mateixa recta es pot escriure de diverses maneres:','La misma recta se puede escribir de varias maneras:')}</p><table class="taula"><tr><th>${t('Nom','Nombre')}</th><th>${t('Equació','Ecuación')}</th></tr><tr><td>${t('Vectorial','Vectorial')}</td><td>(x, y) = (x₀, y₀) + λ(v₁, v₂)</td></tr><tr><td>${t('Paramètriques','Paramétricas')}</td><td>x = x₀ + λv₁ ; y = y₀ + λv₂</td></tr><tr><td>${t('Contínua','Continua')}</td><td>${F('x − x₀','v₁')} = ${F('y − y₀','v₂')}</td></tr><tr><td>${t('Punt-pendent','Punto-pendiente')}</td><td>y − y₀ = m(x − x₀)</td></tr><tr><td>${t('Explícita','Explícita')}</td><td>y = mx + n</td></tr><tr><td>General</td><td>Ax + By + C = 0</td></tr></table><p>${t('En l\'explícita, <b>n</b> és l\'<b>ordenada en l\'origen</b>: on la recta talla l\'eix Y. En la general, m = −A/B. En la vectorial, cada valor de λ dona un punt de la recta.','En la explícita, <b>n</b> es la <b>ordenada en el origen</b>: donde la recta corta el eje Y. En la general, m = −A/B. En la vectorial, cada valor de λ da un punto de la recta.')}</p>${EX(t('Recta per P(2, 1) amb m = 3:<br>Punt-pendent: y − 1 = 3(x − 2)<br>Explícita: y = 3x − 6 + 1 → <b>y = 3x − 5</b><br>General: <b>3x − y − 5 = 0</b><br>Vectorial (v = (1, 3)): <b>(x, y) = (2, 1) + λ(1, 3)</b>','Recta por P(2, 1) con m = 3:<br>Punto-pendiente: y − 1 = 3(x − 2)<br>Explícita: y = 3x − 6 + 1 → <b>y = 3x − 5</b><br>General: <b>3x − y − 5 = 0</b><br>Vectorial (v = (1, 3)): <b>(x, y) = (2, 1) + λ(1, 3)</b>'))}${PQ(t('Per a saber si un punt és de la recta, substitueix les seues coordenades: si es compleix la igualtat, hi és.','Para saber si un punto es de la recta, sustituye sus coordenadas: si se cumple la igualdad, está.'))}`},
+{h:t('3. Posicions i punts de tall','3. Posiciones y puntos de corte'),b:`<table class="taula"><tr><th>${t('Paral·leles','Paralelas')}</th><th>${t('Perpendiculars','Perpendiculares')}</th><th>${t('Secants','Secantes')}</th></tr><tr><td>m = m′</td><td>m · m′ = −1<br>m′ = −1/m</td><td>m ≠ m′</td></tr></table>${EX(t('Perpendicular a y = 2x + 1: m′ = −1/2. Perpendicular a y = −⅔x: m′ = 3/2 (es gira la fracció i es canvia el signe).','Perpendicular a y = 2x + 1: m′ = −1/2. Perpendicular a y = −⅔x: m′ = 3/2 (se da la vuelta a la fracción y se cambia el signo).'))}<h3>${t('Punt de tall de dues rectes','Punto de corte de dos rectas')}</h3><p>${t('És la solució del sistema format per les dues equacions.','Es la solución del sistema formado por las dos ecuaciones.')}</p>${EX(t('y = 2x − 1 i y = −x + 5 → 2x − 1 = −x + 5 → 3x = 6 → x = 2; y = 2·2 − 1 = 3. Tall: <b>(2, 3)</b>.','y = 2x − 1 e y = −x + 5 → 2x − 1 = −x + 5 → 3x = 6 → x = 2; y = 2·2 − 1 = 3. Corte: <b>(2, 3)</b>.'))}${MI(graella({lines:[{m:rq(2),n:rq(-1)},{m:rq(-1),n:rq(5),c:'#7a4fb0'}],pts:[{p:[2,3],n:'(2, 3)',c:VERD}]}))}<h3>${t('Tall amb els eixos','Corte con los ejes')}</h3><p>${t('Eix Y: fes x = 0 → punt (0, n). Eix X: fes y = 0 i aïlla x → punt (x, 0).','Eje Y: haz x = 0 → punto (0, n). Eje X: haz y = 0 y despeja x → punto (x, 0).')}</p>`}
+]
+};
+
+const CURIOS={
+sembl:()=>[t('Tales de Milet va calcular l\'altura de la gran piràmide d\'Egipte amb la seua ombra i un bastó, fa uns 2600 anys.','Tales de Mileto calculó la altura de la gran pirámide de Egipto con su sombra y un bastón, hace unos 2600 años.'),t('Si una pilota fora el doble de gran, pesaria 8 vegades més (el volum es multiplica per 2³).','Si una pelota fuera el doble de grande, pesaría 8 veces más (el volumen se multiplica por 2³).'),t('Les formigues poden carregar molt més del seu pes perquè la força va amb k² i el pes amb k³: com més xicotet, més forta en proporció.','Las hormigas pueden cargar mucho más que su peso porque la fuerza va con k² y el peso con k³: cuanto más pequeño, más fuerte en proporción.')],
+pita:()=>[t('Les polzades d\'una tele mesuren la diagonal de la pantalla. Una de 55" té una diagonal de 140 cm.','Las pulgadas de una tele miden la diagonal de la pantalla. Una de 55" tiene una diagonal de 140 cm.'),t('Els constructors fan angles rectes amb una corda de 12 nucs: un triangle 3-4-5 sempre és rectangle.','Los constructores hacen ángulos rectos con una cuerda de 12 nudos: un triángulo 3-4-5 siempre es rectángulo.'),t('Hi ha més de 300 demostracions diferents del teorema de Pitàgores; una la va fer un president dels Estats Units.','Hay más de 300 demostraciones distintas del teorema de Pitágoras; una la hizo un presidente de Estados Unidos.')],
+arees:()=>[t('Encara que les pilotes encaixen justes en un pot, només n\'omplin com a molt 2/3: la resta és aire.','Aunque las pelotas encajen justas en un bote, solo llenan como mucho 2/3: el resto es aire.'),t('Arquimedes estava tan orgullós de descobrir que l\'esfera és 2/3 del cilindre que la conté que ho va fer gravar a la seua tomba.','Arquímedes estaba tan orgulloso de descubrir que la esfera es 2/3 del cilindro que la contiene que lo hizo grabar en su tumba.'),t('Una pista de tennis de dobles fa 260,76 m²; en caben més de 27 en un camp de futbol.','Una pista de tenis de dobles mide 260,76 m²; caben más de 27 en un campo de fútbol.')],
+vect:()=>[t('Els radars d\'ull de falcó calculen el vector velocitat de la pilota amb diverses càmeres per saber on bota.','Los radares de ojo de halcón calculan el vector velocidad de la pelota con varias cámaras para saber dónde bota.'),t('En els videojocs, cada personatge es mou sumant cada fotograma el seu vector velocitat a la seua posició: B = A + v.','En los videojuegos, cada personaje se mueve sumando en cada fotograma su vector velocidad a su posición: B = A + v.'),t('Un avió que vola a 800 km/h amb vent de cara de 100 km/h avança a 700 km/h respecte del terra: suma de vectors.','Un avión que vuela a 800 km/h con viento de cara de 100 km/h avanza a 700 km/h respecto al suelo: suma de vectores.')],
+rect:()=>[t('Descartes va inventar els eixos de coordenades, i per això es diuen "cartesians". Diuen que se li va ocórrer mirant una mosca al sostre.','Descartes inventó los ejes de coordenadas, y por eso se llaman "cartesianos". Dicen que se le ocurrió mirando una mosca en el techo.'),t('Una pendent del 10% en un senyal de carretera vol dir m = 0,1: puja 10 m per cada 100 m.','Una pendiente del 10% en una señal de carretera significa m = 0,1: sube 10 m por cada 100 m.'),t('El GPS del mòbil troba on estàs calculant punts de tall, com en un sistema d\'equacions.','El GPS del móvil encuentra dónde estás calculando puntos de corte, como en un sistema de ecuaciones.')]
+};
+const NOMG={raok:()=>t('Raó de semblança','Razón de semejanza'),tales:()=>'Tales',escala:()=>t('Escales','Escalas'),areak:()=>t('Àrees semblants (k²)','Áreas semejantes (k²)'),volk:()=>t('Volums semblants (k³)','Volúmenes semejantes (k³)'),ombra:()=>t('Ombres','Sombras'),hip:()=>t('Hipotenusa','Hipotenusa'),catet:()=>t('Catet','Cateto'),classif:()=>t('Classificar triangles','Clasificar triángulos'),diag:()=>t('Diagonal','Diagonal'),diag3d:()=>t('Diagonal en l\'espai','Diagonal en el espacio'),equil:()=>t('Altura de l\'equilàter','Altura del equilátero'),trapezi:()=>t('Trapezi','Trapecio'),cercle:()=>t('Cercle','Círculo'),sector:()=>t('Sector circular','Sector circular'),hexa:()=>t('Polígon regular','Polígono regular'),cilindre:()=>t('Volum del cilindre','Volumen del cilindro'),con:()=>t('Volum del con','Volumen del cono'),esfera:()=>t('Volum de l\'esfera','Volumen de la esfera'),piramide:()=>t('Volum de la piràmide','Volumen de la pirámide'),areacil:()=>t('Àrea del cilindre','Área del cilindro'),conlat:()=>t('Àrea lateral del con','Área lateral del cono'),litres:()=>t('Litres i m³','Litros y m³'),comp:()=>t('Components','Componentes'),extrem:()=>t('Extrem del vector','Extremo del vector'),origen:()=>t('Origen del vector','Origen del vector'),modul:()=>t('Mòdul','Módulo'),suma:()=>t('Suma i resta','Suma y resta'),escalar:()=>t('Producte per un número','Producto por un número'),mitja:()=>t('Punt mitjà','Punto medio'),dist:()=>t('Distància','Distancia'),simetric:()=>t('Simètric','Simétrico'),pendent:()=>t('Pendent','Pendiente'),graf:()=>t('Equació des de la gràfica','Ecuación desde la gráfica'),dibuixa:()=>t('Dibuixar una recta','Dibujar una recta'),eixos:()=>t('Tall amb els eixos','Corte con los ejes'),puntpend:()=>t('Punt-pendent','Punto-pendiente'),general:()=>t('Forma general','Forma general'),paral:()=>t('Paral·leles i perpendiculars','Paralelas y perpendiculares'),tall:()=>t('Punt de tall','Punto de corte'),director:()=>t('Vector director','Vector director'),param:()=>t('Vectorial i paramètriques','Vectorial y paramétricas')};
+let S={};
+function llegeixVict(){try{return JSON.parse(localStorage.getItem('geo-vict')||'{}')}catch(e){return{}}}
+function sumaVict(id){try{const v=llegeixVict();v[id]=(v[id]||0)+1;localStorage.setItem('geo-vict',JSON.stringify(v))}catch(e){}}
+function canviaIdioma(){LANG=LANG==='va'?'es':'va';try{localStorage.setItem('trigo-idioma',LANG)}catch(e){}document.documentElement.lang=LANG==='va'?'ca-valencia':'es';inici()}
+
+function inici(){
+const vt=llegeixVict();const tot=Object.values(vt).reduce((a,b)=>a+b,0);
+$('#app').innerHTML=`<div class="cap"><div><div class="titol">Geo Po<span class="ii">i</span>nt</div><div class="lema">${t('Geometria de 4t d\'ESO, punt a punt','Geometría de 4º de ESO, punto a punto')}</div><div class="vict">🏆 ${t('Partits guanyats','Partidos ganados')} <b>${tot}</b></div></div><button class="idioma" id="lg">${LANG==='va'?'es':'va'}</button></div>
+<div class="intro"><p>${t('Tria una pista. Primer l\'<b>escalfament</b>: la teoria amb exemples resolts. Després el partit: cada pregunta és un punt. Escriuràs números amb el marcador o tocaràs punts sobre la graella. Si falles, l\'<b>ull de falcó</b> t\'explica l\'error. Guanya qui s\'endú 2 jocs.','Elige una pista. Primero el <b>calentamiento</b>: la teoría con ejemplos resueltos. Después el partido: cada pregunta es un punto. Escribirás números en el marcador o tocarás puntos en la cuadrícula. Si fallas, el <b>ojo de halcón</b> te explica el error. Gana quien se lleve 2 juegos.')}</p></div>
+${BLOCS.map((b,i)=>`<button class="bloc sup-${b.sup}" data-i="${i}"><span class="ic">${b.ic}</span><span><b>${b.nom()}</b><span class="sub">${b.sub()}</span></span><span class="trof"><i class="${vt[b.id]?'on':''}">🏆</i>${vt[b.id]?'×'+vt[b.id]:''}</span></button>`).join('')}
+<p class="peu">${t('Tingues a mà la calculadora per a les arrels i π.','Ten a mano la calculadora para las raíces y π.')}</p>`;
+$('#lg').onclick=canviaIdioma;
+document.querySelectorAll('.bloc').forEach(b=>b.onclick=()=>teoria(BLOCS[+b.dataset.i],0,false));
+scrollTo(0,0);
+}
+
+function teoria(B,pag,enPartit){
+const P=[PERQUE[B.id](),...TEORIA[B.id]()];const p=P[pag];
+$('#app').innerHTML=`<div class="barra"><button id="tor">← ${enPartit?t('Tornar al partit','Volver al partido'):t('Pistes','Pistas')}</button><span>${pag===0?t('Abans de començar','Antes de empezar'):t('Escalfament','Calentamiento')} · ${pag+1}/${P.length}</span></div>
+<div class="carta"><h2>${p.h}</h2>${p.b}<div class="punts">${P.map((_,i)=>`<i class="${i===pag?'on':''}"></i>`).join('')}</div></div>
+<div class="fila">${pag>0?`<button class="sec" id="ant">← ${t('Anterior','Anterior')}</button>`:''}${pag<P.length-1?`<button class="gran" id="seg">${t('Següent','Siguiente')} →</button>`:(enPartit?`<button class="gran" id="seg">${t('Tornar al partit','Volver al partido')}</button>`:`<button class="gran" id="seg">🎾 ${t('Jugar el partit','Jugar el partido')}</button>`)}</div>
+${!enPartit&&pag===0?`<button class="sec" id="dir">${t('Ja me la sé: directe al partit','Ya me la sé: directo al partido')} →</button>`:''}`;
+$('#tor').onclick=()=>enPartit?pregunta(true):inici();
+if($('#ant'))$('#ant').onclick=()=>teoria(B,pag-1,enPartit);
+if($('#dir'))$('#dir').onclick=()=>partit(B);
+$('#seg').onclick=()=>pag<P.length-1?teoria(B,pag+1,enPartit):(enPartit?pregunta(true):partit(B));
+scrollTo(0,0);
+}
+
+function flojos(){try{return JSON.parse(localStorage.getItem('geo-flojos')||'{}')}catch(e){return{}}}
+function anota(g,ok){try{const f=flojos();f[g]=Math.max(0,Math.min(6,(f[g]||0)+(ok?-1:2)));localStorage.setItem('geo-flojos',JSON.stringify(f))}catch(e){}}
+function partit(B){S={B,pt:[0,0],jc:[0,0],ult:[],q:null,encerts:0,total:0,errors:{},ratxa:0,millor:0,pistes:0};nova()}
+function nova(){
+const fl=flojos();const gs=S.B.gens.filter(x=>!S.ult.includes(x));let tot=0;const pes=gs.map(x=>{const w=1+(fl[x]||0)/2;tot+=w;return w});let u=Math.random()*tot,g=gs[gs.length-1];for(let j=0;j<gs.length;j++){u-=pes[j];if(u<0){g=gs[j];break}}
+S.ult.push(g);if(S.ult.length>Math.min(4,S.B.gens.length-2))S.ult.shift();
+const Q=G[g]();Q.gen=g;
+if(Q.tipus==='test')Q.ops=montaOps(Q.ans,Q.wrong);
+if(Q.tipus==='num')Q.entr='';
+if(Q.tipus==='punt')Q.marks=[];
+S.q=Q;pregunta(false);
+}
+function montaOps(ans,wrong){const seen=new Set([ans.k]);const w=[];for(const o of wrong){if(!seen.has(o.k)&&o.h!==ans.h){seen.add(o.k);w.push(o)}if(w.length===3)break}return shuffle([{...ans,ok:true},...w])}
+function txtPunts(){const [a,b]=S.pt;const N=['0','15','30','40'];if(a>=3&&b>=3){if(a===b)return[t('Iguals','Iguales'),''];return a>b?[t('Avant.','Vent.'),'']:['',t('Avant.','Vent.')]}return[N[a],N[b]]}
+function marcador(){const [pa,pb]=txtPunts();return`<div class="marcador"><div class="nom"><i class="s"></i>${t('Tu','Tú')}</div><div class="jocs">${S.jc[0]}</div><div class="pts">${pa}</div><div class="sep"></div><div class="nom"><i></i>${t('La màquina','La máquina')}</div><div class="jocs">${S.jc[1]}</div><div class="pts">${pb}</div></div>`}
+
+function parseNum(s){s=s.replace(/,/g,'.');if(!s||s==='-'||s==='.')return NaN;if(s.includes('/')){const [a,b]=s.split('/');const x=parseFloat(a),y=parseFloat(b);if(isNaN(x)||isNaN(y)||y===0)return NaN;return x/y}return Number(s)}
+function zonaResposta(Q){
+if(Q.tipus==='test')return`<div class="opcions${Q.una?' una':''}">${Q.ops.map((o,i)=>`<button class="op" data-i="${i}">${o.h}</button>`).join('')}</div>`;
+if(Q.tipus==='num'){const keys=['7','8','9','⌫','4','5','6','OK','1','2','3','−','0',',',Q.frac?'/':''];
+return`<div class="pantalla" id="pan">${Q.entr?Q.entr.replace(/-/g,'−'):'<span class="buit">?</span>'}${Q.u?`<span class="u">${Q.u}</span>`:''}</div><div class="teclat">${keys.map(k=>k===''?'<span></span>':k==='OK'?`<button class="ok" data-k="ok">${t('Colp!','¡Golpe!')}</button>`:`<button data-k="${k}">${k}</button>`).join('')}</div>`}
+return`<div class="estat" id="est">${Q.need===2?t('Toca dos punts de la graella','Toca dos puntos de la cuadrícula'):t('Toca un punt de la graella','Toca un punto de la cuadrícula')}</div><button class="gran comprova" id="cmp" disabled>${t('Colp!','¡Golpe!')}</button>`;
+}
+function figPunt(Q){return graella({...Q.o,marks:Q.marks})}
+function pregunta(tornant){
+const Q=S.q;
+$('#app').innerHTML=`<div class="barra"><button id="ix">✕</button><span>${S.B.nom()}</span><button id="te">📖 ${t('Teoria','Teoría')}</button></div>${marcador()}
+<div class="aviso" id="av"></div>
+<div class="carta preg"><div class="enun">${Q.q}</div>${Q.tipus==='punt'?`<div class="fig" id="gfig">${figPunt(Q)}</div>`:Q.fig?`<div class="fig">${Q.fig}</div>`:''}${Q.calc?`<div class="calc">🧮 ${t('Pots fer servir la calculadora.','Puedes usar la calculadora.')}</div>`:''}
+${zonaResposta(Q)}<div id="pz">${Q.pistaVista?`<div class="pistab">💡 ${Q.pista}</div>`:`<button class="ajuda" id="pb">💡 ${t('Pista','Pista')}</button>`}</div></div>`;
+if($('#pb'))$('#pb').onclick=()=>{Q.pistaVista=true;S.pistes++;$('#pz').innerHTML=`<div class="pistab">💡 ${Q.pista}</div>`};
+$('#ix').onclick=inici;
+$('#te').onclick=()=>teoria(S.B,0,true);
+if(Q.tipus==='test')document.querySelectorAll('.op').forEach(b=>b.onclick=()=>responTest(+b.dataset.i));
+if(Q.tipus==='num'){document.querySelectorAll('.teclat button').forEach(b=>b.onclick=()=>tecla(b.dataset.k))}
+if(Q.tipus==='punt')lligaGraella();
+if(!tornant)scrollTo(0,0);
+}
+function pinta(){const Q=S.q;$('#pan').innerHTML=(Q.entr?Q.entr.replace(/-/g,'−'):'<span class="buit">?</span>')+(Q.u?`<span class="u">${Q.u}</span>`:'')}
+function tecla(k){const Q=S.q;if(Q.fet)return;
+if(k==='ok'){const v=parseNum(Q.entr);if(isNaN(v)){$('#pan').animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:200});return}responNum(v);return}
+if(k==='⌫')Q.entr=Q.entr.slice(0,-1);
+else if(k==='−'){Q.entr=Q.entr.startsWith('-')?Q.entr.slice(1):'-'+Q.entr}
+else if(k===','){const last=Q.entr.split('/').pop();if(!last.includes(','))Q.entr+=(last===''||last==='-'?'0':'')+','}
+else if(k==='/'){if(Q.entr&&!Q.entr.includes('/')&&/\d$/.test(Q.entr))Q.entr+='/'}
+else if(Q.entr.length<10)Q.entr+=k;
+pinta();
+}
+function lligaGraella(){
+const Q=S.q;const sv=$('#gfig svg');
+sv.onclick=e=>{if(Q.fet)return;const r=sv.getBoundingClientRect();const x=Math.round(((e.clientX-r.left)*300/r.width-GO)/GU),y=Math.round((GO-(e.clientY-r.top)*300/r.height)/GU);if(Math.abs(x)>6||Math.abs(y)>6)return;
+const p=[x,y];const i=Q.marks.findIndex(m=>same(m,p));if(i>=0)Q.marks.splice(i,1);else{Q.marks.push(p);if(Q.marks.length>Q.need)Q.marks.shift()}
+$('#gfig').innerHTML=figPunt(Q);lligaGraella();
+$('#est').textContent=Q.marks.length?Q.marks.map(C).join('  ·  '):(Q.need===2?t('Toca dos punts de la graella','Toca dos puntos de la cuadrícula'):t('Toca un punt de la graella','Toca un punto de la cuadrícula'));
+$('#cmp').disabled=Q.marks.length<Q.need};
+$('#cmp').onclick=()=>{if(!Q.fet&&Q.marks.length>=Q.need)responPunt()};
+}
+function pilota(cl){const b=document.createElement('div');b.className='pilota '+cl;document.body.appendChild(b);setTimeout(()=>b.remove(),800)}
+function punt(ok,info){
+const Q=S.q;Q.fet=true;S.total++;
+const qui=ok?0:1;if(ok){S.encerts++;S.ratxa++;S.millor=Math.max(S.millor,S.ratxa)}else{S.errors[Q.gen]=(S.errors[Q.gen]||0)+1;S.ratxa=0}anota(Q.gen,ok);
+S.pt[qui]++;let joc=null;
+if(S.pt[qui]>=4&&S.pt[qui]-S.pt[1-qui]>=2){S.jc[qui]++;S.pt=[0,0];joc=qui}
+pilota(ok?'anim-a':'anim-b');
+const av=$('#av');
+if(ok){av.textContent=joc===0?t('Joc per a tu!','¡Juego para ti!'):[3,5,8,12].includes(S.ratxa)?t(`${S.ratxa} seguits! 🔥`,`¡${S.ratxa} seguidos! 🔥`):pick([t('Punt!','¡Punto!'),t('Directe!','¡Directo!'),t('Ben jugat!','¡Bien jugado!'),'Ace!']);
+setTimeout(()=>{if(S.jc[0]>=2)final();else nova()},joc===0?1300:900)}
+else{av.textContent=joc===1?t('Joc per a la màquina','Juego para la máquina'):t('Fora!','¡Fuera!');setTimeout(()=>ull(info),750)}
+}
+function responTest(i){const Q=S.q;if(Q.fet)return;const o=Q.ops[i];
+document.querySelectorAll('.op').forEach((b,j)=>{b.disabled=true;if(Q.ops[j].ok)b.classList.add('bo');else if(j===i)b.classList.add('mal')});
+punt(!!o.ok,{tri:o.h,why:o.why,bona:Q.ans.h})}
+function responNum(v){const Q=S.q;
+const ok=close(v,Q.ans);
+let why=null;if(!ok){for(const [e,w] of Q.errs){if(!close(e,Q.ans)&&close(v,e)){why=w;break}}
+if(!why){const r=Math.abs(v-Q.ans)/Math.max(1,Math.abs(Q.ans));why=r<0.03?t('Estàs molt a prop! Segurament has arredonit massa prompte. Guarda tots els decimals fins al final i arredonix només el resultat.','¡Estás muy cerca! Seguramente has redondeado demasiado pronto. Guarda todos los decimales hasta el final y redondea solo el resultado.'):Math.abs(v+Q.ans)<0.011*Math.max(1,Math.abs(Q.ans))?t('El número és bo, però el signe no.','El número es bueno, pero el signo no.'):t('No coincideix amb cap error típic. Repassa els passos un a un.','No coincide con ningún error típico. Repasa los pasos uno a uno.')}}
+$('#pan').style.borderColor=ok?'#1f8a4c':'#c8412f';
+punt(ok,{tri:(Q.entr.replace(/-/g,'−'))+(Q.u?' '+Q.u:''),why,bona:(Q.ansH&&Q.ansH!==num(Q.ans)?Q.ansH+' ≈ ':'')+num(Q.ans)+(Q.u?' '+Q.u:'')})}
+function responPunt(){const Q=S.q;const ok=!!Q.ok(Q.marks);
+let why=null;if(!ok){if(Q.diag)why=Q.diag(Q.marks);else{for(const [p,w] of (Q.errPts||[])){if(same(Q.marks[0],p)){why=w;break}}
+if(!why&&Q.ans){const d=[Q.marks[0][0]-Q.ans[0],Q.marks[0][1]-Q.ans[1]];why=t(`Has tocat ${C(Q.marks[0])}. Et separen ${Math.abs(d[0])} ${Math.abs(d[0])===1?'quadret':'quadrets'} en horitzontal i ${Math.abs(d[1])} en vertical de la resposta bona. Revisa els passos.`,`Has tocado ${C(Q.marks[0])}. Te separan ${Math.abs(d[0])} ${Math.abs(d[0])===1?'cuadrito':'cuadritos'} en horizontal y ${Math.abs(d[1])} en vertical de la respuesta buena. Revisa los pasos.`)}}}
+const fin=Q.fin||{};$('#gfig').innerHTML=graella({...fin,marks:Q.marks,mc:ok?'#1f8a4c':'#c8412f'});
+punt(ok,{tri:Q.marks.map(C).join(' · '),why,bona:Q.ans?C(Q.ans):t('qualsevol punt verd','cualquier punto verde'),fig:true})}
+function ull(o){
+const Q=S.q;
+const fig=Q.tipus==='punt'?graella({...(Q.fin||{}),marks:Q.marks,mc:'#c8412f'}):Q.fig;
+$('#app').innerHTML=`<div class="barra"><span></span><span>${S.B.nom()}</span><span></span></div>${marcador()}
+<div class="carta ull"><div class="etiq">${t('Ull de falcó','Ojo de halcón')}</div><h2>${t('Has respost','Has respondido')} ${o.tri}</h2>
+<div class="error">${o.why}</div>
+<div class="enun" style="font-size:16px;color:#5d6b7a">${Q.q}</div>${fig?`<div class="fig">${fig}</div>`:''}${Q.tipus==='punt'?`<p style="font-size:14px;color:#5d6b7a">${t('Cercle roig: el que has tocat. En verd: la solució.','Círculo rojo: lo que has tocado. En verde: la solución.')}</p>`:''}
+<h3>${t('Així es fa','Así se hace')}</h3><ol class="passos">${Q.sol.map(s=>`<li>${s}</li>`).join('')}</ol>
+<p>${t('Resposta bona','Respuesta buena')}: <b>${o.bona}</b></p></div>
+<button class="gran" id="sg">${S.jc[1]>=2?t('Veure el resultat','Ver el resultado'):t('Següent punt','Siguiente punto')} →</button>`;
+$('#sg').onclick=()=>S.jc[1]>=2?final():nova();
+scrollTo(0,0);
+}
+function final(){
+const guanya=S.jc[0]>=2;const pc=Math.round(100*S.encerts/S.total);
+if(guanya)sumaVict(S.B.id);
+const errs=Object.entries(S.errors).sort((a,b)=>b[1]-a[1]);
+$('#app').innerHTML=`<div class="carta res"><div class="etiq" style="color:${guanya?'#1f8a4c':'#c8412f'}">${guanya?t('Partit guanyat','Partido ganado'):t('Partit perdut','Partido perdido')}</div>
+<div class="gros">${S.jc[0]} – ${S.jc[1]}</div><p>${t('Has encertat','Has acertado')} <b>${S.encerts}</b> ${t('de','de')} <b>${S.total}</b> (${pc}%)</p><p>${t('Millor ratxa','Mejor racha')}: <b>${S.millor}</b>${S.pistes?` · ${t('Pistes','Pistas')}: <b>${S.pistes}</b>`:''}</p>
+${errs.length?`<h3>${t('Per a repassar','Para repasar')}</h3><p>${errs.map(([g,n])=>`${NOMG[g]()} (${n})`).join(' · ')}</p><p style="font-size:14px;color:#5d6b7a">${t('En el pròxim partit et tocaran més preguntes d\'això.','En el próximo partido te saldrán más preguntas de esto.')}</p>`:`<p>${t('Cap error. Partit perfecte!','Ningún error. ¡Partido perfecto!')}</p>`}</div>
+<div class="carta" style="text-align:left"><div class="secc-t">💡 ${t('Sabies que…?','¿Sabías que…?')}</div><p>${pick(CURIOS[S.B.id]())}</p></div>
+<button class="gran" id="re">🎾 ${guanya?t('Un altre partit','Otro partido'):t('Revenja','Revancha')}</button>
+<div class="fila"><button class="sec" id="te">📖 ${t('Repassar teoria','Repasar teoría')}</button><button class="sec" id="bl">${t('Pistes','Pistas')}</button></div>`;
+$('#re').onclick=()=>partit(S.B);$('#te').onclick=()=>teoria(S.B,0,false);$('#bl').onclick=inici;
+scrollTo(0,0);
+}
+document.documentElement.lang=LANG==='va'?'ca-valencia':'es';
+inici();
+</script>
+</body>
+</html>
