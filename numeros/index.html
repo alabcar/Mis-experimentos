@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="ca-valencia">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f2a1c">
+<title>Números Open</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--nit:#0f2a1c;--gespa:#2f7d46;--terra:#c8643b;--dura:#2c5f9e;--lila:#6b4fa0;--groc:#d9f03a;--tinta:#1d2733;--paper:#fbfaf4;--bo:#1f8a4c;--mal:#c8412f;--suau:#5d6b7a;--blau:#2c5f9e}
+html,body{min-height:100%}
+html{background:#0b1f15}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(ellipse at 50% -10%,#3b6e4f 0%,#163c28 45%,#0b1f15 100%) fixed;color:var(--tinta);overflow-x:hidden;font-size:17px;line-height:1.45}
+#app{max-width:540px;margin:0 auto;padding:12px 14px 40px;display:flex;flex-direction:column;gap:12px}
+.carta{background:var(--paper);border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.cap{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding-top:8px;color:#fff}
+.titol{font-size:36px;font-weight:900;letter-spacing:.5px;line-height:1;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.titol span{color:var(--groc)}
+.lema{opacity:.9;margin-top:6px;font-size:15px}
+.vict{margin-top:6px;font-size:14px;opacity:.9}
+.idioma{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:10px;padding:6px 12px;font-weight:800;font-size:16px}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+.intro{color:#e8f2ea;font-size:15px}
+.bloc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--paper);border-radius:14px;padding:12px 14px;box-shadow:0 4px 12px rgba(0,0,0,.3);border-left:10px solid var(--gespa)}
+.bloc .ic{width:48px;height:48px;border-radius:12px;background:var(--groc);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;flex:none}
+.bloc b{display:block;font-size:17px}
+.bloc .sub{font-size:13.5px;color:var(--suau);display:block}
+.bloc .trof{margin-left:auto;font-size:13px;font-weight:800;color:var(--bo);white-space:nowrap}
+.bloc .trof i{font-style:normal;filter:grayscale(1);opacity:.35}
+.bloc .trof i.on{filter:none;opacity:1}
+.s-terra{border-left-color:var(--terra)}.s-dura{border-left-color:var(--dura)}.s-gespa{border-left-color:var(--gespa)}.s-lila{border-left-color:var(--lila)}.s-or{border-left-color:#d4a017;background:linear-gradient(90deg,#fff8dc,#fbfaf4)}
+.gran{display:block;width:100%;background:var(--groc);color:var(--tinta);font-weight:900;font-size:18px;padding:14px;border-radius:14px;box-shadow:0 4px 0 #a9bd22}
+.gran:active{transform:translateY(2px);box-shadow:0 2px 0 #a9bd22}
+.sec{display:block;width:100%;background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7);font-weight:700;padding:11px;border-radius:14px}
+.carta .sec{color:var(--tinta);border-color:#c9ccd1}
+.fila{display:flex;gap:10px}.fila>*{flex:1}
+.barra{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#fff;font-size:14px}
+.barra button{background:rgba(255,255,255,.16);border-radius:10px;padding:7px 11px;font-weight:700;font-size:14px;color:#fff}
+.barra span{text-align:center;flex:1;opacity:.9}
+h2{font-size:21px;margin-bottom:8px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+p{margin:7px 0}
+ul.ll{margin:6px 0 6px 20px}ul.ll li{margin:4px 0}
+.marcador{display:grid;grid-template-columns:1fr auto;background:#101820;color:#fff;border-radius:12px;overflow:hidden;font-variant-numeric:tabular-nums;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.marcador div{padding:7px 12px;font-weight:800}
+.marcador .pts{background:var(--groc);color:#101820;text-align:center;min-width:56px;font-size:19px}
+.marcador .sep{grid-column:1/-1;height:1px;background:#2d3946;padding:0}
+.marcador .nom small{font-weight:600;opacity:.7;margin-left:6px;font-size:12px}
+.ratxa{color:#fff;font-size:14px;text-align:center;min-height:20px}
+.tipus{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--suau);margin-bottom:6px}
+.enun{font-size:18.5px}
+.enun .gr{font-size:24px;font-weight:800;display:block;text-align:center;margin:10px 0}
+.opcions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.op{background:#fff;border:2px solid #d6d9de;border-radius:12px;padding:12px 6px;font-size:19px;font-weight:700;min-height:64px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--tinta)}
+.op:active{background:#f3f6e0}
+.op.bo{border-color:var(--bo);background:#e3f4ea}.op.mal{border-color:var(--mal);background:#fbe6e2}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+.rd{white-space:nowrap}
+.ov{border-top:2px solid currentColor;padding:1px 2px 0;margin-left:1px}
+.rd sup.ix{font-size:.62em;margin-right:-3px;vertical-align:.9em}
+sup{font-size:.68em;line-height:0}
+.pant{display:flex;align-items:center;gap:8px;margin-top:12px}
+.pant .cx{flex:1;background:#fff;border:2px solid #d6d9de;border-radius:12px;min-height:54px;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:flex-end;padding:0 14px;font-variant-numeric:tabular-nums}
+.pant .cx:empty::before{content:"?";color:#c3c7cd}
+.pant .ud{font-weight:800;font-size:20px}
+.teclat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.teclat button{background:#eef0f3;border-radius:10px;padding:12px 0;font-size:21px;font-weight:800;box-shadow:0 3px 0 #c9cdd3}
+.teclat button:active{transform:translateY(2px);box-shadow:0 1px 0 #c9cdd3}
+.teclat .ok{background:var(--groc);box-shadow:0 3px 0 #a9bd22;grid-row:span 2}
+.nota{font-size:13.5px;color:var(--suau);margin-top:8px}
+.lin{display:block;margin:8px auto 0;max-width:100%;touch-action:manipulation}
+.rbots{display:flex;gap:8px;margin-top:8px}
+.rbots button{flex:1;background:#eef0f3;border-radius:10px;padding:10px 4px;font-weight:800;font-size:15px;box-shadow:0 3px 0 #c9cdd3}
+.rtxt{text-align:center;font-size:22px;font-weight:800;margin-top:8px;min-height:30px}
+.ajuda{background:transparent;border:2px dashed #c9ccd1;border-radius:10px;padding:8px 12px;font-weight:700;font-size:14px;margin-top:12px;color:var(--suau)}
+.pistab{background:#fff6cf;border-radius:10px;padding:10px;margin-top:12px;font-size:15px}
+.ull{border-left:8px solid var(--mal)}.ull.ok{border-left-color:var(--bo)}
+.etiq{font-size:13px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--mal)}
+.ull.ok .etiq{color:var(--bo)}
+.error{background:#fbe6e2;border-radius:10px;padding:10px;margin:8px 0}
+.bona{background:#e3f4ea;border-radius:10px;padding:10px;margin:8px 0;font-size:19px;font-weight:700}
+.passos{counter-reset:p;list-style:none;margin:6px 0}
+.passos li{counter-increment:p;position:relative;padding:7px 0 7px 34px;border-bottom:1px dashed #d8dbe0}
+.passos li:last-child{border-bottom:0}
+.passos li::before{content:counter(p);position:absolute;left:0;top:7px;width:24px;height:24px;border-radius:50%;background:var(--blau);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.exemple{background:#eef2e4;border-radius:12px;padding:10px 12px;margin:10px 0}
+.exemple .etq,.compte .etq,.perque .etq{font-size:12px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--gespa);display:block;margin-bottom:2px}
+.compte{background:#fbe6e2;border-radius:12px;padding:10px 12px;margin:10px 0}.compte .etq{color:var(--mal)}
+.perque{background:#e6eefa;border-radius:12px;padding:10px 12px;margin:10px 0}.perque .etq{color:var(--blau)}
+.regla{background:#101820;color:#fff;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:17px}
+.regla b{color:var(--groc)}
+.taula{border-collapse:collapse;width:100%;margin:8px 0;font-size:15.5px}
+.taula td,.taula th{border:1px solid #d6d9de;padding:6px 5px;text-align:center;vertical-align:middle}
+.taula th{background:#eef0f3}
+.punts{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.punts i{width:8px;height:8px;border-radius:50%;background:#d0d4da}.punts i.on{background:var(--gespa)}
+.final{text-align:center}
+.final .gran-ic{font-size:64px;line-height:1.1}
+.peu{color:#cfe0d4;font-size:13px;text-align:center}
+.pilota{position:fixed;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c5dc1f 60%,#9fb514);z-index:9;pointer-events:none;top:40%;left:50%}
+.pilota.tu{animation:tu .7s ease-in forwards}.pilota.ella{animation:ella .7s ease-in forwards}
+@keyframes tu{0%{transform:translate(-50%,120px) scale(1.4)}100%{transform:translate(-50%,-320px) scale(.4);opacity:.2}}
+@keyframes ella{0%{transform:translate(-50%,-320px) scale(.4)}100%{transform:translate(-50%,200px) scale(1.6);opacity:.2}}
+.sacseja{animation:sac .35s}
+@keyframes sac{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+let LANG=(()=>{try{return localStorage.getItem('no-idioma')||'va'}catch(e){return'va'}})();
+document.documentElement.lang=LANG==='va'?'ca-valencia':'es';
+const t=(va,es)=>LANG==='va'?va:es;
+const $=s=>document.querySelector(s);
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+const MN=x=>x<0?'−'+(-x):String(x);
+const num=(x,d=3)=>{let s=Math.abs(x).toFixed(d);if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');return(x<0&&+s!==0?'−':'')+s.replace('.',',')};
+const eur=x=>x.toFixed(2).replace('.',',')+' €';
+const r2=x=>Math.round(x*100)/100;
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const fr=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d)||1;n/=g;d/=g;if(d===1)return MN(n);return(n<0?'−':'')+F(Math.abs(n),d)};
+const pw=(b,e)=>`${b}<sup>${typeof e==='number'?MN(e):e}</sup>`;
+const P10=e=>pw('10',e);
+const sci=(m,e)=>`${num(m,4)}·${P10(e)}`;
+const rad=(k,r,i=2)=>{const ix=i>2?`<sup class="ix">${i}</sup>`:'';const c=k===1?'':k===-1?'−':MN(k);return`<span class="rd">${c}${ix}√<span class="ov">${r}</span></span>`};
+function simp(n,i=2){let k=1;for(let f=2;Math.pow(f,i)<=n;f++){const q=Math.pow(f,i);while(n%q===0){n/=q;k*=f}}return[k,n]}
+const LOG=b=>b===10?'log ':`log<sub>${b}</sub> `;
+const iv=(a,b,ac,bc)=>({a,b,ac:a===-Infinity?false:ac,bc:b===Infinity?false:bc});
+const ivTxt=I=>`${I.a===-Infinity?'(−∞':(I.ac?'[':'(')+MN(I.a)}, ${I.b===Infinity?'+∞)':MN(I.b)+(I.bc?']':')')}`;
+const ivEq=(A,B)=>A.a===B.a&&A.b===B.b&&(A.a===-Infinity||A.ac===B.ac)&&(B.b===Infinity||A.bc===B.bc);
+function desTxt(I){
+if(I.a===-Infinity)return`x ${I.bc?'≤':'&lt;'} ${MN(I.b)}`;
+if(I.b===Infinity)return`x ${I.ac?'≥':'&gt;'} ${MN(I.a)}`;
+return`${MN(I.a)} ${I.ac?'≤':'&lt;'} x ${I.bc?'≤':'&lt;'} ${MN(I.b)}`;
+}
+const COLS=['#2c5f9e','#c8643b','#1f8a4c','#6b4fa0'];
+function linia(ints,lo,hi,o={}){
+const W=330,rows=Math.max(1,ints.length),H=46+rows*16,x0=20,x1=W-20,st=(x1-x0)/(hi-lo),y=H-24;
+const X=v=>v===-Infinity?6:v===Infinity?W-6:x0+(v-lo)*st;
+let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" class="lin" ${o.id?`id="${o.id}"`:''}>`;
+s+=`<line x1="4" y1="${y}" x2="${W-4}" y2="${y}" stroke="#1d2733" stroke-width="2"/><path d="M${W-4} ${y}l-8 -5v10z" fill="#1d2733"/>`;
+for(let v=lo;v<=hi;v++){const x=X(v);s+=`<line x1="${x}" y1="${y-5}" x2="${x}" y2="${y+5}" stroke="#1d2733" stroke-width="${v===0?2.5:1.3}"/>`;s+=`<text x="${x}" y="${y+19}" font-size="12" text-anchor="middle" fill="#1d2733" font-weight="${v===0?800:500}">${v<0?'−'+(-v):v}</text>`}
+ints.forEach((I,k)=>{const c=I.col||COLS[k%4];const yy=y-12-k*16;const xa=X(I.a),xb=X(I.b);
+s+=`<line x1="${xa}" y1="${yy}" x2="${xb}" y2="${yy}" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="${I.op||1}"/>`;
+if(I.a===-Infinity)s+=`<path d="M2 ${yy}l10 -7v14z" fill="${c}"/>`;else s+=`<circle cx="${xa}" cy="${yy}" r="6" fill="${I.ac?c:'#fff'}" stroke="${c}" stroke-width="3"/>`;
+if(I.b===Infinity)s+=`<path d="M${W-2} ${yy}l-10 -7v14z" fill="${c}"/>`;else if(I.b!==null)s+=`<circle cx="${xb}" cy="${yy}" r="6" fill="${I.bc?c:'#fff'}" stroke="${c}" stroke-width="3"/>`;
+if(I.lb)s+=`<text x="${(Math.max(xa,8)+Math.min(xb,W-8))/2}" y="${yy-8}" font-size="12" font-weight="800" text-anchor="middle" fill="${c}">${I.lb}</text>`;
+});
+if(o.clic)for(let v=lo;v<=hi;v++){s+=`<rect data-v="${v}" x="${X(v)-st/2}" y="0" width="${st}" height="${H}" fill="transparent" style="cursor:pointer"/>`}
+return s+'</svg>';
+}
+function parseNum(s){s=s.replace(/−/g,'-').replace(/,/g,'.').trim();if(!s)return NaN;
+if(s.includes('/')){const [a,b]=s.split('/');if(a===''||b===undefined||b==='')return NaN;const x=+a,y=+b;if(!isFinite(x)||!isFinite(y)||y===0)return NaN;return x/y}
+const x=+s;return isFinite(x)?x:NaN}
+const NOMS={N:()=>t('ℕ naturals','ℕ naturales'),Z:()=>t('ℤ enters','ℤ enteros'),Q:()=>t('ℚ racionals','ℚ racionales'),I:()=>t('𝕀 irracionals','𝕀 irracionales')};
+</script>
+<script>
+const G={};
+const NT=n=>t(n[0],n[1]);
+
+G.classif=()=>{
+const L=[
+['√49','N',['√49 = 7, perquè 7² = 49. És un nombre natural.','√49 = 7, porque 7² = 49. Es un número natural.']],
+['−√25','Z',['−√25 = −5. És un enter negatiu: no és natural, perquè els naturals no porten signe menys.','−√25 = −5. Es un entero negativo: no es natural, porque los naturales no llevan signo menos.']],
+[F('−12',4),'Z',['−12 : 4 = −3. La divisió és exacta i dona un enter negatiu.','−12 : 4 = −3. La división es exacta y da un entero negativo.']],
+[F('√144',4),'N',['√144 = 12 i 12 : 4 = 3. Encara que porta arrel i fracció, val 3: és natural.','√144 = 12 y 12 : 4 = 3. Aunque lleva raíz y fracción, vale 3: es natural.']],
+[F(3,8),'Q',['3/8 = 0,375. És una fracció que no dona un enter: és racional (decimal exacte).','3/8 = 0,375. Es una fracción que no da un entero: es racional (decimal exacto).']],
+['2,<span class="ov">36</span>','Q',['És un decimal periòdic pur: 2,363636… = 2 + 36/99 = 26/11. Tot decimal periòdic és una fracció, per tant és racional.','Es un decimal periódico puro: 2,363636… = 2 + 36/99 = 26/11. Todo decimal periódico es una fracción, por tanto es racional.']],
+['−0,75','Q',['−0,75 = −3/4. Té un nombre finit de decimals: és racional.','−0,75 = −3/4. Tiene un número finito de decimales: es racional.']],
+['√12','I',['12 no és quadrat perfecte (3² = 9 i 4² = 16), així que √12 = 3,4641016… té infinites xifres sense període: és irracional.','12 no es cuadrado perfecto (3² = 9 y 4² = 16), así que √12 = 3,4641016… tiene infinitas cifras sin periodo: es irracional.']],
+['π','I',['π = 3,14159265… té infinites xifres decimals que no es repeteixen mai en bloc: és irracional.','π = 3,14159265… tiene infinitas cifras decimales que nunca se repiten en bloque: es irracional.']],
+['1,010010001…','I',['Les xifres segueixen un patró (cada vegada un 0 més), però cap bloc es repeteix sempre igual: no és periòdic, és irracional.','Las cifras siguen un patrón (cada vez un 0 más), pero ningún bloque se repite siempre igual: no es periódico, es irracional.']],
+[`√<span class="ov">${F(16,9)}</span>`,'Q',['√(16/9) = 4/3, perquè (4/3)² = 16/9. És una fracció: racional.','√(16/9) = 4/3, porque (4/3)² = 16/9. Es una fracción: racional.']],
+[rad(-1,8,3),'Z',['∛8 = 2 (perquè 2³ = 8), així que −∛8 = −2: enter.','∛8 = 2 (porque 2³ = 8), así que −∛8 = −2: entero.']],
+['1 + √2','I',['√2 és irracional i, si li sumes un racional, continua sent irracional: 1 + √2 = 2,4142135…','√2 es irracional y, si le sumas un racional, sigue siendo irracional: 1 + √2 = 2,4142135…']],
+[rad(1,10,3),'I',['10 no és cub perfecte (2³ = 8, 3³ = 27): ∛10 = 2,1544… és irracional.','10 no es cubo perfecto (2³ = 8, 3³ = 27): ∛10 = 2,1544… es irracional.']],
+['√0,25','Q',['√0,25 = 0,5, perquè 0,5² = 0,25. És un decimal exacte: racional.','√0,25 = 0,5, porque 0,5² = 0,25. Es un decimal exacto: racional.']]
+];
+const it=pick(L);const w=NT(it[2]);
+return{tip:t('Conjunts de nombres','Conjuntos de números'),kind:'op',
+txt:t('Quin és el conjunt <b>més xicotet</b> al qual pertany aquest nombre?','¿Cuál es el conjunto <b>más pequeño</b> al que pertenece este número?')+`<span class="gr">${it[0]}</span>`,
+ok:NOMS[it[1]](),bad:['N','Z','Q','I'].filter(x=>x!==it[1]).map(x=>[NOMS[x](),w]),
+expl:[w,t('Recorda la cadena: ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ. Els irracionals 𝕀 són els reals que <b>no</b> es poden escriure com a fracció (decimals infinits no periòdics).','Recuerda la cadena: ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ. Los irracionales 𝕀 son los reales que <b>no</b> se pueden escribir como fracción (decimales infinitos no periódicos).')],
+pista:t('Primer calcula el nombre si pots (arrels exactes, divisions). Després mira: té signe menys? té decimals? són periòdics?','Primero calcula el número si puedes (raíces exactas, divisiones). Después mira: ¿tiene signo menos? ¿tiene decimales? ¿son periódicos?')};
+};
+
+G.aprox=()=>{
+const L=[['π',Math.PI],['√2',Math.SQRT2],['√3',Math.sqrt(3)],['√5',Math.sqrt(5)],['e',Math.E],['2/3',2/3],['√7',Math.sqrt(7)],['√10',Math.sqrt(10)]];
+const [n,v]=pick(L);const d=R(1,3);const LL=[null,[t('les dècimes','las décimas'),1],[t('les centèsimes','las centésimas'),2],[t('les mil·lèsimes','las milésimas'),3]];
+const lloc=LL[d][0];const p=Math.pow(10,d);const arr=Math.round(v*p)/p,tru=Math.trunc(v*p)/p;const vs=num(v,7)+'…';
+const ty=R(0,2);
+if(ty<2){const ans=ty===0?arr:tru;const alt=ty===0?tru:arr;const seg=num(Math.trunc(v*p*10)%10,0);
+return{tip:t('Aproximacions','Aproximaciones'),kind:'num',ans,tol:1e-9,fmt:num(ans,d),
+txt:(ty===0?t(`<b>Arrodoneix</b> ${n} = ${vs} a ${lloc}.`,`<b>Redondea</b> ${n} = ${vs} a ${lloc}.`):t(`<b>Trunca</b> ${n} = ${vs} a ${lloc}.`,`<b>Trunca</b> ${n} = ${vs} a ${lloc}.`)),
+errs:alt!==ans?[[alt,ty===0?t('Això és <b>truncar</b> (tallar sense mirar la xifra següent). Per arrodonir has de mirar la xifra següent: si és 5 o més, la xifra anterior puja una unitat.','Eso es <b>truncar</b> (cortar sin mirar la cifra siguiente). Para redondear tienes que mirar la cifra siguiente: si es 5 o más, la cifra anterior sube una unidad.'):t('Això és <b>arrodonir</b>. Truncar és més fàcil: simplement talles les xifres que sobren, sense mirar-les.','Eso es <b>redondear</b>. Truncar es más fácil: simplemente cortas las cifras que sobran, sin mirarlas.')]]:[],
+expl:[t(`Ens quedem amb ${d} xifra${d>1?'es':''} decimal${d>1?'s':''}.`,`Nos quedamos con ${d} cifra${d>1?'s':''} decimal${d>1?'es':''}.`),
+ty===0?t(`La xifra següent és un <b>${seg}</b>: ${+seg>=5?'com que és 5 o més, l\'última xifra que guardem puja una unitat':'com que és menor que 5, l\'última xifra es queda igual'}.`,`La cifra siguiente es un <b>${seg}</b>: ${+seg>=5?'como es 5 o más, la última cifra que guardamos sube una unidad':'como es menor que 5, la última cifra se queda igual'}.`):t('En truncar, tallem i ja està: no mirem la xifra següent.','Al truncar, cortamos y ya está: no miramos la cifra siguiente.'),
+`${n} ≈ <b>${num(ans,d)}</b>`],
+pista:t('Compta les xifres decimals que has de guardar i mira la següent.','Cuenta las cifras decimales que tienes que guardar y mira la siguiente.')}}
+const ap=Math.round(v*100)/100;const ea=Math.abs(v-ap);const ans=Math.round(ea*10000)/10000;
+return{tip:t('Error absolut','Error absoluto'),kind:'num',ans,tol:0.00006,fmt:num(ans,4),
+txt:t(`Aproximem ${n} = ${vs} per <b>${num(ap,2)}</b>. Calcula l'<b>error absolut</b> (arrodonit a les deumil·lèsimes, 4 decimals).`,`Aproximamos ${n} = ${vs} por <b>${num(ap,2)}</b>. Calcula el <b>error absoluto</b> (redondeado a las diezmilésimas, 4 decimales).`),
+errs:[[-ans,t('L\'error absolut és un <b>valor absolut</b>: mai és negatiu.','El error absoluto es un <b>valor absoluto</b>: nunca es negativo.')]],
+expl:[t('Error absolut = |valor real − aproximació|','Error absoluto = |valor real − aproximación|'),`|${num(v,7)} − ${num(ap,2)}| = ${num(ea,7)}…`,t(`Arrodonit a 4 decimals: <b>${num(ans,4)}</b>`,`Redondeado a 4 decimales: <b>${num(ans,4)}</b>`)],
+pista:t('Resta i lleva el signe: |real − aproximat|.','Resta y quita el signo: |real − aproximado|.')};
+};
+
+function ivRand(){const ty=R(0,5);const a=R(-6,3),b=R(a+2,6);
+if(ty<4)return iv(a,b,ty===1||ty===3,ty===2||ty===3);
+if(ty===4)return iv(a,Infinity,Math.random()<.5,false);
+return iv(-Infinity,b,false,Math.random()<.5)}
+const W_INF=()=>t('L\'infinit no és un nombre que es puga «tocar»: <b>sempre</b> porta parèntesi.','El infinito no es un número que se pueda «tocar»: <b>siempre</b> lleva paréntesis.');
+const W_CL=()=>t('Fixa\'t en els signes: <b>&lt;</b> o <b>&gt;</b> (estricte) vol dir que l\'extrem <b>no</b> entra → parèntesi ( ). <b>≤</b> o <b>≥</b> vol dir que <b>sí</b> entra → claudàtor [ ].','Fíjate en los signos: <b>&lt;</b> o <b>&gt;</b> (estricto) quiere decir que el extremo <b>no</b> entra → paréntesis ( ). <b>≤</b> o <b>≥</b> quiere decir que <b>sí</b> entra → corchete [ ].');
+G.desig=()=>{
+const I=ivRand();const bad=[];
+if(I.a!==-Infinity&&I.b!==Infinity){[[!I.ac,I.bc],[I.ac,!I.bc],[!I.ac,!I.bc]].forEach(([x,y])=>bad.push([ivTxt(iv(I.a,I.b,x,y)),W_CL()]))}
+else if(I.b===Infinity){bad.push([ivTxt(iv(I.a,Infinity,!I.ac,false)),W_CL()]);bad.push([`${I.ac?'[':'('}${MN(I.a)}, +∞]`,W_INF()]);bad.push([ivTxt(iv(-Infinity,I.a,false,I.ac)),t(`x ${I.ac?'≥':'&gt;'} ${MN(I.a)} vol dir nombres <b>majors</b> que ${MN(I.a)}: van cap a la dreta, cap a +∞.`,`x ${I.ac?'≥':'&gt;'} ${MN(I.a)} quiere decir números <b>mayores</b> que ${MN(I.a)}: van hacia la derecha, hacia +∞.`)])}
+else{bad.push([ivTxt(iv(-Infinity,I.b,false,!I.bc)),W_CL()]);bad.push([`[−∞, ${MN(I.b)}${I.bc?']':')'}`,W_INF()]);bad.push([ivTxt(iv(I.b,Infinity,I.bc,false)),t(`x ${I.bc?'≤':'&lt;'} ${MN(I.b)} vol dir nombres <b>menors</b> que ${MN(I.b)}: van cap a l'esquerra, cap a −∞.`,`x ${I.bc?'≤':'&lt;'} ${MN(I.b)} quiere decir números <b>menores</b> que ${MN(I.b)}: van hacia la izquierda, hacia −∞.`)])}
+return{tip:t('Desigualtats i intervals','Desigualdades e intervalos'),kind:'op',
+txt:t('Quin interval correspon a aquesta desigualtat?','¿Qué intervalo corresponde a esta desigualdad?')+`<span class="gr">${desTxt(I)}</span>`,ok:ivTxt(I),bad,
+expl:[W_CL(),I.a===-Infinity||I.b===Infinity?W_INF():t('Els extrems s\'escriuen de menor a major.','Los extremos se escriben de menor a mayor.'),t(`Resultat: <b>${ivTxt(I)}</b>`,`Resultado: <b>${ivTxt(I)}</b>`)+linia([I],-7,7)],
+pista:t('Mira cada signe: ≤ i ≥ porten claudàtor [ ], &lt; i &gt; porten parèntesi ( ).','Mira cada signo: ≤ y ≥ llevan corchete [ ], &lt; y &gt; llevan paréntesis ( ).')};
+};
+
+G.recta=()=>{
+const I=ivRand();const ty=R(0,1);
+return{tip:t('Marca l\'interval','Marca el intervalo'),kind:'recta',ansI:I,rec:{lo:-7,hi:7,given:[]},
+txt:ty?t(`Marca a la recta els nombres que compleixen <b>${desTxt(I)}</b>.`,`Marca en la recta los números que cumplen <b>${desTxt(I)}</b>.`):t(`Marca a la recta l'interval <b>${ivTxt(I)}</b>.`,`Marca en la recta el intervalo <b>${ivTxt(I)}</b>.`),
+expl:[t('Primer situa els extrems. Si un extrem està inclòs (≤, ≥, [ ]) el punt és ple ●; si no (&lt;, &gt;, ( )) és buit ○.','Primero sitúa los extremos. Si un extremo está incluido (≤, ≥, [ ]) el punto es lleno ●; si no (&lt;, &gt;, ( )) es hueco ○.'),
+I.a===-Infinity||I.b===Infinity?t('Si per un costat no té límit, la ratlla arriba fins al final amb una fletxa (±∞).','Si por un lado no tiene límite, la raya llega hasta el final con una flecha (±∞).'):t('Pinta tots els nombres que hi ha entre els dos extrems.','Pinta todos los números que hay entre los dos extremos.'),
+`${desTxt(I)} ⟺ <b>${ivTxt(I)}</b>`+linia([I],-7,7)],
+pista:t('Toca un número de la recta per posar un extrem. Toca\'l una altra vegada per canviar entre ● i ○.','Toca un número de la recta para poner un extremo. Tócalo otra vez para cambiar entre ● y ○.')};
+};
+
+G.opera=()=>{
+const v=shuffle([-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]).slice(0,4).sort((x,y)=>x-y);const [p,q,r,s]=v;
+const A=iv(p,r,Math.random()<.5,Math.random()<.5);const B=Math.random()<.3?iv(q,Infinity,Math.random()<.5,false):iv(q,s,Math.random()<.5,Math.random()<.5);
+const uni=Math.random()<.5;const res=uni?iv(A.a,B.b,A.ac,B.bc):iv(B.a,A.b,B.ac,A.bc);const alt=uni?iv(B.a,A.b,B.ac,A.bc):iv(A.a,B.b,A.ac,B.bc);
+const sim=uni?'∪':'∩';
+const exp=[uni?t('<b>A ∪ B</b> (unió): tots els nombres que són en A <b>o</b> en B (en algun dels dos).','<b>A ∪ B</b> (unión): todos los números que están en A <b>o</b> en B (en alguno de los dos).'):t('<b>A ∩ B</b> (intersecció): només els nombres que són en A <b>i</b> en B alhora (on se solapen).','<b>A ∩ B</b> (intersección): solo los números que están en A <b>y</b> en B a la vez (donde se solapan).'),
+uni?t(`Comença on comença el primer (${MN(A.a)}, que ve d'A) i acaba on acaba l'últim (${B.b===Infinity?'+∞':MN(B.b)}, que ve de B).`,`Empieza donde empieza el primero (${MN(A.a)}, que viene de A) y acaba donde acaba el último (${B.b===Infinity?'+∞':MN(B.b)}, que viene de B).`):t(`Comença on comença el segon (${MN(B.a)}, de B) i acaba on acaba el primer que s'acaba (${MN(A.b)}, d'A).`,`Empieza donde empieza el segundo (${MN(B.a)}, de B) y acaba donde acaba el primero que se termina (${MN(A.b)}, de A).`),
+t('Cada extrem conserva el claudàtor o parèntesi de l\'interval d\'on ve.','Cada extremo conserva el corchete o paréntesis del intervalo de donde viene.'),
+`A ${sim} B = <b>${ivTxt(res)}</b>`+linia([{...A,lb:'A',op:.5},{...B,lb:'B',op:.5},{...res,col:'#1d2733',lb:'A'+sim+'B'}],-7,7)];
+const txt=t(`Si A = <b>${ivTxt(A)}</b> i B = <b>${ivTxt(B)}</b>, `,`Si A = <b>${ivTxt(A)}</b> y B = <b>${ivTxt(B)}</b>, `);
+const base={tip:uni?t('Unió d\'intervals','Unión de intervalos'):t('Intersecció d\'intervals','Intersección de intervalos'),expl:exp,pista:t('Dibuixa A i B l\'un damunt de l\'altre i mira on hi ha ratlla.','Dibuja A y B uno encima del otro y mira dónde hay raya.')};
+if(Math.random()<.5)return{...base,kind:'recta',ansI:res,rec:{lo:-7,hi:7,given:[{...A,lb:'A',op:.35},{...B,lb:'B',op:.35}]},txt:txt+t(`marca <b>A ${sim} B</b>.`,`marca <b>A ${sim} B</b>.`)};
+const bad=[[ivTxt(alt),uni?t('Això és la <b>intersecció</b> (el tros comú). La unió és tot el que està pintat en A o en B.','Eso es la <b>intersección</b> (el trozo común). La unión es todo lo que está pintado en A o en B.'):t('Això és la <b>unió</b> (tot junt). La intersecció és només el tros comú.','Eso es la <b>unión</b> (todo junto). La intersección es solo el trozo común.')]];
+if(res.a!==-Infinity)bad.push([ivTxt(iv(res.a,res.b,!res.ac,res.bc)),t('Revisa l\'extrem esquerre: ha de conservar el claudàtor o parèntesi de l\'interval d\'on ve.','Revisa el extremo izquierdo: tiene que conservar el corchete o paréntesis del intervalo de donde viene.')]);
+if(res.b!==Infinity)bad.push([ivTxt(iv(res.a,res.b,res.ac,!res.bc)),t('Revisa l\'extrem dret: ha de conservar el claudàtor o parèntesi de l\'interval d\'on ve.','Revisa el extremo derecho: tiene que conservar el corchete o paréntesis del intervalo de donde viene.')]);
+bad.push([ivTxt(iv(p,q,A.ac,!B.ac)),t('Aquest tros només és d\'A, no és ni la unió ni la intersecció.','Este trozo solo es de A, no es ni la unión ni la intersección.')]);
+return{...base,kind:'op',txt:txt+t(`quant val <b>A ${sim} B</b>?`,`¿cuánto vale <b>A ${sim} B</b>?`),ok:ivTxt(res),bad};
+};
+
+G.absv=()=>{
+const c=R(-3,4),r=R(1,4),le=Math.random()<.5;const I=iv(c-r,c+r,le,le);const cs=c===0?'x':c>0?`x − ${c}`:`x + ${-c}`;
+const ex=[t(`|${cs}| ${le?'≤':'&lt;'} ${r} vol dir: la <b>distància</b> entre x i ${MN(c)} és ${le?'com a màxim':'menor que'} ${r}.`,`|${cs}| ${le?'≤':'&lt;'} ${r} quiere decir: la <b>distancia</b> entre x y ${MN(c)} es ${le?'como máximo':'menor que'} ${r}.`),
+t(`Ens movem ${r} a cada costat de ${MN(c)}: ${MN(c)} − ${r} = ${MN(c-r)} i ${MN(c)} + ${r} = ${MN(c+r)}.`,`Nos movemos ${r} a cada lado de ${MN(c)}: ${MN(c)} − ${r} = ${MN(c-r)} y ${MN(c)} + ${r} = ${MN(c+r)}.`),
+t(`Solució: <b>${ivTxt(I)}</b> (entorn de centre ${MN(c)} i radi ${r}).`,`Solución: <b>${ivTxt(I)}</b> (entorno de centro ${MN(c)} y radio ${r}).`)+linia([I],-8,8)];
+const txt=t(`Quins nombres compleixen <b>|${cs}| ${le?'≤':'&lt;'} ${r}</b>?`,`¿Qué números cumplen <b>|${cs}| ${le?'≤':'&lt;'} ${r}</b>?`);
+const base={tip:t('Valor absolut','Valor absoluto'),expl:ex,pista:t(`Pensa en distàncies: quins nombres estan a menys de ${r} passos de ${MN(c)}?`,`Piensa en distancias: ¿qué números están a menos de ${r} pasos de ${MN(c)}?`)};
+if(Math.random()<.4)return{...base,kind:'recta',ansI:I,rec:{lo:-8,hi:8,given:[]},txt:txt+t(' Marca\'ls a la recta.',' Márcalos en la recta.')};
+const bad=[[ivTxt(iv(-r,r,le,le)),t(`Això seria |x| ${le?'≤':'&lt;'} ${r}, amb centre 0. Ací el centre és ${MN(c)}.`,`Eso sería |x| ${le?'≤':'&lt;'} ${r}, con centro 0. Aquí el centro es ${MN(c)}.`)],
+[ivTxt(iv(c-r,c+r,!le,!le)),W_CL()]];
+if(c!==0)bad.push([ivTxt(iv(-c-r,-c+r,le,le)),t(`Compte amb el signe: |x − a| és la distància a <b>a</b>. ${cs} → centre ${MN(c)}, no ${MN(-c)}.`,`Cuidado con el signo: |x − a| es la distancia a <b>a</b>. ${cs} → centro ${MN(c)}, no ${MN(-c)}.`)]);
+else bad.push([ivTxt(iv(0,r,le,le)),t('Els nombres negatius també compten: −1 està a distància 1 del 0.','Los números negativos también cuentan: −1 está a distancia 1 del 0.')]);
+return{...base,kind:'op',txt,ok:ivTxt(I),bad};
+};
+
+G.prop=()=>{
+const a=pick([2,3,5,7,10]);let m=R(-4,7),n=R(-4,6);if(m===0)m=3;if(n===0)n=-2;const ty=R(0,2);const P=e=>pw(a,e);const nn=n<0?`(${MN(n)})`:MN(n);
+const W_SUM=t('En un <b>producte</b> de potències de la mateixa base, els exponents se <b>sumen</b> (no es multipliquen).','En un <b>producto</b> de potencias de la misma base, los exponentes se <b>suman</b> (no se multiplican).');
+if(ty===0)return{tip:t('Producte de potències','Producto de potencias'),kind:'op',txt:t('Escriu com una sola potència:','Escribe como una sola potencia:')+`<span class="gr">${P(m)} · ${P(n)}</span>`,ok:P(m+n),
+bad:[[P(m*n),W_SUM],[pw(a*a,m+n),t('Les bases <b>no</b> es multipliquen: la base es queda igual i només sumem exponents.','Las bases <b>no</b> se multiplican: la base se queda igual y solo sumamos exponentes.')],[P(m-n),t('Restar exponents és per a la <b>divisió</b>. En el producte se sumen.','Restar exponentes es para la <b>división</b>. En el producto se suman.')]],
+expl:[t('Mateixa base i multiplicació → es conserva la base i se sumen els exponents: a<sup>m</sup> · a<sup>n</sup> = a<sup>m+n</sup>.','Misma base y multiplicación → se conserva la base y se suman los exponentes: a<sup>m</sup> · a<sup>n</sup> = a<sup>m+n</sup>.'),`${MN(m)} + ${nn} = ${MN(m+n)}`,`${P(m)} · ${P(n)} = <b>${P(m+n)}</b>`],pista:t('Mateixa base multiplicant: què fas amb els exponents?','Misma base multiplicando: ¿qué haces con los exponentes?')};
+if(ty===1)return{tip:t('Quocient de potències','Cociente de potencias'),kind:'op',txt:t('Escriu com una sola potència:','Escribe como una sola potencia:')+`<span class="gr">${P(m)} : ${P(n)}</span>`,ok:P(m-n),
+bad:[[P(m+n),t('En la <b>divisió</b> els exponents es <b>resten</b>: el del numerador menys el del denominador.','En la <b>división</b> los exponentes se <b>restan</b>: el del numerador menos el del denominador.')],[P(n-m),t('L\'ordre importa: és l\'exponent del dividend <b>menys</b> el del divisor.','El orden importa: es el exponente del dividendo <b>menos</b> el del divisor.')],[pw(1,m-n),t('La base no es divideix: es conserva.','La base no se divide: se conserva.')]],
+expl:[t('Mateixa base i divisió → es conserva la base i es resten els exponents: a<sup>m</sup> : a<sup>n</sup> = a<sup>m−n</sup>.','Misma base y división → se conserva la base y se restan los exponentes: a<sup>m</sup> : a<sup>n</sup> = a<sup>m−n</sup>.'),`${MN(m)} − ${nn} = ${MN(m-n)}`+(n<0?t(' (restar un negatiu és sumar)',' (restar un negativo es sumar)'):''),`${P(m)} : ${P(n)} = <b>${P(m-n)}</b>`],pista:t('Dividir potències de la mateixa base: exponent de dalt menys exponent de baix.','Dividir potencias de la misma base: exponente de arriba menos exponente de abajo.')};
+return{tip:t('Potència d\'una potència','Potencia de una potencia'),kind:'op',txt:t('Escriu com una sola potència:','Escribe como una sola potencia:')+`<span class="gr">(${P(m)})<sup>${MN(n)}</sup></span>`,ok:P(m*n),
+bad:[[P(m+n),t('Això seria per a un producte a<sup>m</sup>·a<sup>n</sup>. En una potència d\'una potència els exponents es <b>multipliquen</b>.','Eso sería para un producto a<sup>m</sup>·a<sup>n</sup>. En una potencia de una potencia los exponentes se <b>multiplican</b>.')],[pw(a*Math.abs(n),m),t('L\'exponent de fora no multiplica la base: eleva tota la potència.','El exponente de fuera no multiplica la base: eleva toda la potencia.')],[P(-m*n),t('Compte amb els signes en multiplicar: menys per menys és més, i menys per més és menys.','Cuidado con los signos al multiplicar: menos por menos es más, y menos por más es menos.')]],
+expl:[t('(a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup>: els exponents es multipliquen.','(a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup>: los exponentes se multiplican.'),`${MN(m)} · ${nn} = ${MN(m*n)}`,`(${P(m)})<sup>${MN(n)}</sup> = <b>${P(m*n)}</b>`],pista:t('Potència elevada a una altra potència: multiplica exponents.','Potencia elevada a otra potencia: multiplica exponentes.')};
+};
+
+G.neg=()=>{
+if(Math.random()<.5){const a=pick([2,3,4,5,10]);const n=a<=3?R(1,4):a===10?R(1,3):R(1,3);const v=Math.pow(a,n);
+return{tip:t('Exponent negatiu','Exponente negativo'),kind:'num',ans:1/v,tol:1e-9,fmt:fr(1,v),
+txt:t('Calcula (pots escriure una fracció amb /):','Calcula (puedes escribir una fracción con /):')+`<span class="gr">${pw(a,-n)}</span>`,
+errs:[[-v,t('L\'exponent negatiu <b>no</b> fa el resultat negatiu: vol dir «fes l\'invers».','El exponente negativo <b>no</b> hace el resultado negativo: quiere decir «haz el inverso».')],[-a*n,t('No es multiplica la base per l\'exponent. A més, el resultat no és negatiu.','No se multiplica la base por el exponente. Además, el resultado no es negativo.')],[v,t('Has calculat bé la potència, però l\'exponent negatiu vol dir que cal fer l\'<b>invers</b>: 1 partit per això.','Has calculado bien la potencia, pero el exponente negativo quiere decir que hay que hacer el <b>inverso</b>: 1 partido por eso.')],[-1/v,t('Quasi! Però el resultat és positiu: el menys de l\'exponent només fa l\'invers.','¡Casi! Pero el resultado es positivo: el menos del exponente solo hace el inverso.')]],
+expl:[t('a<sup>−n</sup> = 1 / a<sup>n</sup>: l\'exponent negatiu vol dir «invers».','a<sup>−n</sup> = 1 / a<sup>n</sup>: el exponente negativo quiere decir «inverso».'),`${pw(a,-n)} = ${F(1,pw(a,n))} = <b>${fr(1,v)}</b>`],pista:t('Gira-ho: posa la potència al denominador amb l\'exponent positiu.','Dale la vuelta: pon la potencia en el denominador con el exponente positivo.')}}
+const [p,q]=pick([[1,2],[2,3],[3,4],[2,5],[3,2],[1,3],[4,3],[5,2]]);const n=R(1,3);const P=Math.pow(p,n),Q=Math.pow(q,n);
+return{tip:t('Exponent negatiu','Exponente negativo'),kind:'num',ans:Q/P,tol:1e-9,fmt:fr(Q,P),
+txt:t('Calcula (pots escriure una fracció amb /):','Calcula (puedes escribir una fracción con /):')+`<span class="gr">(${F(p,q)})<sup>${MN(-n)}</sup></span>`,
+errs:[[P/Q,t('T\'has oblidat de <b>girar</b> la fracció: l\'exponent negatiu canvia numerador per denominador.','Te has olvidado de <b>girar</b> la fracción: el exponente negativo cambia numerador por denominador.')],[-Q/P,t('El resultat no és negatiu: el menys de l\'exponent només gira la fracció.','El resultado no es negativo: el menos del exponente solo gira la fracción.')],[-P/Q,t('L\'exponent negatiu ni fa negatiu el resultat ni es queda igual: gira la fracció.','El exponente negativo ni hace negativo el resultado ni se queda igual: gira la fracción.')]],
+expl:[t('(a/b)<sup>−n</sup> = (b/a)<sup>n</sup>: girem la fracció i l\'exponent passa a positiu.','(a/b)<sup>−n</sup> = (b/a)<sup>n</sup>: giramos la fracción y el exponente pasa a positivo.'),`(${F(p,q)})<sup>${MN(-n)}</sup> = (${F(q,p)})<sup>${n}</sup> = ${F(pw(q,n),pw(p,n))} = <b>${fr(Q,P)}</b>`],pista:t('Primer gira la fracció; després eleva dalt i baix.','Primero gira la fracción; después eleva arriba y abajo.')};
+};
+
+G.signe=()=>{
+const a=R(2,5),n=a>=4?R(2,3):R(2,4);const ty=R(0,3);let h,v,ex;
+if(ty===0){h=`(−${a})<sup>${n}</sup>`;v=Math.pow(-a,n);ex=t(`El parèntesi fa que el signe també s'eleve. Exponent ${n%2?'senar':'parell'} → resultat ${n%2?'negatiu':'positiu'}.`,`El paréntesis hace que el signo también se eleve. Exponente ${n%2?'impar':'par'} → resultado ${n%2?'negativo':'positivo'}.`)}
+else if(ty===1){h=`−${a}<sup>${n}</sup>`;v=-Math.pow(a,n);ex=t(`Sense parèntesi, l'exponent només afecta el ${a}: −${a}<sup>${n}</sup> = −(${a}<sup>${n}</sup>). El menys es queda fora.`,`Sin paréntesis, el exponente solo afecta al ${a}: −${a}<sup>${n}</sup> = −(${a}<sup>${n}</sup>). El menos se queda fuera.`)}
+else if(ty===2){h=`(−${a})<sup>0</sup>`;v=1;ex=t('Qualsevol nombre (diferent de 0) elevat a 0 val 1, també els negatius si van entre parèntesis.','Cualquier número (distinto de 0) elevado a 0 vale 1, también los negativos si van entre paréntesis.')}
+else{h=`−${a}<sup>0</sup>`;v=-1;ex=t(`Sense parèntesi: −${a}<sup>0</sup> = −(${a}<sup>0</sup>) = −1. L'exponent no afecta el signe.`,`Sin paréntesis: −${a}<sup>0</sup> = −(${a}<sup>0</sup>) = −1. El exponente no afecta al signo.`)}
+const errs=[[-v,t('Revisa el signe: mira si el menys està dins del parèntesi (s\'eleva) o fora (no s\'eleva).','Revisa el signo: mira si el menos está dentro del paréntesis (se eleva) o fuera (no se eleva).')]];
+if(ty<2)errs.push([a*n,t('Una potència no és multiplicar la base per l\'exponent: és multiplicar la base per ella mateixa.','Una potencia no es multiplicar la base por el exponente: es multiplicar la base por sí misma.')],[-a*n,t('Una potència no és multiplicar la base per l\'exponent.','Una potencia no es multiplicar la base por el exponente.')]);
+if(ty>=2)errs.push([0,t('a<sup>0</sup> val 1, no 0. Pensa: a<sup>3</sup> : a<sup>3</sup> = a<sup>0</sup>, i un nombre dividit per ell mateix és 1.','a<sup>0</sup> vale 1, no 0. Piensa: a<sup>3</sup> : a<sup>3</sup> = a<sup>0</sup>, y un número dividido por sí mismo es 1.')]);
+return{tip:t('Signes i potències','Signos y potencias'),kind:'num',ans:v,tol:1e-9,fmt:MN(v),txt:t('Calcula:','Calcula:')+`<span class="gr">${h}</span>`,errs,
+expl:[ex,ty<2?`${ty===0?`(−${a})·`.repeat(n).slice(0,-1):`−(${(a+'·').repeat(n).slice(0,-1)})`} = <b>${MN(v)}</b>`:`${h} = <b>${MN(v)}</b>`],pista:t('Mira bé si el signe menys està dins del parèntesi.','Mira bien si el signo menos está dentro del paréntesis.')};
+};
+
+G.simpl=()=>{
+for(;;){const a=pick([2,2,3]);const E=a===2?R(-4,4):R(-2,3);const p=R(-3,6),r=pick([2,-2,3,-1,4]),s=pick([2,-1,3,-2]);const q=E-p+r*s;if(Math.abs(q)>8||q===0)continue;
+const num_=p+q,den=r*s;const val=E>=0?Math.pow(a,E):1/Math.pow(a,-E);const fm=E>=0?MN(Math.pow(a,E)):fr(1,Math.pow(a,-E));const qq=q<0?`(${MN(q)})`:q;const dd=den<0?`(${MN(den)})`:den;
+const w=p+q-r-s;const errs=[];if(Math.abs(w)<=7&&w!==E)errs.push([w>=0?Math.pow(a,w):1/Math.pow(a,-w),t(`En (${pw(a,r)})<sup>${MN(s)}</sup> els exponents es <b>multipliquen</b> (${MN(r)}·${MN(s)} = ${MN(den)}), no se sumen.`,`En (${pw(a,r)})<sup>${MN(s)}</sup> los exponentes se <b>multiplican</b> (${MN(r)}·${MN(s)} = ${MN(den)}), no se suman.`)]);
+const w2=num_+den;if(Math.abs(w2)<=7&&w2!==E)errs.push([w2>=0?Math.pow(a,w2):1/Math.pow(a,-w2),t('El denominador resta: l\'exponent final és el de dalt <b>menys</b> el de baix.','El denominador resta: el exponente final es el de arriba <b>menos</b> el de abajo.')]);
+errs.push([-val,t('Totes les potències són de base positiva: el resultat no pot ser negatiu.','Todas las potencias son de base positiva: el resultado no puede ser negativo.')]);
+return{tip:t('Simplificar potències','Simplificar potencias'),kind:'num',ans:val,tol:1e-9,fmt:fm,
+txt:t('Simplifica i calcula el valor (pots escriure fraccions amb /):','Simplifica y calcula el valor (puedes escribir fracciones con /):')+`<span class="gr">${F(pw(a,p)+' · '+pw(a,q),'('+pw(a,r)+')<sup>'+MN(s)+'</sup>')}</span>`,errs,
+expl:[t(`Numerador: ${pw(a,p)} · ${pw(a,q)} = ${pw(a,num_)} (sumem: ${MN(p)} + ${qq} = ${MN(num_)}).`,`Numerador: ${pw(a,p)} · ${pw(a,q)} = ${pw(a,num_)} (sumamos: ${MN(p)} + ${qq} = ${MN(num_)}).`),
+t(`Denominador: (${pw(a,r)})<sup>${MN(s)}</sup> = ${pw(a,den)} (multipliquem: ${MN(r)} · ${s<0?'('+MN(s)+')':s} = ${MN(den)}).`,`Denominador: (${pw(a,r)})<sup>${MN(s)}</sup> = ${pw(a,den)} (multiplicamos: ${MN(r)} · ${s<0?'('+MN(s)+')':s} = ${MN(den)}).`),
+t(`Divisió: ${pw(a,num_)} : ${pw(a,den)} = ${pw(a,E)} (${MN(num_)} − ${dd} = ${MN(E)}).`,`División: ${pw(a,num_)} : ${pw(a,den)} = ${pw(a,E)} (${MN(num_)} − ${dd} = ${MN(E)}).`),
+`${pw(a,E)} = <b>${fm}</b>`],pista:t('Fes-ho per parts: primer dalt (sumar exponents), després baix (multiplicar), i al final divideix (restar).','Hazlo por partes: primero arriba (sumar exponentes), después abajo (multiplicar), y al final divide (restar).')}}
+};
+
+G.base=()=>{
+const b=pick([2,3]);const B=b===2?[[2,1],[4,2],[8,3],[16,4]]:[[3,1],[9,2],[27,3]];
+const f=shuffle(B).slice(0,3);const ks=f.map(()=>{let k=R(-3,4);return k===0?2:k});const tot=f.reduce((s,x,i)=>s+x[1]*ks[i],0);const sk=ks.reduce((s,x)=>s+x,0);const sb=f.reduce((s,x,i)=>s+x[1]+ks[i],0);
+const h=f.map((x,i)=>pw(x[0],ks[i])).join(' · ');
+return{tip:t('Canvi de base','Cambio de base'),kind:'op',txt:t(`Escriu com una sola potència de base ${b}:`,`Escribe como una sola potencia de base ${b}:`)+`<span class="gr">${h}</span>`,ok:pw(b,tot),
+bad:[[pw(b,sk),t(`No pots sumar els exponents directament si les bases són diferents. Primer escriu cada base com a potència de ${b}.`,`No puedes sumar los exponentes directamente si las bases son distintas. Primero escribe cada base como potencia de ${b}.`)],[pw(b,sb),t(`En (${b}<sup>a</sup>)<sup>k</sup> els exponents es <b>multipliquen</b>, no se sumen.`,`En (${b}<sup>a</sup>)<sup>k</sup> los exponentes se <b>multiplican</b>, no se suman.`)],[pw(b,-tot),t('Revisa els signes dels exponents.','Revisa los signos de los exponentes.')],[pw(b,tot+2),t('Revisa la suma final dels exponents, terme a terme.','Revisa la suma final de los exponentes, término a término.')],[pw(b*b,tot),t('La base és '+b+', no '+(b*b)+'.','La base es '+b+', no '+(b*b)+'.')]],
+expl:[t(`Escrivim cada base com a potència de ${b}: `,`Escribimos cada base como potencia de ${b}: `)+f.filter(x=>x[1]>1).map(x=>`${x[0]} = ${pw(b,x[1])}`).join(', '),
+f.map((x,i)=>x[1]>1?`(${pw(b,x[1])})<sup>${MN(ks[i])}</sup> = ${pw(b,x[1]*ks[i])}`:`${pw(b,ks[i])}`).join(' ; '),
+t(`Sumem exponents: ${f.map((x,i)=>MN(x[1]*ks[i])).join(' + ').replace(/\+ −/g,'− ')} = ${MN(tot)}`,`Sumamos exponentes: ${f.map((x,i)=>MN(x[1]*ks[i])).join(' + ').replace(/\+ −/g,'− ')} = ${MN(tot)}`),`<b>${pw(b,tot)}</b>`],
+pista:b===2?t('4 = 2², 8 = 2³, 16 = 2⁴.','4 = 2², 8 = 2³, 16 = 2⁴.'):t('9 = 3², 27 = 3³.','9 = 3², 27 = 3³.')};
+};
+
+function stdStr(D,e){const L=D.length;let s;if(e>=0){s=D+'0'.repeat(Math.max(0,e+1-L));s=s.replace(/\B(?=(\d{3})+(?!\d))/g,' ')}else s='0,'+'0'.repeat(-e-1)+D;return s}
+G.escriu=()=>{
+const D=pick([String(R(11,99)),String(R(101,999))]).replace(/0+$/,'')||'5';const m=+(D[0]+'.'+D.slice(1));const e=Math.random()<.5?R(4,10):R(-7,-2);
+const s=stdStr(D,e);const un=+(D.slice(0,2)+'.'+D.slice(2));
+const bad=[[sci(m,e+(e>0?-1:1)),t('Compta bé quants llocs es mou la coma: fins a deixar <b>una sola xifra</b> (no nul·la) davant.','Cuenta bien cuántos lugares se mueve la coma: hasta dejar <b>una sola cifra</b> (no nula) delante.')],[sci(m,-e),t('El signe de l\'exponent: nombres <b>grans</b> → exponent positiu; nombres <b>menuts</b> (0,…) → exponent negatiu.','El signo del exponente: números <b>grandes</b> → exponente positivo; números <b>pequeños</b> (0,…) → exponente negativo.')]];
+if(D.length>1)bad.push([sci(un,e-1),t('Té el mateix valor, però no és notació científica: davant de la coma hi ha d\'haver <b>una sola xifra</b>, de l\'1 al 9.','Tiene el mismo valor, pero no es notación científica: delante de la coma tiene que haber <b>una sola cifra</b>, del 1 al 9.')]);
+else bad.push([sci(m,e+(e>0?1:-1)),t('Compta bé quants llocs es mou la coma.','Cuenta bien cuántos lugares se mueve la coma.')]);
+return{tip:t('Notació científica','Notación científica'),kind:'op',txt:t('Escriu en notació científica:','Escribe en notación científica:')+`<span class="gr">${s}</span>`,ok:sci(m,e),bad,
+expl:[t('Posem la coma darrere de la primera xifra que no és zero: ','Ponemos la coma detrás de la primera cifra que no es cero: ')+num(m,4),
+e>0?t(`Per passar de ${num(m,4)} a ${s} la coma es mou <b>${e}</b> llocs a la dreta → multipliquem per ${P10(e)}.`,`Para pasar de ${num(m,4)} a ${s} la coma se mueve <b>${e}</b> lugares a la derecha → multiplicamos por ${P10(e)}.`):t(`Per passar de ${num(m,4)} a ${s} la coma es mou <b>${-e}</b> llocs a l'esquerra → multipliquem per ${P10(e)}.`,`Para pasar de ${num(m,4)} a ${s} la coma se mueve <b>${-e}</b> lugares a la izquierda → multiplicamos por ${P10(e)}.`),
+`${s} = <b>${sci(m,e)}</b>`],pista:t('Deixa una sola xifra davant de la coma i compta quants llocs l\'has moguda.','Deja una sola cifra delante de la coma y cuenta cuántos lugares la has movido.')};
+};
+
+G.mult=()=>{
+const A=R(11,99),B=R(11,99);const a=A/10,b=B/10;const m=R(-8,9),n=R(-8,9);const pr=A*B/100;let ma=pr,ex=m+n;if(ma>=10){ma=A*B/1000;ex++}
+const nn=n<0?`(${MN(n)})`:n;
+const bad=[[sci(ma,m*n),t('En multiplicar potències de 10, els exponents se <b>sumen</b>, no es multipliquen.','Al multiplicar potencias de 10, los exponentes se <b>suman</b>, no se multiplican.')],[sci(r2(a+b)>=10?r2(a+b)/10:r2(a+b),m+n),t('Les mantisses (els nombres de davant) es <b>multipliquen</b>, no se sumen.','Las mantisas (los números de delante) se <b>multiplican</b>, no se suman.')]];
+if(pr>=10){bad.push([`${num(pr,4)}·${P10(m+n)}`,t(`El valor és correcte però no està en notació científica: ${num(pr,4)} té dues xifres davant de la coma. Passa\'n una a l\'exponent.`,`El valor es correcto pero no está en notación científica: ${num(pr,4)} tiene dos cifras delante de la coma. Pasa una al exponente.`)]);bad.push([sci(ma,m+n),t('Has corregit la mantissa (dividint per 10) però t\'has oblidat de <b>sumar 1</b> a l\'exponent.','Has corregido la mantisa (dividiendo por 10) pero te has olvidado de <b>sumar 1</b> al exponente.')])}
+else bad.push([sci(ma,ex+1),t('Si la mantissa ja és entre 1 i 10, l\'exponent no s\'ha de tocar.','Si la mantisa ya está entre 1 y 10, el exponente no se toca.')]);
+return{tip:t('Multiplicar en notació científica','Multiplicar en notación científica'),kind:'op',txt:t('Calcula i dona el resultat en notació científica:','Calcula y da el resultado en notación científica:')+`<span class="gr">(${sci(a,m)}) · (${sci(b,n)})</span>`,ok:sci(ma,ex),bad,
+expl:[t(`Multipliquem les mantisses: ${num(a)} · ${num(b)} = ${num(pr,4)}`,`Multiplicamos las mantisas: ${num(a)} · ${num(b)} = ${num(pr,4)}`),t(`Sumem els exponents: ${MN(m)} + ${nn} = ${MN(m+n)}`,`Sumamos los exponentes: ${MN(m)} + ${nn} = ${MN(m+n)}`),
+pr>=10?t(`${num(pr,4)} no és entre 1 i 10: ${num(pr,4)} = ${num(ma,4)}·10, així que l'exponent puja 1 → <b>${sci(ma,ex)}</b>`,`${num(pr,4)} no está entre 1 y 10: ${num(pr,4)} = ${num(ma,4)}·10, así que el exponente sube 1 → <b>${sci(ma,ex)}</b>`):t(`${num(pr,4)} ja és entre 1 i 10 → <b>${sci(ma,ex)}</b>`,`${num(pr,4)} ya está entre 1 y 10 → <b>${sci(ma,ex)}</b>`)],
+pista:t('Números amb números (multiplica), potències amb potències (suma exponents). Al final, revisa que davant de la coma hi haja una sola xifra.','Números con números (multiplica), potencias con potencias (suma exponentes). Al final, revisa que delante de la coma haya una sola cifra.')};
+};
+
+G.div=()=>{
+const [a,b]=pick([[1.2,4],[1.5,5],[2.4,8],[3,6],[6.4,8],[1.8,2],[8.4,2.1],[9,1.5],[7.5,2.5],[4.8,1.6],[2.8,7],[9.6,3],[6.3,9],[3.6,1.2]]);
+const m=R(-6,9),n=R(-6,9);const q=Math.round(a/b*1e6)/1e6;let ma=q,ex=m-n;if(q<1){ma=Math.round(q*10*1e6)/1e6;ex--}const nn=n<0?`(${MN(n)})`:n;
+const bad=[[sci(ma,m+n),t('En dividir potències de 10, els exponents es <b>resten</b>.','Al dividir potencias de 10, los exponentes se <b>restan</b>.')],[sci(ma,n-m+(q<1?-1:0)),t('L\'ordre de la resta importa: exponent del dividend <b>menys</b> exponent del divisor.','El orden de la resta importa: exponente del dividendo <b>menos</b> exponente del divisor.')]];
+if(q<1)bad.push([`${num(q,4)}·${P10(m-n)}`,t(`El valor és correcte però no és notació científica: ${num(q,4)} és menor que 1. Cal ${num(ma,4)} i baixar 1 l'exponent.`,`El valor es correcto pero no es notación científica: ${num(q,4)} es menor que 1. Hay que poner ${num(ma,4)} y bajar 1 el exponente.`)]);
+bad.push([sci(ma,ex+1),t('Revisa l\'exponent: després de dividir les mantisses, l\'exponent és la resta dels exponents.','Revisa el exponente: después de dividir las mantisas, el exponente es la resta de los exponentes.')]);
+if(q>=1)bad.push([sci(Math.round(b/a*1e4)/1e4<1?Math.round(b/a*1e5)/1e4:Math.round(b/a*1e4)/1e4,m-n),t('Has dividit al revés les mantisses.','Has dividido al revés las mantisas.')]);
+return{tip:t('Dividir en notació científica','Dividir en notación científica'),kind:'op',txt:t('Calcula i dona el resultat en notació científica:','Calcula y da el resultado en notación científica:')+`<span class="gr">(${sci(a,m)}) : (${sci(b,n)})</span>`,ok:sci(ma,ex),bad,
+expl:[t(`Dividim les mantisses: ${num(a)} : ${num(b)} = ${num(q,4)}`,`Dividimos las mantisas: ${num(a)} : ${num(b)} = ${num(q,4)}`),t(`Restem els exponents: ${MN(m)} − ${nn} = ${MN(m-n)}`,`Restamos los exponentes: ${MN(m)} − ${nn} = ${MN(m-n)}`),
+q<1?t(`${num(q,4)} és menor que 1: ${num(q,4)} = ${num(ma,4)}·${P10(-1)}, així que l'exponent baixa 1 → <b>${sci(ma,ex)}</b>`,`${num(q,4)} es menor que 1: ${num(q,4)} = ${num(ma,4)}·${P10(-1)}, así que el exponente baja 1 → <b>${sci(ma,ex)}</b>`):t(`${num(q,4)} ja és entre 1 i 10 → <b>${sci(ma,ex)}</b>`,`${num(q,4)} ya está entre 1 y 10 → <b>${sci(ma,ex)}</b>`)],
+pista:t('Divideix els números, resta els exponents i revisa que la mantissa quede entre 1 i 10.','Divide los números, resta los exponentes y revisa que la mantisa quede entre 1 y 10.')};
+};
+
+G.suma=()=>{
+const A=R(11,99),B=R(11,99);const a=A/10,b=B/10;const m=R(-3,8);const d=R(1,2);const n=m-d;const mes=Math.random()<.6;
+const S=mes?A*Math.pow(10,d)+B:A*Math.pow(10,d)-B;const L=String(S).length;const ma=S/Math.pow(10,L-1);const ex=n-1+L-1;
+const bs=num(b/Math.pow(10,d),4);const sg=mes?'+':'−';const ab=mes?r2(a+b):r2(a-b);
+const bad=[[`${num(ab)}·${P10(m)}`,t('Només pots sumar o restar les mantisses si les potències de 10 són <b>iguals</b>. Primer has d\'igualar els exponents.','Solo puedes sumar o restar las mantisas si las potencias de 10 son <b>iguales</b>. Primero tienes que igualar los exponentes.')],[`${num(ab)}·${P10(m+n)}`,t('En una suma els exponents no se sumen (això és per a la multiplicació). Cal igualar-los i treure factor comú.','En una suma los exponentes no se suman (eso es para la multiplicación). Hay que igualarlos y sacar factor común.')],[sci(ma,ex+1),t('Revisa l\'exponent final: has de mantindre el valor del nombre.','Revisa el exponente final: tienes que mantener el valor del número.')]];
+return{tip:mes?t('Sumar en notació científica','Sumar en notación científica'):t('Restar en notació científica','Restar en notación científica'),kind:'op',txt:t('Calcula i dona el resultat en notació científica:','Calcula y da el resultado en notación científica:')+`<span class="gr">${sci(a,m)} ${sg} ${sci(b,n)}</span>`,ok:sci(ma,ex),bad,
+expl:[t(`Igualem exponents: passem el segon a ${P10(m)}. ${sci(b,n)} = ${bs}·${P10(m)} (la coma es mou ${d} lloc${d>1?'s':''} a l'esquerra).`,`Igualamos exponentes: pasamos el segundo a ${P10(m)}. ${sci(b,n)} = ${bs}·${P10(m)} (la coma se mueve ${d} lugar${d>1?'es':''} a la izquierda).`),
+t(`Traiem factor comú: (${num(a)} ${sg} ${bs})·${P10(m)} = ${num(S/Math.pow(10,d+1),5)}·${P10(m)}`,`Sacamos factor común: (${num(a)} ${sg} ${bs})·${P10(m)} = ${num(S/Math.pow(10,d+1),5)}·${P10(m)}`),
+S/Math.pow(10,d+1)>=10||S/Math.pow(10,d+1)<1?t(`Ajustem perquè hi haja una sola xifra davant de la coma: <b>${sci(ma,ex)}</b>`,`Ajustamos para que haya una sola cifra delante de la coma: <b>${sci(ma,ex)}</b>`):t(`Ja està en notació científica: <b>${sci(ma,ex)}</b>`,`Ya está en notación científica: <b>${sci(ma,ex)}</b>`)],
+pista:t('Abans de sumar, posa els dos nombres amb la mateixa potència de 10.','Antes de sumar, pon los dos números con la misma potencia de 10.')};
+};
+
+G.context=()=>{
+const L=[
+()=>({txt:t(`La llum recorre ${sci(3,5)} km cada segon. Un any té uns ${sci(3.15,7)} segons. Quants km recorre la llum en un any (un <b>any llum</b>)?`,`La luz recorre ${sci(3,5)} km cada segundo. Un año tiene unos ${sci(3.15,7)} segundos. ¿Cuántos km recorre la luz en un año (un <b>año luz</b>)?`),ok:sci(9.45,12)+' km',
+bad:[[sci(9.45,35)+' km',t('Els exponents se sumen en multiplicar (5 + 7), no es multipliquen.','Los exponentes se suman al multiplicar (5 + 7), no se multiplican.')],[sci(6.15,12)+' km',t('Les mantisses es multipliquen: 3 · 3,15 = 9,45.','Las mantisas se multiplican: 3 · 3,15 = 9,45.')],[sci(9.52,-2)+' km',t('Per saber la distància en un any has de <b>multiplicar</b> velocitat per temps, no dividir.','Para saber la distancia en un año tienes que <b>multiplicar</b> velocidad por tiempo, no dividir.')]],
+expl:[t('Distància = velocitat · temps','Distancia = velocidad · tiempo'),`(${sci(3,5)}) · (${sci(3.15,7)}) = (3 · 3,15)·${P10('5+7')} = <b>${sci(9.45,12)}</b> km`,t('Uns 9 bilions de km! Per això les distàncies entre estreles es mesuren en anys llum.','¡Unos 9 billones de km! Por eso las distancias entre estrellas se miden en años luz.')]}),
+()=>({txt:t(`Una pilota de tennis pesa ${sci(5.8,-2)} kg. En un gran torneig es fan servir uns ${sci(6,4)} pilotes. Quant pesen totes juntes?`,`Una pelota de tenis pesa ${sci(5.8,-2)} kg. En un gran torneo se usan unas ${sci(6,4)} pelotas. ¿Cuánto pesan todas juntas?`),ok:sci(3.48,3)+' kg',
+bad:[[sci(3.48,2)+' kg',t('5,8 · 6 = 34,8 = 3,48 · 10: has de sumar 1 a l\'exponent.','5,8 · 6 = 34,8 = 3,48 · 10: tienes que sumar 1 al exponente.')],[sci(3.48,-7)+' kg',t('Els exponents se sumen en multiplicar: −2 + 4 = 2 (i després +1 per ajustar).','Los exponentes se suman al multiplicar: −2 + 4 = 2 (y después +1 para ajustar).')],[`34,8·${P10(2)} kg`,t('El valor és correcte, però en notació científica davant de la coma només hi pot haver una xifra.','El valor es correcto, pero en notación científica delante de la coma solo puede haber una cifra.')]],
+expl:[t('Pes total = pes d\'una · nombre de pilotes','Peso total = peso de una · número de pelotas'),`(${sci(5.8,-2)}) · (${sci(6,4)}) = 34,8·${P10(2)}`,`34,8·${P10(2)} = 3,48·10·${P10(2)} = <b>${sci(3.48,3)}</b> kg`,t('Unes 3,5 tones de pilotes!','¡Unas 3,5 toneladas de pelotas!')]}),
+()=>({txt:t(`Un cabell fa ${sci(8,-5)} m de gruix. Quants cabells, un al costat de l'altre, ocupen 2 cm = ${sci(2,-2)} m?`,`Un pelo mide ${sci(8,-5)} m de grosor. ¿Cuántos pelos, uno al lado del otro, ocupan 2 cm = ${sci(2,-2)} m?`),ok:sci(2.5,2),
+bad:[[sci(2.5,-8),t('En dividir, els exponents es <b>resten</b>: −2 − (−5) = 3.','Al dividir, los exponentes se <b>restan</b>: −2 − (−5) = 3.')],[sci(4,-3),t('Has dividit al revés: és el tros total entre el gruix d\'un cabell.','Has dividido al revés: es el trozo total entre el grosor de un pelo.')],[`0,25·${P10(3)}`,t('El valor és correcte, però 0,25 no és entre 1 i 10: 0,25·10³ = 2,5·10².','El valor es correcto, pero 0,25 no está entre 1 y 10: 0,25·10³ = 2,5·10².')]],
+expl:[t('Nombre de cabells = longitud total : gruix d\'un cabell','Número de pelos = longitud total : grosor de un pelo'),`(${sci(2,-2)}) : (${sci(8,-5)}) = (2 : 8)·${P10('−2−(−5)')} = 0,25·${P10(3)}`,`0,25·${P10(3)} = <b>${sci(2.5,2)}</b> = 250 ${t('cabells','pelos')}`]}),
+()=>({txt:t(`La Terra és a ${sci(1.5,8)} km del Sol i la llum va a ${sci(3,5)} km/s. Quants segons tarda la llum del Sol a arribar-nos?`,`La Tierra está a ${sci(1.5,8)} km del Sol y la luz va a ${sci(3,5)} km/s. ¿Cuántos segundos tarda la luz del Sol en llegarnos?`),ok:sci(5,2)+' s',
+bad:[[sci(5,3)+' s',t('1,5 : 3 = 0,5, i 0,5·10³ = 5·10²: en ajustar la mantissa l\'exponent <b>baixa</b> 1.','1,5 : 3 = 0,5, y 0,5·10³ = 5·10²: al ajustar la mantisa el exponente <b>baja</b> 1.')],[sci(4.5,13)+' s',t('Temps = distància <b>:</b> velocitat. Has multiplicat.','Tiempo = distancia <b>:</b> velocidad. Has multiplicado.')],[sci(2,-3)+' s',t('Has dividit al revés: distància entre velocitat.','Has dividido al revés: distancia entre velocidad.')]],
+expl:[t('Temps = distància : velocitat','Tiempo = distancia : velocidad'),`(${sci(1.5,8)}) : (${sci(3,5)}) = 0,5·${P10(3)}`,`0,5·${P10(3)} = <b>${sci(5,2)}</b> s = 500 s ≈ 8 min 20 s`]})
+];
+const o=pick(L)();return{tip:t('Problema amb notació científica','Problema con notación científica'),kind:'op',...o,pista:t('Pensa primer si has de multiplicar o dividir. Després: números amb números i potències amb potències.','Piensa primero si tienes que multiplicar o dividir. Después: números con números y potencias con potencias.')};
+};
+
+G.potfrac=()=>{
+const a=pick([2,3,5,7,'x']);let m=R(1,5),n=R(2,5);if(m===n)m=n===5?4:n+1;const fx=`${m}/${n}`;const rr=`${n>2?`<sup class="ix">${n}</sup>`:''}√<span class="ov">${m===1?a:pw(a,m)}</span>`;const rad2=(i,inner)=>`<span class="rd">${i>2?`<sup class="ix">${i}</sup>`:''}√<span class="ov">${inner}</span></span>`;
+if(Math.random()<.5)return{tip:t('Arrel → potència','Raíz → potencia'),kind:'op',txt:t('Escriu com a potència d\'exponent fraccionari:','Escribe como potencia de exponente fraccionario:')+`<span class="gr"><span class="rd">${rr}</span></span>`,ok:pw(a,fx),
+bad:[[pw(a,`${n}/${m}`),t('L\'<b>índex</b> de l\'arrel va al <b>denominador</b>, i l\'exponent del radicand al numerador.','El <b>índice</b> de la raíz va al <b>denominador</b>, y el exponente del radicando al numerador.')],[pw(a,m*n),t('No es multipliquen: l\'arrel <b>divideix</b> l\'exponent entre l\'índex.','No se multiplican: la raíz <b>divide</b> el exponente entre el índice.')],[pw(a,m-n),t('L\'arrel no resta: ⁿ√(a<sup>m</sup>) = a<sup>m/n</sup>.','La raíz no resta: ⁿ√(a<sup>m</sup>) = a<sup>m/n</sup>.')]],
+expl:[t('Regla: ⁿ√(a<sup>m</sup>) = a<sup>m/n</sup>. L\'exponent de dins va dalt, l\'índex de l\'arrel va baix.','Regla: ⁿ√(a<sup>m</sup>) = a<sup>m/n</sup>. El exponente de dentro va arriba, el índice de la raíz va abajo.'),n===2?t('Si no es veu l\'índex, és 2 (arrel quadrada).','Si no se ve el índice, es 2 (raíz cuadrada).'):t(`Ací l'índex és ${n} i l'exponent ${m}.`,`Aquí el índice es ${n} y el exponente ${m}.`),`<span class="rd">${rr}</span> = <b>${pw(a,fx)}</b>`],pista:t('Índex baix, exponent dalt.','Índice abajo, exponente arriba.')};
+return{tip:t('Potència → arrel','Potencia → raíz'),kind:'op',txt:t('Escriu en forma de radical:','Escribe en forma de radical:')+`<span class="gr">${pw(a,fx)}</span>`,ok:`<span class="rd">${rr}</span>`,
+bad:[[rad2(m,n===1?a:pw(a,n)),t('Al revés: el <b>denominador</b> és l\'índex de l\'arrel i el numerador és l\'exponent de dins.','Al revés: el <b>denominador</b> es el índice de la raíz y el numerador es el exponente de dentro.')],[`${m}·${rad2(n,a)}`,t('L\'exponent no multiplica l\'arrel: va dins, elevant la base.','El exponente no multiplica la raíz: va dentro, elevando la base.')],[rad2(n,typeof a==='number'?a*m:m+'x'),t('L\'exponent eleva la base (potència), no la multiplica.','El exponente eleva la base (potencia), no la multiplica.')]],
+expl:[t('Regla: a<sup>m/n</sup> = ⁿ√(a<sup>m</sup>). El denominador és l\'índex; el numerador, l\'exponent del radicand.','Regla: a<sup>m/n</sup> = ⁿ√(a<sup>m</sup>). El denominador es el índice; el numerador, el exponente del radicando.'),`${pw(a,fx)} = <b><span class="rd">${rr}</span></b>`],pista:t('El denominador de la fracció és l\'índex de l\'arrel.','El denominador de la fracción es el índice de la raíz.')};
+};
+
+G.valor=()=>{
+const [b,m,n]=pick([[8,2,3],[27,2,3],[16,3,4],[32,3,5],[9,3,2],[4,-1,2],[125,-2,3],[81,3,4],[25,3,2],[64,2,3],[100,-1,2],[1000,2,3],[16,-1,4],[4,3,2],[8,-1,3],[49,-1,2],[36,3,2]]);
+const r=Math.round(Math.pow(b,1/n));const v=m>0?Math.pow(r,m):1/Math.pow(r,-m);const fm=m>0?MN(v):fr(1,Math.pow(r,-m));
+const errs=[[b*m/n,t('L\'exponent fraccionari <b>no</b> multiplica la base: vol dir arrel i potència.','El exponente fraccionario <b>no</b> multiplica la base: quiere decir raíz y potencia.')]];if(m<0)errs.push([-1/v,t('L\'exponent negatiu no fa negatiu el resultat: fa l\'invers.','El exponente negativo no hace negativo el resultado: hace el inverso.')],[1/v,t('Quasi: falta fer l\'invers per l\'exponent negatiu.','Casi: falta hacer el inverso por el exponente negativo.')]);
+return{tip:t('Exponent fraccionari','Exponente fraccionario'),kind:'num',ans:v,tol:1e-9,fmt:fm,txt:t('Calcula sense calculadora (pots escriure fraccions amb /):','Calcula sin calculadora (puedes escribir fracciones con /):')+`<span class="gr">${pw(b,`${MN(m)}/${n}`)}</span>`,errs,
+expl:[t(`El denominador ${n} és l'arrel: ${rad(1,b,n)} = ${r}, perquè ${pw(r,n)} = ${b}.`,`El denominador ${n} es la raíz: ${rad(1,b,n)} = ${r}, porque ${pw(r,n)} = ${b}.`),m>0?t(`El numerador ${m} és la potència: ${pw(r,m)} = ${v}.`,`El numerador ${m} es la potencia: ${pw(r,m)} = ${v}.`):t(`El numerador ${MN(m)} és potència i invers: ${pw(r,m)} = ${F(1,pw(r,-m))}.`,`El numerador ${MN(m)} es potencia e inverso: ${pw(r,m)} = ${F(1,pw(r,-m))}.`),`${pw(b,`${MN(m)}/${n}`)} = <b>${fm}</b>`],pista:t('Primer fes l\'arrel (denominador) perquè queda un número més menut, després eleva (numerador).','Primero haz la raíz (denominador) porque queda un número más pequeño, después eleva (numerador).')};
+};
+
+G.extreu=()=>{
+const cub=Math.random()<.3;const i=cub?3:2;let k,r;
+if(cub){k=pick([2,3]);r=pick([2,3,4,5])}else{r=pick([2,3,5,6,7,10]);k=R(2,7);while(k*k*r>300)k--}
+const n=Math.pow(k,i)*r;const ok=rad(k,r,i);
+if(Math.random()<.25){return{tip:t('Introduir factors','Introducir factores'),kind:'op',txt:t('Introdueix el factor dins de l\'arrel:','Introduce el factor dentro de la raíz:')+`<span class="gr">${ok}</span>`,ok:rad(1,n,i),
+bad:[[rad(1,k*r,i),t(`Per entrar un factor a l'arrel l'has d'elevar a l'índex: ${k} → ${pw(k,i)} = ${Math.pow(k,i)}.`,`Para meter un factor en la raíz hay que elevarlo al índice: ${k} → ${pw(k,i)} = ${Math.pow(k,i)}.`)],[rad(1,Math.pow(k,i)+r,i),t('El factor entra multiplicant, no sumant.','El factor entra multiplicando, no sumando.')],[rad(1,k*Math.pow(r,i),i),t('Has elevat el número equivocat: el que entra és el de fora.','Has elevado el número equivocado: el que entra es el de fuera.')]],
+expl:[t(`Per entrar ${k} dins l'arrel l'elevem a l'índex ${i}: ${k} = ${rad(1,pw(k,i),i)}.`,`Para meter ${k} dentro de la raíz lo elevamos al índice ${i}: ${k} = ${rad(1,pw(k,i),i)}.`),`${ok} = ${rad(1,`${pw(k,i)}·${r}`,i)} = <b>${rad(1,n,i)}</b>`],pista:t('El factor entra elevat a l\'índex.','El factor entra elevado al índice.')}}
+const bad=[[rad(Math.pow(k,i),r,i),t(`Has tret ${pw(k,i)} sense fer-ne l'arrel. Fora va l'arrel: ${rad(1,pw(k,i),i)} = ${k}.`,`Has sacado ${pw(k,i)} sin hacer su raíz. Fuera va la raíz: ${rad(1,pw(k,i),i)} = ${k}.`)]];
+const d=[2,3,5,7].find(p=>k%p===0&&p<k);if(d)bad.push([rad(d,n/Math.pow(d,i),i),t('És correcte però incomplet: encara pots traure més factors de dins de l\'arrel.','Es correcto pero incompleto: todavía puedes sacar más factores de dentro de la raíz.')]);
+if(r!==k)bad.push([rad(r,Math.pow(k,i),i),t('Has deixat dins el que havia d\'eixir i has tret el que no és potència perfecta.','Has dejado dentro lo que debía salir y has sacado lo que no es potencia perfecta.')]);
+bad.push([rad(k,r*i,i),t('Revisa la descomposició del radicand.','Revisa la descomposición del radicando.')]);
+return{tip:t('Extraure factors','Extraer factores'),kind:'op',txt:t('Simplifica traient factors de l\'arrel:','Simplifica sacando factores de la raíz:')+`<span class="gr">${rad(1,n,i)}</span>`,ok,bad,
+expl:[t(`Busquem dins de ${n} un ${cub?'cub':'quadrat'} perfecte: ${n} = ${Math.pow(k,i)} · ${r}, i ${Math.pow(k,i)} = ${pw(k,i)}.`,`Buscamos dentro de ${n} un ${cub?'cubo':'cuadrado'} perfecto: ${n} = ${Math.pow(k,i)} · ${r}, y ${Math.pow(k,i)} = ${pw(k,i)}.`),`${rad(1,n,i)} = ${rad(1,`${pw(k,i)}·${r}`,i)} = ${rad(1,pw(k,i),i)}·${rad(1,r,i)}`,t(`${rad(1,pw(k,i),i)} = ${k} surt fora: <b>${ok}</b>`,`${rad(1,pw(k,i),i)} = ${k} sale fuera: <b>${ok}</b>`)],
+pista:cub?t('Busca un divisor que siga cub perfecte: 8, 27, 64…','Busca un divisor que sea cubo perfecto: 8, 27, 64…'):t('Busca el quadrat perfecte més gran que divideix el número: 4, 9, 16, 25, 36, 49…','Busca el cuadrado perfecto más grande que divide al número: 4, 9, 16, 25, 36, 49…')};
+};
+
+G.sumrad=()=>{
+for(;;){const r=pick([2,3,5]);const k1=R(2,5),k2=R(2,4);const c1=R(1,3),c2=R(1,2);const mes=Math.random()<.6;const co=mes?c1*k1+c2*k2:c1*k1-c2*k2;if(co===0||k1===k2)continue;
+const n1=k1*k1*r,n2=k2*k2*r;if(n1>200||n2>200)continue;const sg=mes?'+':'−';const T=(c,n)=>`${c===1?'':c}√${n}`;
+const okh=rad(co,r);const sr=mes?n1+n2:n1-n2;
+const bad=[[mes||sr>0?rad(mes?c1+c2:c1-c2,sr):rad(c1*k1*k1+(mes?1:-1)*c2*k2*k2,r),t('Els radicands no es poden sumar: √a + √b ≠ √(a + b). Per exemple √9 + √16 = 3 + 4 = 7, però √25 = 5. Només se sumen radicals <b>semblants</b> (mateix radicand).','Los radicandos no se pueden sumar: √a + √b ≠ √(a + b). Por ejemplo √9 + √16 = 3 + 4 = 7, pero √25 = 5. Solo se suman radicales <b>semejantes</b> (mismo radicando).')],
+[rad(mes?c1+c2:c1-c2,r),t(`Has vist que tots dos són múltiples de √${r}, però en traure el factor has de multiplicar-lo pel coeficient que ja hi havia.`,`Has visto que los dos son múltiplos de √${r}, pero al sacar el factor tienes que multiplicarlo por el coeficiente que ya había.`)],
+[rad(c1*k1*k1+(mes?1:-1)*c2*k2*k2,r),t('Fora de l\'arrel ix l\'<b>arrel</b> del quadrat (k), no el quadrat sencer (k²).','Fuera de la raíz sale la <b>raíz</b> del cuadrado (k), no el cuadrado entero (k²).')],[rad(-co,r),t('Revisa el signe del resultat.','Revisa el signo del resultado.')],[rad(c1*k1*c2*k2,r),t('Els coeficients se <b>sumen</b> (o resten), no es multipliquen.','Los coeficientes se <b>suman</b> (o restan), no se multiplican.')]];
+return{tip:t('Sumar radicals','Sumar radicales'),kind:'op',txt:t('Calcula i simplifica:','Calcula y simplifica:')+`<span class="gr"><span class="rd">${T(c1,n1)} ${sg} ${T(c2,n2)}</span></span>`,ok:okh,bad,
+expl:[t('Simplifiquem cada radical per veure si són semblants:','Simplificamos cada radical para ver si son semejantes:'),`${c1===1?'':c1+'·'}√${n1} = ${c1===1?'':c1+'·'}√(${k1*k1}·${r}) = ${c1===1?'':c1+'·'}${k1}√${r} = ${c1*k1}√${r}`,`${c2===1?'':c2+'·'}√${n2} = ${c2===1?'':c2+'·'}√(${k2*k2}·${r}) = ${c2===1?'':c2+'·'}${k2}√${r} = ${c2*k2}√${r}`,t(`Ara són semblants (els dos porten √${r}) i sumem els coeficients: ${c1*k1} ${sg} ${c2*k2} = ${MN(co)} → <b>${okh}</b>`,`Ahora son semejantes (los dos llevan √${r}) y sumamos los coeficientes: ${c1*k1} ${sg} ${c2*k2} = ${MN(co)} → <b>${okh}</b>`)],
+pista:t('Simplifica cada arrel per separat: hauria d\'aparéixer la mateixa arrel en totes dues.','Simplifica cada raíz por separado: debería aparecer la misma raíz en las dos.')}}
+};
+
+G.multrad=()=>{
+const [a,b,i]=pick([[6,3,2],[2,8,2],[5,10,2],[3,12,2],[6,15,2],[2,6,2],[10,15,2],[14,7,2],[3,15,2],[2,10,2],[4,2,3],[9,6,3],[4,10,3],[2,12,3]]);
+const n=a*b;const [k,r]=simp(n,i);const okh=r===1?String(k):rad(k,r,i);
+const bad=[[rad(1,a+b,i),t('Les arrels del mateix índex es <b>multipliquen</b> multiplicant els radicands: √a · √b = √(a·b). No se sumen.','Las raíces del mismo índice se <b>multiplican</b> multiplicando los radicandos: √a · √b = √(a·b). No se suman.')],[rad(1,n,i),t(`És correcte, però no està simplificat: ${n} = ${pw(k,i)}·${r} i el ${k} pot eixir de l'arrel.`,`Es correcto, pero no está simplificado: ${n} = ${pw(k,i)}·${r} y el ${k} puede salir de la raíz.`)],[rad(Math.pow(k,i),r,i),t('Fora de l\'arrel ix l\'arrel del factor, no el factor sencer.','Fuera de la raíz sale la raíz del factor, no el factor entero.')]];
+return{tip:t('Multiplicar radicals','Multiplicar radicales'),kind:'op',txt:t('Multiplica i simplifica:','Multiplica y simplifica:')+`<span class="gr">${rad(1,a,i)} · ${rad(1,b,i)}</span>`,ok:okh,bad,
+expl:[t('Mateix índex → multipliquem dins d\'una sola arrel:','Mismo índice → multiplicamos dentro de una sola raíz:')+` ${rad(1,a,i)} · ${rad(1,b,i)} = ${rad(1,`${a}·${b}`,i)} = ${rad(1,n,i)}`,`${n} = ${pw(k,i)}·${r}`,t(`Traiem ${k} fora: <b>${okh}</b>`,`Sacamos ${k} fuera: <b>${okh}</b>`)],pista:t('Primer ajunta-ho tot en una arrel; després busca una potència perfecta dins.','Primero júntalo todo en una raíz; después busca una potencia perfecta dentro.')};
+};
+
+G.racio=()=>{
+const [k,n]=pick([[6,3],[10,5],[4,2],[3,6],[5,10],[12,6],[14,7],[2,8],[9,3],[15,5],[6,8],[4,12]]);
+const [s,tq]=simp(n);const g=gcd(k*s,n);const nu=k*s/g,de=n/g;const okh=de===1?rad(nu,tq):F(rad(nu,tq),de);
+const ex=[t(`Multipliquem dalt i baix per √${n}, perquè √${n}·√${n} = ${n}:`,`Multiplicamos arriba y abajo por √${n}, porque √${n}·√${n} = ${n}:`)+` ${F(k,'√'+n)} = ${F(k+'·√'+n,'√'+n+'·√'+n)} = ${F(k+'√'+n,n)}`];
+if(s>1)ex.push(t(`Simplifiquem √${n} = ${s}√${tq}: ${F(k+'·'+s+'√'+tq,n)} = ${F(k*s+'√'+tq,n)}`,`Simplificamos √${n} = ${s}√${tq}: ${F(k+'·'+s+'√'+tq,n)} = ${F(k*s+'√'+tq,n)}`));
+ex.push(t(`Simplifiquem la fracció (entre ${g}): <b>${okh}</b>`,`Simplificamos la fracción (entre ${g}): <b>${okh}</b>`));
+return{tip:t('Racionalitzar','Racionalizar'),kind:'op',txt:t('Racionalitza (lleva l\'arrel del denominador) i simplifica:','Racionaliza (quita la raíz del denominador) y simplifica:')+`<span class="gr">${F(k,rad(1,n))}</span>`,ok:okh,
+bad:[[rad(k,n),t(`Has multiplicat dalt per √${n} però no baix. Si multipliques dalt i baix pel mateix, la fracció no canvia; i baix queda √${n}·√${n} = ${n}.`,`Has multiplicado arriba por √${n} pero no abajo. Si multiplicas arriba y abajo por lo mismo, la fracción no cambia; y abajo queda √${n}·√${n} = ${n}.`)],[F(rad(k,n),n*n),t(`√${n}·√${n} = ${n}, no ${n*n}.`,`√${n}·√${n} = ${n}, no ${n*n}.`)],[fr(k,n),t(`No pots llevar l'arrel sense més: √${n} no val ${n}.`,`No puedes quitar la raíz sin más: √${n} no vale ${n}.`)]],
+expl:ex,pista:t('Multiplica numerador i denominador per l\'arrel del denominador.','Multiplica numerador y denominador por la raíz del denominador.')};
+};
+
+G.conj=()=>{
+const [k,p,q,mn]=pick([[2,3,1,1],[4,5,1,0],[6,7,2,1],[1,2,1,0],[3,7,2,0],[10,6,1,0],[4,3,1,0],[2,5,2,1],[3,6,3,1],[2,6,2,0],[9,7,2,1]]);
+const D=p-q*q;const co=k/D;const sd=mn?'−':'+',sc=mn?'+':'−';const ex=(c,s)=>{const t1=c===1?`√${p}`:c===-1?`−√${p}`:`${MN(c)}√${p}`;const qv=c*(s==='+'?q:-q);return t1+(qv<0?' − '+(-qv):' + '+qv)};
+const ansH=ex(co,sc);
+return{tip:t('Racionalitzar amb conjugat','Racionalizar con conjugado'),kind:'op',txt:t('Racionalitza i simplifica:','Racionaliza y simplifica:')+`<span class="gr">${F(k,`√${p} ${sd} ${q}`)}</span>`,ok:ansH,
+bad:[[ex(co,sd),t(`El conjugat de √${p} ${sd} ${q} és √${p} ${sc} ${q}: es canvia el signe del mig. Així (a+b)(a−b) = a² − b² i l'arrel desapareix.`,`El conjugado de √${p} ${sd} ${q} es √${p} ${sc} ${q}: se cambia el signo del medio. Así (a+b)(a−b) = a² − b² y la raíz desaparece.`)],
+[F(`${k}(√${p} ${sc} ${q})`,p+q*q),t(`El denominador és (√${p})² − ${q}² = ${p} − ${q*q} = ${D}. És una <b>resta</b> (suma per diferència), no una suma.`,`El denominador es (√${p})² − ${q}² = ${p} − ${q*q} = ${D}. Es una <b>resta</b> (suma por diferencia), no una suma.`)],
+[`${k}(√${p} ${sc} ${q})`,t(`T'has oblidat de dividir pel nou denominador, ${D}.`,`Te has olvidado de dividir por el nuevo denominador, ${D}.`)]],
+expl:[t(`Multipliquem dalt i baix pel <b>conjugat</b> del denominador: √${p} ${sc} ${q}.`,`Multiplicamos arriba y abajo por el <b>conjugado</b> del denominador: √${p} ${sc} ${q}.`),t(`Denominador: (√${p} ${sd} ${q})(√${p} ${sc} ${q}) = (√${p})² − ${q}² = ${p} − ${q*q} = ${D}`,`Denominador: (√${p} ${sd} ${q})(√${p} ${sc} ${q}) = (√${p})² − ${q}² = ${p} − ${q*q} = ${D}`),
+`${F(`${k}(√${p} ${sc} ${q})`,D)} = ${co===1?'':co===-1?'−':MN(co)}(√${p} ${sc} ${q}) = <b>${ansH}</b>`],pista:t('Suma per diferència és igual a diferència de quadrats: (a+b)(a−b) = a² − b².','Suma por diferencia es igual a diferencia de cuadrados: (a+b)(a−b) = a² − b².'),chk:{k,p,q,mn,co}};
+};
+
+G.ldef=()=>{
+const b=pick([2,3,5,10]);const mx={2:6,3:5,5:4,10:4}[b];let k=R(-3,mx);if(Math.random()<.12)k=0.5;if(k===0&&Math.random()<.5)k=1;
+let x;if(k===0.5)x=`√${b}`;else if(k>=0)x=String(Math.pow(b,k)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');else x=b===10?num(Math.pow(10,k),4):F(1,Math.pow(b,-k));
+const fm=k===0.5?F(1,2):MN(k);
+const errs=[[-k,t('Revisa el signe: si el número és menor que 1 (una fracció o 0,…), el logaritme és negatiu; si és major que 1, positiu.','Revisa el signo: si el número es menor que 1 (una fracción o 0,…), el logaritmo es negativo; si es mayor que 1, positivo.')]];
+if(k>1&&Math.pow(b,k)/b!==k)errs.push([Math.pow(b,k)/b,t(`El logaritme no és dividir: és l'exponent al qual cal elevar ${b}.`,`El logaritmo no es dividir: es el exponente al que hay que elevar ${b}.`)]);
+if(k===0)errs.push([1,t(`Qualsevol base elevada a 0 dona 1, així que el logaritme de 1 és 0.`,`Cualquier base elevada a 0 da 1, así que el logaritmo de 1 es 0.`)]);
+return{tip:t('Definició de logaritme','Definición de logaritmo'),kind:'num',ans:k,tol:1e-9,fmt:fm,txt:t('Calcula (pots escriure fraccions amb /):','Calcula (puedes escribir fracciones con /):')+`<span class="gr">${LOG(b)}${x}</span>`,errs,
+expl:[t(`${LOG(b)}${x} és l'exponent al qual hem d'elevar ${b} per obtindre ${x}.`,`${LOG(b)}${x} es el exponente al que hay que elevar ${b} para obtener ${x}.`)+(b===10?t(' (log sense base vol dir base 10)',' (log sin base quiere decir base 10)'):''),
+k===0.5?t(`√${b} = ${pw(b,'1/2')}`,`√${b} = ${pw(b,'1/2')}`):k<0?`${x} = ${b===10?'':F(1,pw(b,-k))+' = '}${pw(b,k)}`:`${x} = ${pw(b,k)}`,`${LOG(b)}${x} = <b>${fm}</b>`],pista:t(`Pregunta't: ${b} elevat a quant dona ${x}?`,`Pregúntate: ¿${b} elevado a cuánto da ${x}?`)};
+};
+
+G.linc=()=>{
+if(Math.random()<.5){const b=pick([2,3,4,5,10]);const k=b===10?R(-3,3):R(-3,4);const v=k>=0?Math.pow(b,k):1/Math.pow(b,-k);const fm=k>=0?MN(v):(b===10?num(v,4):fr(1,Math.pow(b,-k)));
+const errs=[[b*k,t(`No es multiplica: ${LOG(b)}x = ${MN(k)} vol dir x = ${pw(b,k)}.`,`No se multiplica: ${LOG(b)}x = ${MN(k)} quiere decir x = ${pw(b,k)}.`)]];if(k<0)errs.push([-Math.pow(b,-k),t('Un exponent negatiu dona l\'invers, no un nombre negatiu.','Un exponente negativo da el inverso, no un número negativo.')]);
+return{tip:t('Trobar la x','Hallar la x'),kind:'num',ans:v,tol:1e-9,fmt:fm,txt:t('Troba x (pots escriure fraccions amb /):','Halla x (puedes escribir fracciones con /):')+`<span class="gr">${LOG(b)}x = ${MN(k)}</span>`,errs,
+expl:[t('Passem a forma de potència: log<sub>b</sub> x = y ⟺ b<sup>y</sup> = x','Pasamos a forma de potencia: log<sub>b</sub> x = y ⟺ b<sup>y</sup> = x'),`x = ${pw(b,k)} = <b>${fm}</b>`],pista:t('Escriu-ho com a potència: la base elevada al resultat.','Escríbelo como potencia: la base elevada al resultado.')}}
+const r=pick([2,3,4,5,6,7,10]);const k=r>=6?2:pick([2,3]);const N=Math.pow(r,k);
+return{tip:t('Trobar la base','Hallar la base'),kind:'num',ans:r,tol:1e-9,fmt:MN(r),txt:t('Troba la base x:','Halla la base x:')+`<span class="gr">log<sub>x</sub> ${N} = ${k}</span>`,errs:[[N/k,t(`No es divideix: x<sup>${k}</sup> = ${N}, així que x és l'arrel ${k===2?'quadrada':'cúbica'} de ${N}.`,`No se divide: x<sup>${k}</sup> = ${N}, así que x es la raíz ${k===2?'cuadrada':'cúbica'} de ${N}.`)],[-r,t('La base d\'un logaritme sempre és positiva.','La base de un logaritmo siempre es positiva.')]],
+expl:[t(`Passem a potència: ${pw('x',k)} = ${N}`,`Pasamos a potencia: ${pw('x',k)} = ${N}`),`x = ${rad(1,N,k)} = <b>${r}</b>`],pista:t('Quin número elevat a l\'exponent dona el resultat?','¿Qué número elevado al exponente da el resultado?')};
+};
+
+G.lprop=()=>{
+const L=[
+['log 2 + log 50',2,['log(2·50) = log 100','100 = 10² → 2']],
+['log 4 + log 25',2,['log(4·25) = log 100','100 = 10² → 2']],
+['log 20 + log 50',3,['log(20·50) = log 1000','1000 = 10³ → 3']],
+['log 8 + log 125',3,['log(8·125) = log 1000','1000 = 10³ → 3']],
+['log<sub>6</sub> 4 + log<sub>6</sub> 9',2,['log<sub>6</sub>(4·9) = log<sub>6</sub> 36','36 = 6² → 2']],
+['log<sub>2</sub> 48 − log<sub>2</sub> 3',4,['log<sub>2</sub>(48 : 3) = log<sub>2</sub> 16','16 = 2⁴ → 4']],
+['log<sub>3</sub> 54 − log<sub>3</sub> 2',3,['log<sub>3</sub>(54 : 2) = log<sub>3</sub> 27','27 = 3³ → 3']],
+['log 5000 − log 5',3,['log(5000 : 5) = log 1000','1000 = 10³ → 3']],
+['log<sub>2</sub> (8<sup>5</sup>)',15,['log<sub>2</sub>(8⁵) = 5 · log<sub>2</sub> 8','5 · 3 = 15']],
+['log<sub>3</sub> √27',1.5,['√27 = 27<sup>1/2</sup> → log<sub>3</sub> √27 = ½ · log<sub>3</sub> 27','½ · 3 = 3/2']],
+['log<sub>2</sub> (4<sup>3</sup> · 2)',7,['log<sub>2</sub>(4³) + log<sub>2</sub> 2 = 3 · log<sub>2</sub> 4 + 1','3 · 2 + 1 = 7']],
+['log<sub>5</sub> 50 − log<sub>5</sub> 2',2,['log<sub>5</sub>(50 : 2) = log<sub>5</sub> 25','25 = 5² → 2']],
+['3 log 2 + log 125',3,['3 log 2 = log 2³ = log 8','log 8 + log 125 = log 1000 = 3']],
+['2 log 5 + log 4',2,['2 log 5 = log 25','log 25 + log 4 = log 100 = 2']]];
+const [h,v,st]=pick(L);
+return{tip:t('Propietats dels logaritmes','Propiedades de los logaritmos'),kind:'num',ans:v,tol:1e-9,fmt:v===1.5?F(3,2):MN(v),txt:t('Calcula fent servir les propietats (sense calculadora):','Calcula usando las propiedades (sin calculadora):')+`<span class="gr">${h}</span>`,
+errs:[],gw:t('Recorda: log a + log b = log(a·b); log a − log b = log(a/b); log(aⁿ) = n·log a. I <b>no</b> existeix cap regla per a log(a + b).','Recuerda: log a + log b = log(a·b); log a − log b = log(a/b); log(aⁿ) = n·log a. Y <b>no</b> existe ninguna regla para log(a + b).'),
+expl:[...st.map(x=>x.replace('→',t('→ resultat:','→ resultado:'))),t('Les propietats converteixen sumes de logaritmes en productes, i restes en divisions.','Las propiedades convierten sumas de logaritmos en productos, y restas en divisiones.')],pista:t('Suma de logaritmes = logaritme del producte. Resta = logaritme del quocient.','Suma de logaritmos = logaritmo del producto. Resta = logaritmo del cociente.')};
+};
+
+G.laprox=()=>{
+const L=[
+['log 6',0.778,['6 = 2 · 3','log 6 = log 2 + log 3 ≈ 0,301 + 0,477 = 0,778'],0.301*0.477],
+['log 12',1.079,['12 = 2² · 3','log 12 = 2·log 2 + log 3 ≈ 0,602 + 0,477 = 1,079'],0.301*0.301*0.477],
+['log 18',1.255,['18 = 2 · 3²','log 18 = log 2 + 2·log 3 ≈ 0,301 + 0,954 = 1,255'],null],
+['log 5',0.699,['5 = 10 : 2','log 5 = log 10 − log 2 ≈ 1 − 0,301 = 0,699'],null],
+['log 1,5',0.176,['1,5 = 3 : 2','log 1,5 = log 3 − log 2 ≈ 0,477 − 0,301 = 0,176'],0.477/0.301],
+['log 0,2',-0.699,['0,2 = 2 : 10','log 0,2 = log 2 − log 10 ≈ 0,301 − 1 = −0,699'],null],
+['log 8',0.903,['8 = 2³','log 8 = 3·log 2 ≈ 3 · 0,301 = 0,903'],null],
+['log 9',0.954,['9 = 3²','log 9 = 2·log 3 ≈ 2 · 0,477 = 0,954'],null],
+['log 0,6',-0.222,['0,6 = 6 : 10 = 2·3 : 10','log 0,6 = log 2 + log 3 − 1 ≈ 0,778 − 1 = −0,222'],null],
+['log 30',1.477,['30 = 3 · 10','log 30 = log 3 + log 10 ≈ 0,477 + 1 = 1,477'],null],
+['log 24',1.38,['24 = 2³ · 3','log 24 = 3·log 2 + log 3 ≈ 0,903 + 0,477 = 1,380'],null],
+['log 2,5',0.398,['2,5 = 10 : 4 = 10 : 2²','log 2,5 = 1 − 2·log 2 ≈ 1 − 0,602 = 0,398'],null],
+['log 20',1.301,['20 = 2 · 10','log 20 = log 2 + 1 ≈ 1,301'],null]];
+const [h,v,st,e]=pick(L);const errs=[];if(e!==null)errs.push([e,t('Compte: el logaritme d\'un producte és la <b>suma</b> dels logaritmes (i el d\'un quocient, la resta). No es multipliquen ni es divideixen els logaritmes.','Cuidado: el logaritmo de un producto es la <b>suma</b> de los logaritmos (y el de un cociente, la resta). No se multiplican ni se dividen los logaritmos.')]);
+return{tip:t('Calcular amb log 2 i log 3','Calcular con log 2 y log 3'),kind:'num',ans:v,tol:0.0015,fmt:num(v,3),txt:t('Sabent que <b>log 2 ≈ 0,301</b> i <b>log 3 ≈ 0,477</b>, calcula (3 decimals):','Sabiendo que <b>log 2 ≈ 0,301</b> y <b>log 3 ≈ 0,477</b>, calcula (3 decimales):')+`<span class="gr">${h}</span>`,errs,
+expl:[t('Descomponem el número en factors 2, 3 i 10 (log 10 = 1):','Descomponemos el número en factores 2, 3 y 10 (log 10 = 1):')+' '+st[0],st[1].replace(/= ([−\d,]+)$/,'= <b>$1</b>')],pista:t('Escriu el número com a producte o quocient de 2, 3 i 10.','Escribe el número como producto o cociente de 2, 3 y 10.')};
+};
+
+G.lexist=()=>{
+const no=pick([['log(−100)'],['log<sub>2</sub> 0'],['log<sub>3</sub>(−9)'],['log<sub>5</sub>(−5)']]);
+const si=shuffle([['log<sub>2</sub> '+F(1,8),'−3'],['log 1','0'],['log<sub>5</sub> √5','1/2'],['log 0,01','−2'],['log<sub>7</sub> 7','1'],['log<sub>4</sub> 2','1/2']]).slice(0,3);
+return{tip:t('Quan existeix un logaritme','Cuándo existe un logaritmo'),kind:'op',txt:t('Quin d\'aquests logaritmes <b>no existeix</b>?','¿Cuál de estos logaritmos <b>no existe</b>?'),ok:no[0],
+bad:si.map(([h,v])=>[h,t(`Aquest sí que existeix: val ${v}. Que el resultat siga 0 o negatiu no és cap problema; el problema és quan el número de dins és 0 o negatiu.`,`Este sí que existe: vale ${v}. Que el resultado sea 0 o negativo no es ningún problema; el problema es cuando el número de dentro es 0 o negativo.`)]),
+expl:[t('Una potència de base positiva (2<sup>x</sup>, 10<sup>x</sup>…) <b>sempre</b> dona un resultat positiu, mai 0 ni negatiu.','Una potencia de base positiva (2<sup>x</sup>, 10<sup>x</sup>…) <b>siempre</b> da un resultado positivo, nunca 0 ni negativo.'),t('Per tant, només existeix el logaritme de nombres <b>positius</b>.','Por tanto, solo existe el logaritmo de números <b>positivos</b>.'),t(`${no[0]} no existeix: no hi ha cap exponent que faça que la potència done això.`,`${no[0]} no existe: no hay ningún exponente que haga que la potencia dé eso.`)],pista:t('Mira el número de dins del logaritme, no el resultat.','Mira el número de dentro del logaritmo, no el resultado.')};
+};
+
+G.lexp=()=>{
+const L=[
+['2<sup>x</sup> = 32',5,['32 = 2⁵','2<sup>x</sup> = 2⁵ → x = 5'],0],
+['3<sup>x−1</sup> = 81',5,['81 = 3⁴','x − 1 = 4 → x = 5'],0],
+['5<sup>x</sup> = '+F(1,25),-2,['1/25 = 5<sup>−2</sup>','x = −2'],0],
+['2<sup>x+1</sup> = '+F(1,8),-4,['1/8 = 2<sup>−3</sup>','x + 1 = −3 → x = −4'],0],
+['10<sup>x</sup> = 0,001',-3,['0,001 = 10<sup>−3</sup>','x = −3'],0],
+['4<sup>x</sup> = 8',1.5,['4 = 2², 8 = 2³ → 2<sup>2x</sup> = 2³','2x = 3 → x = 3/2 = 1,5'],0],
+['2<sup>x</sup> = 10',Math.log(10)/Math.log(2),[t('10 no és potència de 2: prenem logaritmes','10 no es potencia de 2: tomamos logaritmos'),'x · log 2 = log 10 → x = 1 / log 2 ≈ 1 / 0,301 ≈ 3,32'],1],
+['3<sup>x</sup> = 20',Math.log(20)/Math.log(3),[t('20 no és potència de 3: prenem logaritmes','20 no es potencia de 3: tomamos logaritmos'),'x · log 3 = log 20 → x = log 20 / log 3 ≈ 1,301 / 0,477 ≈ 2,73'],1],
+['5<sup>x</sup> = 2',Math.log(2)/Math.log(5),[t('Prenem logaritmes','Tomamos logaritmos'),'x · log 5 = log 2 → x = 0,301 / 0,699 ≈ 0,43'],1]];
+const [h,v,st,c]=pick(L);
+return{tip:t('Equacions exponencials','Ecuaciones exponenciales'),kind:'num',ans:v,tol:c?0.006:1e-9,fmt:c?num(v,2):(v===1.5?'3/2':MN(v)),txt:t('Resol l\'equació','Resuelve la ecuación')+(c?t(' (arrodoneix a les centèsimes; usa log 2 ≈ 0,301, log 3 ≈ 0,477 o la calculadora):',' (redondea a las centésimas; usa log 2 ≈ 0,301, log 3 ≈ 0,477 o la calculadora):'):':')+`<span class="gr">${h}</span>`,errs:[],
+expl:[c?t('Quan no es poden igualar les bases, apliquem log als dos costats: log(a<sup>x</sup>) = x·log a.','Cuando no se pueden igualar las bases, aplicamos log a los dos lados: log(a<sup>x</sup>) = x·log a.'):t('Escrivim els dos costats com a potència de la mateixa base i igualem els exponents.','Escribimos los dos lados como potencia de la misma base e igualamos los exponentes.'),...st],pista:c?t('Aplica log als dos costats i baixa l\'exponent.','Aplica log a los dos lados y baja el exponente.'):t('Escriu el número de la dreta com a potència de la base de l\'esquerra.','Escribe el número de la derecha como potencia de la base de la izquierda.')};
+};
+
+G.pindex=()=>{
+const p=pick([3,5,8,12,15,21,30,35,40,60,4,7,2]);const up=Math.random()<.5;const v=up?1+p/100:1-p/100;
+const errs=[[p/100,t(`${num(p/100,2)} és el ${p} % sol. El que queda (o el que tens) és el 100 % ${up?'més':'menys'} el ${p} %.`,`${num(p/100,2)} es el ${p} % solo. Lo que queda (o lo que tienes) es el 100 % ${up?'más':'menos'} el ${p} %.`)],[up?1-p/100:1+p/100,t(up?'Això seria una <b>baixada</b>. Si puja, el multiplicador és major que 1.':'Això seria una <b>pujada</b>. Si baixa, el multiplicador és menor que 1.',up?'Eso sería una <b>bajada</b>. Si sube, el multiplicador es mayor que 1.':'Eso sería una <b>subida</b>. Si baja, el multiplicador es menor que 1.')],[p,t('El percentatge s\'ha de passar a decimal: dividint per 100.','El porcentaje hay que pasarlo a decimal: dividiendo entre 100.')]];
+if(p<10)errs.push([up?1+p/10:1-p/10,t(`${p} % és ${num(p/100,2)} (${p} centèsimes), no ${num(p/10,1)}.`,`${p} % es ${num(p/100,2)} (${p} centésimas), no ${num(p/10,1)}.`)]);
+return{tip:t('Índex de variació','Índice de variación'),kind:'num',ans:v,tol:1e-9,fmt:num(v,2),txt:up?t(`Per quin número has de multiplicar un preu per <b>pujar-lo un ${p} %</b>?`,`¿Por qué número tienes que multiplicar un precio para <b>subirlo un ${p} %</b>?`):t(`Per quin número has de multiplicar un preu per <b>rebaixar-lo un ${p} %</b>?`,`¿Por qué número tienes que multiplicar un precio para <b>rebajarlo un ${p} %</b>?`),errs,
+expl:[up?t(`Si puja un ${p} %, tens el 100 % + ${p} % = ${100+p} %.`,`Si sube un ${p} %, tienes el 100 % + ${p} % = ${100+p} %.`):t(`Si baixa un ${p} %, et queda el 100 % − ${p} % = ${100-p} %.`,`Si baja un ${p} %, te queda el 100 % − ${p} % = ${100-p} %.`),t(`${up?100+p:100-p} % = ${up?100+p:100-p}/100 = <b>${num(v,2)}</b> (índex de variació)`,`${up?100+p:100-p} % = ${up?100+p:100-p}/100 = <b>${num(v,2)}</b> (índice de variación)`)],pista:t('Pensa quin tant per cent tindràs al final i passa\'l a decimal.','Piensa qué tanto por ciento tendrás al final y pásalo a decimal.')};
+};
+
+G.pfinal=()=>{
+const o=pick([
+()=>{const P=pick([40,60,80,120,150,35,90,250]);return{P,p:21,up:true,txt:t(`Una raqueta costa ${eur(P)} <b>sense IVA</b>. Quant costa amb l'IVA del 21 %?`,`Una raqueta cuesta ${eur(P)} <b>sin IVA</b>. ¿Cuánto cuesta con el IVA del 21 %?`)}},
+()=>{const P=pick([60,80,95,120,140,75]);const p=pick([15,20,25,30,35,40]);return{P,p,up:false,txt:t(`Unes sabatilles de ${eur(P)} estan rebaixades un ${p} %. Quant costen ara?`,`Unas zapatillas de ${eur(P)} están rebajadas un ${p} %. ¿Cuánto cuestan ahora?`)}},
+()=>{const P=pick([45,50,60,80,120]);const p=pick([5,8,12,15,20]);return{P,p,up:true,txt:t(`L'entrada d'un torneig costava ${eur(P)} i ha pujat un ${p} %. Quant costa ara?`,`La entrada de un torneo costaba ${eur(P)} y ha subido un ${p} %. ¿Cuánto cuesta ahora?`)}}])();
+const {P,p,up}=o;const idx=up?1+p/100:1-p/100;const v=r2(P*idx);
+return{tip:t('Pujades i baixades','Subidas y bajadas'),kind:'num',ans:v,tol:0.006,fmt:eur(v),ud:'€',txt:o.txt,
+errs:[[r2(P*p/100),t(`Això és només el ${p} % (el que ${up?'puja':'es descompta'}). Falta ${up?'sumar-lo al':'restar-lo del'} preu inicial.`,`Eso es solo el ${p} % (lo que ${up?'sube':'se descuenta'}). Falta ${up?'sumarlo al':'restarlo del'} precio inicial.`)],[up?P+p:P-p,t(`El ${p} % no són ${p} €: és ${p} de cada 100.`,`El ${p} % no son ${p} €: es ${p} de cada 100.`)],[r2(P*(up?1-p/100:1+p/100)),t(up?'Has calculat una baixada i era una pujada.':'Has calculat una pujada i era una baixada.',up?'Has calculado una bajada y era una subida.':'Has calculado una subida y era una bajada.')]],
+expl:[t(`Índex de variació: ${up?'1 + ':'1 − '}${num(p/100,2)} = ${num(idx,2)}`,`Índice de variación: ${up?'1 + ':'1 − '}${num(p/100,2)} = ${num(idx,2)}`),`${eur(P)} · ${num(idx,2)} = <b>${eur(v)}</b>`,t(`Comprovació: el ${p} % de ${num(P)} és ${num(r2(P*p/100),2)} i ${num(P)} ${up?'+':'−'} ${num(r2(P*p/100),2)} = ${num(v,2)}.`,`Comprobación: el ${p} % de ${num(P)} es ${num(r2(P*p/100),2)} y ${num(P)} ${up?'+':'−'} ${num(r2(P*p/100),2)} = ${num(v,2)}.`)],pista:t('Multiplica pel índex de variació (1 + p/100 si puja, 1 − p/100 si baixa).','Multiplica por el índice de variación (1 + p/100 si sube, 1 − p/100 si baja).')};
+};
+
+G.pencad=()=>{
+const [a,b]=pick([[20,-20],[10,-10],[50,-50],[25,-20],[30,-10],[10,-20],[20,-10],[40,-25],[50,-20],[10,10],[20,30],[-10,-10],[-20,-50],[60,-25]]);
+const ia=1+a/100,ib=1+b/100;const tot=Math.round((ia*ib-1)*10000)/100;
+const D=x=>x>0?t(`puja un ${x} %`,`sube un ${x} %`):t(`baixa un ${-x} %`,`baja un ${-x} %`);
+return{tip:t('Percentatges encadenats','Porcentajes encadenados'),kind:'num',ans:tot,tol:1e-6,fmt:(tot>0?'+':'')+num(tot,2)+' %',ud:'%',
+txt:t(`Un preu primer <b>${D(a)}</b> i després <b>${D(b)}</b>. Quina és la variació total en %? (escriu un número negatiu si al final ha baixat)`,`Un precio primero <b>${D(a)}</b> y después <b>${D(b)}</b>. ¿Cuál es la variación total en %? (escribe un número negativo si al final ha bajado)`),
+errs:a+b!==tot?[[a+b,t('Els percentatges encadenats <b>no</b> se sumen: el segon percentatge s\'aplica sobre un preu que ja ha canviat. Cal multiplicar els índexs.','Los porcentajes encadenados <b>no</b> se suman: el segundo porcentaje se aplica sobre un precio que ya ha cambiado. Hay que multiplicar los índices.')]]:[],
+expl:[t(`Índexs: ${num(ia,2)} i ${num(ib,2)}`,`Índices: ${num(ia,2)} y ${num(ib,2)}`),t(`Índex total = ${num(ia,2)} · ${num(ib,2)} = ${num(ia*ib,4)}`,`Índice total = ${num(ia,2)} · ${num(ib,2)} = ${num(ia*ib,4)}`),
+tot===0?t('Índex 1 → el preu queda igual: <b>0 %</b>','Índice 1 → el precio queda igual: <b>0 %</b>'):tot>0?t(`${num(ia*ib,4)} > 1 → puja un <b>${num(tot,2)} %</b>`,`${num(ia*ib,4)} > 1 → sube un <b>${num(tot,2)} %</b>`):t(`${num(ia*ib,4)} < 1 → baixa un <b>${num(-tot,2)} %</b> (1 − ${num(ia*ib,4)} = ${num(-tot/100,4)})`,`${num(ia*ib,4)} < 1 → baja un <b>${num(-tot,2)} %</b> (1 − ${num(ia*ib,4)} = ${num(-tot/100,4)})`),
+t('Prova amb 100 €: ','Prueba con 100 €: ')+`100 → ${num(100*ia,2)} → ${num(100*ia*ib,2)} €`],pista:t('Multiplica els dos índexs de variació. Prova amb un preu de 100 €.','Multiplica los dos índices de variación. Prueba con un precio de 100 €.')};
+};
+
+G.pinv=()=>{
+const O=pick([40,60,80,120,200,250,160]);const p=pick([10,20,25,40,50]);const up=Math.random()<.4;const idx=up?1+p/100:1-p/100;const Fv=r2(O*idx);
+return{tip:t('Calcular el preu inicial','Calcular el precio inicial'),kind:'num',ans:O,tol:0.006,fmt:eur(O),ud:'€',
+txt:up?t(`Després de pujar un ${p} %, un abonament costa ${eur(Fv)}. Quant costava abans?`,`Después de subir un ${p} %, un abono cuesta ${eur(Fv)}. ¿Cuánto costaba antes?`):t(`Amb un descompte del ${p} % has pagat ${eur(Fv)} per una bossa de tennis. Quant costava sense descompte?`,`Con un descuento del ${p} % has pagado ${eur(Fv)} por una bolsa de tenis. ¿Cuánto costaba sin descuento?`),
+errs:[[r2(Fv*(up?1-p/100:1+p/100)),t(`El ${p} % es calcula sobre el preu <b>inicial</b>, no sobre el final. Per tornar enrere has de <b>dividir</b> per l'índex, no aplicar el percentatge al revés.`,`El ${p} % se calcula sobre el precio <b>inicial</b>, no sobre el final. Para volver atrás tienes que <b>dividir</b> por el índice, no aplicar el porcentaje al revés.`)],[r2(Fv*idx),t('Has tornat a aplicar el canvi. Per desfer-lo has de dividir per l\'índex.','Has vuelto a aplicar el cambio. Para deshacerlo tienes que dividir por el índice.')]],
+expl:[t(`Preu inicial · ${num(idx,2)} = ${num(Fv,2)}`,`Precio inicial · ${num(idx,2)} = ${num(Fv,2)}`),t(`Preu inicial = ${num(Fv,2)} : ${num(idx,2)} = <b>${eur(O)}</b>`,`Precio inicial = ${num(Fv,2)} : ${num(idx,2)} = <b>${eur(O)}</b>`),t(`Comprovació: ${num(O)} · ${num(idx,2)} = ${num(Fv,2)} ✓`,`Comprobación: ${num(O)} · ${num(idx,2)} = ${num(Fv,2)} ✓`)],pista:t('Al revés que multiplicar per l\'índex és… dividir per l\'índex.','Lo contrario de multiplicar por el índice es… dividir por el índice.')};
+};
+
+G.pquin=()=>{
+for(;;){const B=pick([80,120,200,250,40,60,150,300,25]);const p=pick([5,10,12,15,20,25,30,35,40,45,60,75,8]);const A=B*p/100;if(A!==Math.round(A))continue;
+const ctx=pick([[t(`De ${B} primers servicis, Luca n'ha encertat ${A}.`,`De ${B} primeros saques, Luca ha acertado ${A}.`),t('Quin percentatge ha encertat?','¿Qué porcentaje ha acertado?')],[t(`En un club de ${B} socis, ${A} juguen a pàdel.`,`En un club de ${B} socios, ${A} juegan al pádel.`),t('Quin percentatge representen?','¿Qué porcentaje representan?')],[t(`Una samarreta de ${B} € té un descompte de ${A} €.`,`Una camiseta de ${B} € tiene un descuento de ${A} €.`),t('Quin percentatge de descompte és?','¿Qué porcentaje de descuento es?')]]);
+return{tip:t('Quin tant per cent?','¿Qué tanto por ciento?'),kind:'num',ans:p,tol:1e-6,fmt:p+' %',ud:'%',txt:ctx[0]+' '+ctx[1],
+errs:[[A/B,t(`${num(A/B,4)} és la proporció en tant per u. Per passar a tant per cent multiplica per 100.`,`${num(A/B,4)} es la proporción en tanto por uno. Para pasar a tanto por ciento multiplica por 100.`)],[r2(B/A*100),t('Has dividit al revés: és la part entre el total.','Has dividido al revés: es la parte entre el total.')]],
+expl:[t('Percentatge = part : total · 100','Porcentaje = parte : total · 100'),`${A} : ${B} = ${num(A/B,4)}`,`${num(A/B,4)} · 100 = <b>${p} %</b>`],pista:t('Divideix la part entre el total i multiplica per 100.','Divide la parte entre el total y multiplica por 100.')}}
+};
+
+G.pinteres=()=>{
+const C=pick([500,1000,1200,2000,800,1500]);const r=pick([2,3,4,5]);const n=pick([2,3]);const v=r2(C*Math.pow(1+r/100,n));
+return{tip:t('Interés compost','Interés compuesto'),kind:'num',ans:v,tol:0.011,fmt:eur(v),ud:'€',
+txt:t(`Luca guarda ${eur(C)} en un compte al <b>${r} % anual d'interés compost</b>. Quants diners tindrà al cap de <b>${n} anys</b>? (arrodoneix als cèntims)`,`Luca guarda ${eur(C)} en una cuenta al <b>${r} % anual de interés compuesto</b>. ¿Cuánto dinero tendrá al cabo de <b>${n} años</b>? (redondea a los céntimos)`),
+errs:[[r2(C*(1+r*n/100)),t('Això és interés <b>simple</b> (sempre el mateix interés cada any). En el compost, cada any l\'interés es calcula sobre els diners que ja tens, interessos inclosos.','Eso es interés <b>simple</b> (siempre el mismo interés cada año). En el compuesto, cada año el interés se calcula sobre el dinero que ya tienes, intereses incluidos.')],[r2(C*Math.pow(1+r/100,n)-C),t('Això són només els interessos guanyats. La pregunta és quants diners tindrà en total.','Eso son solo los intereses ganados. La pregunta es cuánto dinero tendrá en total.')],[r2(C*Math.pow(1+r,n)),t(`El ${r} % és ${num(r/100,2)}: l'índex és ${num(1+r/100,2)}, no ${1+r}.`,`El ${r} % es ${num(r/100,2)}: el índice es ${num(1+r/100,2)}, no ${1+r}.`)]],
+expl:[t('Fórmula: C<sub>final</sub> = C · (1 + r/100)<sup>n</sup>','Fórmula: C<sub>final</sub> = C · (1 + r/100)<sup>n</sup>'),`${num(C)} · ${pw(num(1+r/100,2),n)} = ${num(C)} · ${num(Math.pow(1+r/100,n),6)}`,`= <b>${eur(v)}</b>`,t(`Cada any multipliques per ${num(1+r/100,2)}: `,`Cada año multiplicas por ${num(1+r/100,2)}: `)+Array.from({length:n+1},(_,i)=>num(r2(C*Math.pow(1+r/100,i)),2)).join(' → ')],pista:t('Cada any els diners es multipliquen per (1 + r/100).','Cada año el dinero se multiplica por (1 + r/100).')};
+};
+</script>
+<script>
+const EX=(tt,h)=>`<div class="exemple"><span class="etq">${tt||t('Exemple resolt','Ejemplo resuelto')}</span>${h}</div>`;
+const CP=h=>`<div class="compte"><span class="etq">${t('Compte!','¡Cuidado!')}</span>${h}</div>`;
+const PQ=h=>`<div class="perque"><span class="etq">${t('Per què?','¿Por qué?')}</span>${h}</div>`;
+const RG=h=>`<div class="regla">${h}</div>`;
+
+const BLOCS=[
+{id:'reals',ic:'ℝ',sup:'terra',nom:()=>t('Nombres reals i intervals','Números reales e intervalos'),sub:()=>t('Conjunts, aproximacions, intervals, valor absolut','Conjuntos, aproximaciones, intervalos, valor absoluto'),gens:['classif','aprox','desig','recta','opera','absv'],
+curio:()=>t('Els pitagòrics creien que tot es podia escriure amb fraccions. Diu la llegenda que quan Hípas va demostrar que √2 no és una fracció, el van llançar a la mar.','Los pitagóricos creían que todo se podía escribir con fracciones. Dice la leyenda que cuando Hípaso demostró que √2 no es una fracción, lo tiraron al mar.')},
+{id:'pot',ic:'aⁿ',sup:'dura',nom:()=>t('Potències','Potencias'),sub:()=>t('Exponents negatius, signes, propietats','Exponentes negativos, signos, propiedades'),gens:['prop','neg','signe','simpl','base'],
+curio:()=>t('Si dobleges un full de paper 42 vegades (2⁴² capes), el gruix arribaria a la Lluna. El creixement exponencial enganya molt la intuïció.','Si doblas una hoja de papel 42 veces (2⁴² capas), el grosor llegaría a la Luna. El crecimiento exponencial engaña mucho a la intuición.')},
+{id:'cient',ic:'10ⁿ',sup:'gespa',nom:()=>t('Notació científica','Notación científica'),sub:()=>t('Escriure, multiplicar, dividir, sumar','Escribir, multiplicar, dividir, sumar'),gens:['escriu','mult','div','suma','context'],
+curio:()=>t('Al teu cos hi ha uns 3·10¹³ glòbuls rojos. Si els posares en fila, farien la volta a la Terra més de 5 vegades.','En tu cuerpo hay unos 3·10¹³ glóbulos rojos. Si los pusieras en fila, darían la vuelta a la Tierra más de 5 veces.')},
+{id:'rad',ic:'√',sup:'lila',nom:()=>t('Radicals','Radicales'),sub:()=>t('Exponents fraccionaris, simplificar, operar, racionalitzar','Exponentes fraccionarios, simplificar, operar, racionalizar'),gens:['potfrac','valor','extreu','sumrad','multrad','racio','conj'],
+curio:()=>t('Un full DIN A4 mesura 21 × 29,7 cm: el costat llarg és el curt per √2. Gràcies a això, si el plegues per la meitat, el A5 que en surt té exactament la mateixa forma.','Una hoja DIN A4 mide 21 × 29,7 cm: el lado largo es el corto por √2. Gracias a eso, si la doblas por la mitad, el A5 que sale tiene exactamente la misma forma.')},
+{id:'log',ic:'log',sup:'terra',nom:()=>t('Logaritmes','Logaritmos'),sub:()=>t('Definició, propietats, equacions exponencials','Definición, propiedades, ecuaciones exponenciales'),gens:['ldef','linc','lprop','laprox','lexist','lexp'],
+curio:()=>t('Els decibels són logarítmics: un estadi cridant (uns 110 dB) té 10 000 vegades més intensitat sonora que una conversa normal (70 dB), no «un poc més».','Los decibelios son logarítmicos: un estadio gritando (unos 110 dB) tiene 10 000 veces más intensidad sonora que una conversación normal (70 dB), no «un poco más».')},
+{id:'perc',ic:'%',sup:'dura',nom:()=>t('Percentatges','Porcentajes'),sub:()=>t('Índex de variació, encadenats, interés compost','Índice de variación, encadenados, interés compuesto'),gens:['pindex','pfinal','pencad','pinv','pquin','pinteres'],
+curio:()=>t('Si alguna cosa baixa un 50 %, després ha de pujar un 100 % (no un 50 %) per tornar al preu inicial. Les botigues ho saben molt bé.','Si algo baja un 50 %, después tiene que subir un 100 % (no un 50 %) para volver al precio inicial. Las tiendas lo saben muy bien.')}
+];
+const SLAM={id:'slam',ic:'🏆',sup:'or',nom:()=>t('Gran Slam','Gran Slam'),sub:()=>t('Tot el bloc barrejat · super tie-break a 10','Todo el bloque mezclado · super tie-break a 10'),gens:BLOCS.flatMap(b=>b.gens),meta:10,
+curio:()=>t('Has jugat amb tots els nombres de 4t. Aquestes eines (potències, arrels, logaritmes i percentatges) són la base de la física, la química, l\'economia i la informàtica.','Has jugado con todos los números de 4º. Estas herramientas (potencias, raíces, logaritmos y porcentajes) son la base de la física, la química, la economía y la informática.')};
+
+const TEORIA={
+reals:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('Els <b>nombres reals</b> són tots els nombres que pots col·locar en una recta: enters, fraccions, decimals i també nombres com √2 o π, que tenen infinits decimals sense repetició.','Los <b>números reales</b> son todos los números que puedes colocar en una recta: enteros, fracciones, decimales y también números como √2 o π, que tienen infinitos decimales sin repetición.')}</p>
+<p>${t('La diagonal d\'una pista de tennis, la longitud d\'una circumferència o el costat d\'un quadrat de 2 m² són nombres reals que no es poden escriure exactament amb una fracció.','La diagonal de una pista de tenis, la longitud de una circunferencia o el lado de un cuadrado de 2 m² son números reales que no se pueden escribir exactamente con una fracción.')}</p>
+<p>${t('Els <b>intervals</b> serveixen per dir «entre quins valors» està una cosa: una pilota és bona si bota entre 0 i 11,885 m de la xarxa; un medicament fa efecte entre 36 i 37,5 °C; una nota aprovada està en [5, 10].','Los <b>intervalos</b> sirven para decir «entre qué valores» está algo: una pelota es buena si bota entre 0 y 11,885 m de la red; una nota aprobada está en [5, 10].')}</p>
+${PQ(t('Amb els intervals podem escriure, en molt poc espai, infinits nombres alhora. També són la forma de donar les solucions de les inequacions.','Con los intervalos podemos escribir, en muy poco espacio, infinitos números a la vez. También son la forma de dar las soluciones de las inecuaciones.'))}`},
+{h:t('Els conjunts de nombres','Los conjuntos de números'),b:`<table class="taula"><tr><th>${t('Conjunt','Conjunto')}</th><th>${t('Què són','Qué son')}</th><th>${t('Exemples','Ejemplos')}</th></tr>
+<tr><td><b>ℕ</b></td><td>${t('Naturals: per comptar','Naturales: para contar')}</td><td>1, 2, 3, 47</td></tr>
+<tr><td><b>ℤ</b></td><td>${t('Enters: naturals, el 0 i els negatius','Enteros: naturales, el 0 y los negativos')}</td><td>−5, 0, 12</td></tr>
+<tr><td><b>ℚ</b></td><td>${t('Racionals: es poden escriure com a fracció. Decimals exactes o periòdics.','Racionales: se pueden escribir como fracción. Decimales exactos o periódicos.')}</td><td>${F(3,4)}, −0,5, 2,<span class="ov">3</span></td></tr>
+<tr><td><b>𝕀</b></td><td>${t('Irracionals: decimals infinits <b>no</b> periòdics. No són fraccions.','Irracionales: decimales infinitos <b>no</b> periódicos. No son fracciones.')}</td><td>√2, π, √12</td></tr>
+<tr><td><b>ℝ</b></td><td>${t('Reals: racionals + irracionals','Reales: racionales + irracionales')}</td><td>${t('tots els anteriors','todos los anteriores')}</td></tr></table>
+${RG('ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ &nbsp;&nbsp; '+t('i','y')+' &nbsp; ℝ = ℚ ∪ 𝕀')}
+${EX('',t('<b>√49</b> = 7 → natural. &nbsp; <b>−12/4</b> = −3 → enter. &nbsp; <b>0,1666…</b> = 1/6 → racional. &nbsp; <b>√7</b> = 2,6457513… → irracional (7 no és quadrat perfecte).','<b>√49</b> = 7 → natural. &nbsp; <b>−12/4</b> = −3 → entero. &nbsp; <b>0,1666…</b> = 1/6 → racional. &nbsp; <b>√7</b> = 2,6457513… → irracional (7 no es cuadrado perfecto).'))}
+${EX(t('Periòdic a fracció','Periódico a fracción'),t('x = 0,<span class="ov">36</span> → 100x = 36,<span class="ov">36</span>. Restem: 99x = 36 → x = 36/99 = <b>4/11</b>. Per això tot periòdic és racional.','x = 0,<span class="ov">36</span> → 100x = 36,<span class="ov">36</span>. Restamos: 99x = 36 → x = 36/99 = <b>4/11</b>. Por eso todo periódico es racional.'))}
+${CP(t('Una arrel no sempre és irracional: √49, √0,25 o ∛8 són exactes. Primer calcula, després classifica. I sempre tria el conjunt <b>més xicotet</b>.','Una raíz no siempre es irracional: √49, √0,25 o ∛8 son exactas. Primero calcula, después clasifica. Y elige siempre el conjunto <b>más pequeño</b>.'))}`},
+{h:t('Aproximacions i errors','Aproximaciones y errores'),b:`<p>${t('Com que molts reals tenen infinits decimals, en la pràctica en fem servir una <b>aproximació</b>.','Como muchos reales tienen infinitos decimales, en la práctica usamos una <b>aproximación</b>.')}</p>
+<ul class="ll"><li>${t('<b>Truncar</b>: tallar les xifres que sobren. π ≈ 3,14 (a les centèsimes).','<b>Truncar</b>: cortar las cifras que sobran. π ≈ 3,14 (a las centésimas).')}</li>
+<li>${t('<b>Arrodonir</b>: mirar la xifra següent; si és 5 o més, la darrera xifra puja 1. √2 = 1,41421… a les mil·lèsimes → 1,414 (la següent és 2); e = 2,71828… a les centèsimes → 2,72 (la següent és 8).','<b>Redondear</b>: mirar la cifra siguiente; si es 5 o más, la última cifra sube 1. √2 = 1,41421… a las milésimas → 1,414 (la siguiente es 2); e = 2,71828… a las centésimas → 2,72 (la siguiente es 8).')}</li></ul>
+${RG(t('<b>Error absolut</b> = |valor real − aproximació|<br><b>Error relatiu</b> = error absolut : valor real (×100 per tenir-lo en %)','<b>Error absoluto</b> = |valor real − aproximación|<br><b>Error relativo</b> = error absoluto : valor real (×100 para tenerlo en %)'))}
+${EX('',t('Aproximem π per 3,14. Error absolut = |3,14159… − 3,14| = 0,00159… ≈ 0,0016. Error relatiu = 0,0016 : 3,1416 ≈ 0,0005 = 0,05 %.','Aproximamos π por 3,14. Error absoluto = |3,14159… − 3,14| = 0,00159… ≈ 0,0016. Error relativo = 0,0016 : 3,1416 ≈ 0,0005 = 0,05 %.'))}
+${PQ(t('L\'error relatiu diu si una aproximació és bona: equivocar-se 1 cm en una pista de 24 m és molt menys greu que equivocar-se 1 cm en una pilota de 6,7 cm.','El error relativo dice si una aproximación es buena: equivocarse 1 cm en una pista de 24 m es mucho menos grave que equivocarse 1 cm en una pelota de 6,7 cm.'))}`},
+{h:t('Intervals','Intervalos'),b:`<p>${t('Un interval és un tros de la recta real. Es pot escriure de tres maneres: amb desigualtats, amb la notació d\'interval o dibuixat.','Un intervalo es un trozo de la recta real. Se puede escribir de tres maneras: con desigualdades, con la notación de intervalo o dibujado.')}</p>
+<table class="taula"><tr><th>${t('Desigualtat','Desigualdad')}</th><th>${t('Interval','Intervalo')}</th><th>${t('Nom','Nombre')}</th></tr>
+<tr><td>−2 &lt; x &lt; 3</td><td>(−2, 3)</td><td>${t('obert','abierto')}</td></tr>
+<tr><td>−2 ≤ x ≤ 3</td><td>[−2, 3]</td><td>${t('tancat','cerrado')}</td></tr>
+<tr><td>−2 ≤ x &lt; 3</td><td>[−2, 3)</td><td>${t('semiobert','semiabierto')}</td></tr>
+<tr><td>x &gt; 1</td><td>(1, +∞)</td><td>${t('semirecta','semirrecta')}</td></tr>
+<tr><td>x ≤ 4</td><td>(−∞, 4]</td><td>${t('semirecta','semirrecta')}</td></tr></table>
+${RG(t('<b>[ ]</b> claudàtor = l\'extrem <b>entra</b> (≤, ≥) → punt ple ●<br><b>( )</b> parèntesi = l\'extrem <b>no entra</b> (&lt;, &gt;) → punt buit ○<br><b>∞</b> sempre porta parèntesi','<b>[ ]</b> corchete = el extremo <b>entra</b> (≤, ≥) → punto lleno ●<br><b>( )</b> paréntesis = el extremo <b>no entra</b> (&lt;, &gt;) → punto hueco ○<br><b>∞</b> siempre lleva paréntesis'))}
+${EX('[−2, 3)  ⟺  −2 ≤ x &lt; 3',linia([iv(-2,3,true,false)],-5,5))}
+${EX('(1, +∞)  ⟺  x &gt; 1',linia([iv(1,Infinity,false,false)],-5,5))}
+${CP(t('S\'escriu sempre de menor a major: (−2, 3), mai (3, −2).','Se escribe siempre de menor a mayor: (−2, 3), nunca (3, −2).'))}`},
+{h:t('Unió, intersecció i valor absolut','Unión, intersección y valor absoluto'),b:`<ul class="ll"><li>${t('<b>A ∪ B</b> (unió): els nombres que són en A <b>o</b> en B.','<b>A ∪ B</b> (unión): los números que están en A <b>o</b> en B.')}</li><li>${t('<b>A ∩ B</b> (intersecció): els nombres que són en A <b>i</b> en B alhora.','<b>A ∩ B</b> (intersección): los números que están en A <b>y</b> en B a la vez.')}</li></ul>
+${EX(t('A = [−3, 2) i B = (0, 5]','A = [−3, 2) y B = (0, 5]'),linia([{...iv(-3,2,true,false),lb:'A'},{...iv(0,5,false,true),lb:'B'}],-5,6)+t('<p>A ∩ B = <b>(0, 2)</b>: el tros on hi ha les dues ratlles. El 0 no entra (no és en B) i el 2 tampoc (no és en A).</p><p>A ∪ B = <b>[−3, 5]</b>: tot el que està pintat.</p>','<p>A ∩ B = <b>(0, 2)</b>: el trozo donde están las dos rayas. El 0 no entra (no está en B) y el 2 tampoco (no está en A).</p><p>A ∪ B = <b>[−3, 5]</b>: todo lo que está pintado.</p>'))}
+<h3>${t('Valor absolut i entorns','Valor absoluto y entornos')}</h3>
+<p>${t('|x| és la <b>distància</b> de x al 0 (sempre positiva): |−4| = 4. I |x − a| és la distància entre x i a.','|x| es la <b>distancia</b> de x al 0 (siempre positiva): |−4| = 4. Y |x − a| es la distancia entre x y a.')}</p>
+${RG(t('|x − a| ≤ r ⟺ a − r ≤ x ≤ a + r ⟺ [a − r, a + r]<br>(entorn de centre <b>a</b> i radi <b>r</b>)','|x − a| ≤ r ⟺ a − r ≤ x ≤ a + r ⟺ [a − r, a + r]<br>(entorno de centro <b>a</b> y radio <b>r</b>)'))}
+${EX('|x − 2| &lt; 3',t('Distància a 2 menor que 3: de 2 − 3 = −1 fins a 2 + 3 = 5 → <b>(−1, 5)</b>','Distancia a 2 menor que 3: de 2 − 3 = −1 hasta 2 + 3 = 5 → <b>(−1, 5)</b>')+linia([iv(-1,5,false,false)],-3,7))}
+${CP(t('|x + 1| ≤ 2 vol dir |x − (−1)| ≤ 2: el centre és <b>−1</b>, no 1. Solució: [−3, 1].','|x + 1| ≤ 2 quiere decir |x − (−1)| ≤ 2: el centro es <b>−1</b>, no 1. Solución: [−3, 1].'))}`}
+],
+pot:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('Les potències són una manera curta d\'escriure multiplicacions repetides: 2·2·2·2·2 = 2⁵. Apareixen sempre que alguna cosa es <b>duplica</b>, <b>triplica</b> o creix (o decreix) en la mateixa proporció una vegada i una altra.','Las potencias son una manera corta de escribir multiplicaciones repetidas: 2·2·2·2·2 = 2⁵. Aparecen siempre que algo se <b>duplica</b>, <b>triplica</b> o crece (o decrece) en la misma proporción una y otra vez.')}</p>
+<ul class="ll"><li>${t('Un quadre de 128 jugadors (2⁷) necessita 7 rondes per tindre campió.','Un cuadro de 128 jugadores (2⁷) necesita 7 rondas para tener campeón.')}</li><li>${t('Els bacteris que es divideixen cada hora: 2ⁿ al cap de n hores.','Las bacterias que se dividen cada hora: 2ⁿ al cabo de n horas.')}</li><li>${t('La memòria dels mòbils: 1 kB = 2¹⁰ bytes, 1 GB = 2³⁰ bytes.','La memoria de los móviles: 1 kB = 2¹⁰ bytes, 1 GB = 2³⁰ bytes.')}</li></ul>
+${PQ(t('Les propietats de les potències et permeten fer càlculs enormes de cap, sense calculadora, i són la base de la notació científica, els radicals i els logaritmes.','Las propiedades de las potencias te permiten hacer cálculos enormes de cabeza, sin calculadora, y son la base de la notación científica, los radicales y los logaritmos.'))}`},
+{h:t('Exponent zero i negatiu','Exponente cero y negativo'),b:`${RG(t('aⁿ = a · a · … · a (n vegades) &nbsp; a = <b>base</b>, n = <b>exponent</b><br>a¹ = a &nbsp;&nbsp; a⁰ = 1 (a ≠ 0)<br>a<sup>−n</sup> = 1 / aⁿ &nbsp;&nbsp; (a/b)<sup>−n</sup> = (b/a)ⁿ','aⁿ = a · a · … · a (n veces) &nbsp; a = <b>base</b>, n = <b>exponente</b><br>a¹ = a &nbsp;&nbsp; a⁰ = 1 (a ≠ 0)<br>a<sup>−n</sup> = 1 / aⁿ &nbsp;&nbsp; (a/b)<sup>−n</sup> = (b/a)ⁿ'))}
+${PQ(t('a³ : a³ = 1 (un nombre dividit per ell mateix), però per la regla de la divisió a³ : a³ = a<sup>3−3</sup> = a⁰. Per tant a⁰ = 1.<br>I a² : a⁵ = a<sup>−3</sup>, però també = (a·a)/(a·a·a·a·a) = 1/a³. Per això a<sup>−3</sup> = 1/a³.','a³ : a³ = 1 (un número dividido por sí mismo), pero por la regla de la división a³ : a³ = a<sup>3−3</sup> = a⁰. Por tanto a⁰ = 1.<br>Y a² : a⁵ = a<sup>−3</sup>, pero también = (a·a)/(a·a·a·a·a) = 1/a³. Por eso a<sup>−3</sup> = 1/a³.'))}
+${EX('',`2<sup>−3</sup> = ${F(1,'2³')} = <b>${F(1,8)}</b> &nbsp;&nbsp; 10<sup>−2</sup> = ${F(1,100)} = <b>0,01</b> &nbsp;&nbsp; (${F(2,3)})<sup>−2</sup> = (${F(3,2)})² = <b>${F(9,4)}</b>`)}
+${CP(t('L\'exponent negatiu <b>no</b> fa negatiu el resultat: 2<sup>−3</sup> = 1/8, no −8 ni −6.','El exponente negativo <b>no</b> hace negativo el resultado: 2<sup>−3</sup> = 1/8, no −8 ni −6.'))}`},
+{h:t('Potències i signes','Potencias y signos'),b:`<p>${t('Si la base és negativa, el resultat depén de l\'exponent:','Si la base es negativa, el resultado depende del exponente:')}</p>
+${RG(t('(−a)<sup>parell</sup> → <b>positiu</b> &nbsp;&nbsp; (−2)⁴ = 16<br>(−a)<sup>senar</sup> → <b>negatiu</b> &nbsp;&nbsp; (−2)³ = −8','(−a)<sup>par</sup> → <b>positivo</b> &nbsp;&nbsp; (−2)⁴ = 16<br>(−a)<sup>impar</sup> → <b>negativo</b> &nbsp;&nbsp; (−2)³ = −8'))}
+${CP(t('Mira el parèntesi! <b>(−3)²</b> = (−3)·(−3) = 9, però <b>−3²</b> = −(3·3) = −9. Sense parèntesi, l\'exponent només afecta el número, no el signe. Igual: (−5)⁰ = 1 però −5⁰ = −1.','¡Mira el paréntesis! <b>(−3)²</b> = (−3)·(−3) = 9, pero <b>−3²</b> = −(3·3) = −9. Sin paréntesis, el exponente solo afecta al número, no al signo. Igual: (−5)⁰ = 1 pero −5⁰ = −1.'))}
+${CP(t('Una potència no és «base per exponent»: 3⁴ = 3·3·3·3 = 81, no 12.','Una potencia no es «base por exponente»: 3⁴ = 3·3·3·3 = 81, no 12.'))}`},
+{h:t('Propietats','Propiedades'),b:`<table class="taula"><tr><th>${t('Operació','Operación')}</th><th>${t('Regla','Regla')}</th><th>${t('Exemple','Ejemplo')}</th></tr>
+<tr><td>${t('Producte, mateixa base','Producto, misma base')}</td><td>aᵐ · aⁿ = a<sup>m+n</sup></td><td>2³ · 2⁴ = 2⁷</td></tr>
+<tr><td>${t('Quocient, mateixa base','Cociente, misma base')}</td><td>aᵐ : aⁿ = a<sup>m−n</sup></td><td>5² : 5⁶ = 5<sup>−4</sup></td></tr>
+<tr><td>${t('Potència de potència','Potencia de potencia')}</td><td>(aᵐ)ⁿ = a<sup>m·n</sup></td><td>(3²)<sup>−3</sup> = 3<sup>−6</sup></td></tr>
+<tr><td>${t('Mateix exponent','Mismo exponente')}</td><td>aⁿ · bⁿ = (a·b)ⁿ</td><td>2³ · 5³ = 10³</td></tr>
+<tr><td>${t('Mateix exponent','Mismo exponente')}</td><td>aⁿ : bⁿ = (a/b)ⁿ</td><td>6⁴ : 3⁴ = 2⁴</td></tr></table>
+${CP(t('• 2³ · 2⁴ ≠ 4⁷ (la base no es multiplica).<br>• 2³ + 2⁴ ≠ 2⁷ (per a sumes <b>no</b> hi ha regla: 8 + 16 = 24).<br>• En (aᵐ)ⁿ es multipliquen; en aᵐ·aⁿ se sumen.','• 2³ · 2⁴ ≠ 4⁷ (la base no se multiplica).<br>• 2³ + 2⁴ ≠ 2⁷ (para sumas <b>no</b> hay regla: 8 + 16 = 24).<br>• En (aᵐ)ⁿ se multiplican; en aᵐ·aⁿ se suman.'))}`},
+{h:t('Simplificar amb canvi de base','Simplificar con cambio de base'),b:`<p>${t('Si les bases són diferents però són potències del mateix número (4 = 2², 8 = 2³, 9 = 3²…), primer les escrivim totes amb la mateixa base.','Si las bases son distintas pero son potencias del mismo número (4 = 2², 8 = 2³, 9 = 3²…), primero las escribimos todas con la misma base.')}</p>
+${EX('',`${F('2³ · 4<sup>−1</sup>','8²')}<ol class="passos"><li>${t('Canvi de base','Cambio de base')}: 4<sup>−1</sup> = (2²)<sup>−1</sup> = 2<sup>−2</sup> ; 8² = (2³)² = 2⁶</li><li>${t('Numerador','Numerador')}: 2³ · 2<sup>−2</sup> = 2<sup>3+(−2)</sup> = 2¹</li><li>${t('Divisió','División')}: 2¹ : 2⁶ = 2<sup>1−6</sup> = 2<sup>−5</sup></li><li>2<sup>−5</sup> = <b>${F(1,32)}</b></li></ol>`)}
+${EX('',`${F('3<sup>4</sup> · 9<sup>−3</sup>','27<sup>−1</sup>')} = ${F('3⁴ · 3<sup>−6</sup>','3<sup>−3</sup>')} = ${F('3<sup>−2</sup>','3<sup>−3</sup>')} = 3<sup>−2−(−3)</sup> = 3¹ = <b>3</b>`)}
+${PQ(t('Treballar amb exponents és molt més ràpid que calcular cada potència: 8² = 64 i 2⁵ = 32 es veuen de seguida que donen 2.','Trabajar con exponentes es mucho más rápido que calcular cada potencia.'))}`},
+{h:t('Resum','Resumen'),b:RG('a⁰ = 1 &nbsp;·&nbsp; a<sup>−n</sup> = 1/aⁿ &nbsp;·&nbsp; (a/b)<sup>−n</sup> = (b/a)ⁿ<br>aᵐ·aⁿ = a<sup>m+n</sup> &nbsp;·&nbsp; aᵐ:aⁿ = a<sup>m−n</sup> &nbsp;·&nbsp; (aᵐ)ⁿ = a<sup>m·n</sup><br>(−a)<sup>'+t('parell','par')+'</sup> > 0 &nbsp;·&nbsp; (−a)<sup>'+t('senar','impar')+'</sup> < 0 &nbsp;·&nbsp; −a² ≠ (−a)²')+`<p>${t('Estratègia: tot a la mateixa base → suma/resta/multiplica exponents → calcula al final.','Estrategia: todo a la misma base → suma/resta/multiplica exponentes → calcula al final.')}</p>`}
+],
+cient:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('La massa de la Terra és 5 970 000 000 000 000 000 000 000 kg. La d\'un àtom d\'hidrogen, 0,000 000 000 000 000 000 000 000 001 67 kg. Escriure i operar amb això és impossible sense equivocar-se.','La masa de la Tierra es 5 970 000 000 000 000 000 000 000 kg. La de un átomo de hidrógeno, 0,000 000 000 000 000 000 000 000 001 67 kg. Escribir y operar con eso es imposible sin equivocarse.')}</p>
+<p>${t('Amb notació científica: 5,97·10²⁴ kg i 1,67·10<sup>−27</sup> kg. Curt, clar i es veu de seguida quin és més gran.','Con notación científica: 5,97·10²⁴ kg y 1,67·10<sup>−27</sup> kg. Corto, claro y se ve enseguida cuál es mayor.')}</p>
+${PQ(t('La fan servir la física, la química, la biologia i l\'astronomia. I la calculadora: quan veus «2.5E-6» vol dir 2,5·10<sup>−6</sup>.','La usan la física, la química, la biología y la astronomía. Y la calculadora: cuando ves «2.5E-6» quiere decir 2,5·10<sup>−6</sup>.'))}`},
+{h:t('Com s\'escriu','Cómo se escribe'),b:`${RG(t('a · 10ⁿ &nbsp; amb &nbsp; <b>1 ≤ a &lt; 10</b> &nbsp; (una sola xifra no nul·la davant de la coma)<br>n = nombre de llocs que es mou la coma','a · 10ⁿ &nbsp; con &nbsp; <b>1 ≤ a &lt; 10</b> &nbsp; (una sola cifra no nula delante de la coma)<br>n = número de lugares que se mueve la coma'))}
+${EX(t('Nombre gran → exponent positiu','Número grande → exponente positivo'),t('47 000 000: posem la coma darrere del 4 → 4,7. De 4,7 a 47 000 000 la coma es mou 7 llocs a la dreta → <b>4,7·10⁷</b>','47 000 000: ponemos la coma detrás del 4 → 4,7. De 4,7 a 47 000 000 la coma se mueve 7 lugares a la derecha → <b>4,7·10⁷</b>'))}
+${EX(t('Nombre menut → exponent negatiu','Número pequeño → exponente negativo'),t('0,000 52: la primera xifra no nul·la és el 5 → 5,2. De 5,2 a 0,000 52 la coma es mou 4 llocs a l\'esquerra → <b>5,2·10<sup>−4</sup></b>','0,000 52: la primera cifra no nula es el 5 → 5,2. De 5,2 a 0,000 52 la coma se mueve 4 lugares a la izquierda → <b>5,2·10<sup>−4</sup></b>'))}
+${CP(t('52·10<sup>−5</sup> té el mateix valor, però <b>no</b> és notació científica (52 té dues xifres). Tampoc 0,52·10<sup>−3</sup>.','52·10<sup>−5</sup> tiene el mismo valor, pero <b>no</b> es notación científica (52 tiene dos cifras). Tampoco 0,52·10<sup>−3</sup>.'))}
+${PQ(t('Comparar és fàcil: mana l\'exponent. 3·10<sup>−5</sup> &gt; 9·10<sup>−6</sup> perquè −5 &gt; −6.','Comparar es fácil: manda el exponente. 3·10<sup>−5</sup> &gt; 9·10<sup>−6</sup> porque −5 &gt; −6.'))}`},
+{h:t('Multiplicar i dividir','Multiplicar y dividir'),b:`${RG(t('<b>Multiplicar:</b> mantisses × mantisses, exponents se <b>sumen</b><br><b>Dividir:</b> mantisses : mantisses, exponents es <b>resten</b><br>Al final: ajusta perquè la mantissa quede entre 1 i 10','<b>Multiplicar:</b> mantisas × mantisas, exponentes se <b>suman</b><br><b>Dividir:</b> mantisas : mantisas, exponentes se <b>restan</b><br>Al final: ajusta para que la mantisa quede entre 1 y 10'))}
+${EX('',`(3·10⁵) · (4·10<sup>−2</sup>)<ol class="passos"><li>3 · 4 = 12</li><li>5 + (−2) = 3 → 12·10³</li><li>${t('12 no és entre 1 i 10: 12 = 1,2·10, l\'exponent puja 1','12 no está entre 1 y 10: 12 = 1,2·10, el exponente sube 1')} → <b>1,2·10⁴</b></li></ol>`)}
+${EX('',`(1,2·10³) : (4·10<sup>−5</sup>)<ol class="passos"><li>1,2 : 4 = 0,3</li><li>3 − (−5) = 8 → 0,3·10⁸</li><li>${t('0,3 és menor que 1: 0,3 = 3·10<sup>−1</sup>, l\'exponent baixa 1','0,3 es menor que 1: 0,3 = 3·10<sup>−1</sup>, el exponente baja 1')} → <b>3·10⁷</b></li></ol>`)}
+${CP(t('Si la mantissa es fa més gran (12 → 1,2), l\'exponent puja; si es fa més menuda (0,3 → 3), l\'exponent baixa. El valor no pot canviar.','Si la mantisa se hace más grande (12 → 1,2), el exponente sube; si se hace más pequeña (0,3 → 3), el exponente baja. El valor no puede cambiar.'))}`},
+{h:t('Sumar i restar','Sumar y restar'),b:`<p>${t('Només podem sumar mantisses si les potències de 10 són <b>iguals</b>. Si no ho són, primer les igualem (normalment a la més gran).','Solo podemos sumar mantisas si las potencias de 10 son <b>iguales</b>. Si no lo son, primero las igualamos (normalmente a la mayor).')}</p>
+${EX('',`3,2·10⁵ + 4·10⁴<ol class="passos"><li>4·10⁴ = 0,4·10⁵ ${t('(la coma es mou 1 lloc a l\'esquerra i l\'exponent puja 1)','(la coma se mueve 1 lugar a la izquierda y el exponente sube 1)')}</li><li>(3,2 + 0,4)·10⁵</li><li><b>3,6·10⁵</b></li></ol>`)}
+${EX('',`7,5·10<sup>−3</sup> − 8·10<sup>−5</sup><ol class="passos"><li>8·10<sup>−5</sup> = 0,08·10<sup>−3</sup></li><li>(7,5 − 0,08)·10<sup>−3</sup> = <b>7,42·10<sup>−3</sup></b></li></ol>`)}
+${CP(t('3,2·10⁵ + 4·10⁴ ≠ 7,2·10⁵ i ≠ 7,2·10⁹. En les sumes els exponents <b>no</b> se sumen.','3,2·10⁵ + 4·10⁴ ≠ 7,2·10⁵ y ≠ 7,2·10⁹. En las sumas los exponentes <b>no</b> se suman.'))}
+${PQ(t('Si un nombre és moltíssim més gran que l\'altre (10⁹ + 10²), la suma quasi no canvia el gran: per això en ciència sovint es «menysprea» el menut.','Si un número es muchísimo mayor que el otro (10⁹ + 10²), la suma casi no cambia el grande: por eso en ciencia a menudo se «desprecia» el pequeño.'))}`}
+],
+rad:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('Les arrels desfan les potències: si un quadrat té 50 m² d\'àrea, el seu costat és √50 m. Si un cub té 27 cm³, la seua aresta és ∛27 = 3 cm.','Las raíces deshacen las potencias: si un cuadrado tiene 50 m² de área, su lado es √50 m. Si un cubo tiene 27 cm³, su arista es ∛27 = 3 cm.')}</p>
+<p>${t('Amb Pitàgores apareixen contínuament: la diagonal d\'una pista d\'individuals (23,77 × 8,23 m) és √(23,77² + 8,23²) ≈ 25,15 m.','Con Pitágoras aparecen continuamente: la diagonal de una pista de individuales (23,77 × 8,23 m) es √(23,77² + 8,23²) ≈ 25,15 m.')}</p>
+${PQ(t('Treballar amb radicals <b>exactes</b> (5√2 en lloc de 7,0710678…) evita errors d\'arrodoniment i fa que els resultats siguen més clars. Racionalitzar, a més, facilita dividir i comparar.','Trabajar con radicales <b>exactos</b> (5√2 en lugar de 7,0710678…) evita errores de redondeo y hace que los resultados sean más claros. Racionalizar, además, facilita dividir y comparar.'))}`},
+{h:t('Radicals i potències','Radicales y potencias'),b:`${RG(t('ⁿ√a = b ⟺ bⁿ = a &nbsp;&nbsp; (n = <b>índex</b>, a = <b>radicand</b>)<br>ⁿ√(aᵐ) = a<sup>m/n</sup>','ⁿ√a = b ⟺ bⁿ = a &nbsp;&nbsp; (n = <b>índice</b>, a = <b>radicando</b>)<br>ⁿ√(aᵐ) = a<sup>m/n</sup>'))}
+<ul class="ll"><li>${t('Índex parell (√, ⁴√…): el radicand ha de ser ≥ 0. √(−4) no existeix en ℝ.','Índice par (√, ⁴√…): el radicando tiene que ser ≥ 0. √(−4) no existe en ℝ.')}</li><li>${t('Índex senar (∛…): qualsevol radicand. ∛(−8) = −2.','Índice impar (∛…): cualquier radicando. ∛(−8) = −2.')}</li></ul>
+${EX('',`${rad(1,'x³',5)} = x<sup>3/5</sup> &nbsp;&nbsp; 7<sup>2/3</sup> = ${rad(1,'7²',3)}<br>8<sup>2/3</sup> = (∛8)² = 2² = <b>4</b> &nbsp;&nbsp; 16<sup>3/4</sup> = (⁴√16)³ = 2³ = <b>8</b><br>4<sup>−1/2</sup> = ${F(1,'√4')} = <b>${F(1,2)}</b>`)}
+${PQ(t('Com que les arrels són potències d\'exponent fraccionari, totes les propietats de les potències funcionen també amb arrels.','Como las raíces son potencias de exponente fraccionario, todas las propiedades de las potencias funcionan también con raíces.'))}
+${CP(t('8<sup>2/3</sup> no és 8·2/3. Primer fes l\'arrel (denominador) i després la potència (numerador).','8<sup>2/3</sup> no es 8·2/3. Primero haz la raíz (denominador) y después la potencia (numerador).'))}`},
+{h:t('Extraure i introduir factors','Extraer e introducir factores'),b:`<p>${t('Si dins de l\'arrel hi ha un factor elevat a l\'índex, pot eixir fora sense arrel.','Si dentro de la raíz hay un factor elevado al índice, puede salir fuera sin raíz.')}</p>
+${EX('',`√72<ol class="passos"><li>${t('Descomponem','Descomponemos')}: 72 = 2³·3² = 2²·2·3² ${t('o bé','o bien')} 72 = 36 · 2</li><li>√72 = √36 · √2</li><li>√36 = 6 → <b>6√2</b></li></ol>`)}
+${EX('',`∛54 = ∛(27·2) = ∛27 · ∛2 = <b>3∛2</b>`)}
+${EX(t('Introduir','Introducir'),t('Per entrar un factor, l\'elevem a l\'índex: 3√2 = √(3²·2) = <b>√18</b>; 2∛5 = ∛(2³·5) = <b>∛40</b>','Para meter un factor, lo elevamos al índice: 3√2 = √(3²·2) = <b>√18</b>; 2∛5 = ∛(2³·5) = <b>∛40</b>'))}
+${CP(t('√72 ≠ 36√2: fora va l\'arrel de 36 (6), no 36. I 3√8 no està acabat: √8 = 2√2, per tant 3√8 = 6√2.','√72 ≠ 36√2: fuera va la raíz de 36 (6), no 36. Y 3√8 no está acabado: √8 = 2√2, por tanto 3√8 = 6√2.'))}
+<p>${t('Quadrats perfectes útils: 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144. Cubs: 8, 27, 64, 125.','Cuadrados perfectos útiles: 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144. Cubos: 8, 27, 64, 125.')}</p>`},
+{h:t('Operar amb radicals','Operar con radicales'),b:`${RG(t('<b>Sumar/restar</b>: només radicals <b>semblants</b> (mateix índex i radicand): a√r + b√r = (a+b)√r<br><b>Multiplicar</b> (mateix índex): ⁿ√a · ⁿ√b = ⁿ√(a·b)<br><b>Dividir</b>: ⁿ√a : ⁿ√b = ⁿ√(a/b)','<b>Sumar/restar</b>: solo radicales <b>semejantes</b> (mismo índice y radicando): a√r + b√r = (a+b)√r<br><b>Multiplicar</b> (mismo índice): ⁿ√a · ⁿ√b = ⁿ√(a·b)<br><b>Dividir</b>: ⁿ√a : ⁿ√b = ⁿ√(a/b)'))}
+${EX('',`√12 + √27<ol class="passos"><li>√12 = √(4·3) = 2√3</li><li>√27 = √(9·3) = 3√3</li><li>2√3 + 3√3 = <b>5√3</b></li></ol>`)}
+${EX('',`√6 · √3 = √18 = √(9·2) = <b>3√2</b>`)}
+${CP(t('√9 + √16 = 3 + 4 = 7, però √(9+16) = √25 = 5. Per tant <b>√a + √b ≠ √(a+b)</b>. Si no són semblants després de simplificar, la suma es deixa indicada (√2 + √3 no es pot ajuntar).','√9 + √16 = 3 + 4 = 7, pero √(9+16) = √25 = 5. Por tanto <b>√a + √b ≠ √(a+b)</b>. Si no son semejantes después de simplificar, la suma se deja indicada (√2 + √3 no se puede juntar).'))}`},
+{h:t('Racionalitzar','Racionalizar'),b:`<p>${t('Racionalitzar és llevar les arrels del denominador sense canviar el valor: multipliquem dalt i baix pel mateix.','Racionalizar es quitar las raíces del denominador sin cambiar el valor: multiplicamos arriba y abajo por lo mismo.')}</p>
+${EX(t('Cas 1: una arrel quadrada','Caso 1: una raíz cuadrada'),`${F(6,'√3')} = ${F('6·√3','√3·√3')} = ${F('6√3',3)} = <b>2√3</b>`)}
+${EX(t('Cas 2: binomi amb arrel → conjugat','Caso 2: binomio con raíz → conjugado'),`${F(2,'√3 − 1')}<ol class="passos"><li>${t('El conjugat de √3 − 1 és √3 + 1 (canviem el signe del mig).','El conjugado de √3 − 1 es √3 + 1 (cambiamos el signo del medio).')}</li><li>${t('Baix','Abajo')}: (√3 − 1)(√3 + 1) = (√3)² − 1² = 3 − 1 = 2</li><li>${F('2(√3 + 1)',2)} = <b>√3 + 1</b></li></ol>`)}
+${RG(t('(a + b)(a − b) = a² − b² &nbsp; → &nbsp; l\'arrel desapareix','(a + b)(a − b) = a² − b² &nbsp; → &nbsp; la raíz desaparece'))}
+${CP(t('√3·√3 = 3, no 9. I el denominador del conjugat és una <b>resta</b> de quadrats: 3 − 1, no 3 + 1.','√3·√3 = 3, no 9. Y el denominador del conjugado es una <b>resta</b> de cuadrados: 3 − 1, no 3 + 1.'))}`}
+],
+log:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('Si saps que 2ˣ = 8, és fàcil: x = 3. Però si 2ˣ = 10? Necessitem una operació que «trega» l\'exponent: el <b>logaritme</b>. És l\'operació inversa de la potència.','Si sabes que 2ˣ = 8, es fácil: x = 3. ¿Pero si 2ˣ = 10? Necesitamos una operación que «saque» el exponente: el <b>logaritmo</b>. Es la operación inversa de la potencia.')}</p>
+<ul class="ll"><li>${t('Escala de Richter (terratrèmols): un grau més = 10 vegades més amplitud.','Escala de Richter (terremotos): un grado más = 10 veces más amplitud.')}</li><li>${t('Decibels (soroll) i pH (acidesa) també són logaritmes.','Decibelios (ruido) y pH (acidez) también son logaritmos.')}</li><li>${t('Quants anys tarden uns estalvis a duplicar-se? Logaritmes.','¿Cuántos años tardan unos ahorros en duplicarse? Logaritmos.')}</li></ul>
+${PQ(t('Els logaritmes converteixen multiplicacions en sumes. Abans de les calculadores, els científics multiplicaven nombres enormes sumant els seus logaritmes en unes taules.','Los logaritmos convierten multiplicaciones en sumas. Antes de las calculadoras, los científicos multiplicaban números enormes sumando sus logaritmos en unas tablas.'))}`},
+{h:t('Definició','Definición'),b:`${RG(t('log<sub>b</sub> x = y &nbsp;⟺&nbsp; b<sup>y</sup> = x<br>(b &gt; 0, b ≠ 1, x &gt; 0)<br>«A quin exponent he d\'elevar b per obtindre x?»','log<sub>b</sub> x = y &nbsp;⟺&nbsp; b<sup>y</sup> = x<br>(b &gt; 0, b ≠ 1, x &gt; 0)<br>«¿A qué exponente tengo que elevar b para obtener x?»'))}
+${EX('',`log<sub>2</sub> 32 = <b>5</b> ${t('perquè','porque')} 2⁵ = 32<br>log<sub>3</sub> ${F(1,9)} = <b>−2</b> ${t('perquè','porque')} 3<sup>−2</sup> = ${F(1,9)}<br>log 0,001 = <b>−3</b> ${t('perquè','porque')} 10<sup>−3</sup> = 0,001<br>log<sub>5</sub> √5 = <b>${F(1,2)}</b> ${t('perquè','porque')} 5<sup>1/2</sup> = √5`)}
+<ul class="ll"><li>${t('<b>log</b> sense base = base 10. <b>ln</b> = base e ≈ 2,718.','<b>log</b> sin base = base 10. <b>ln</b> = base e ≈ 2,718.')}</li><li>log<sub>b</sub> 1 = 0 ${t('i','y')} log<sub>b</sub> b = 1 ${t('sempre','siempre')}.</li></ul>
+${CP(t('Només existeix el logaritme de nombres <b>positius</b>: log(−5) i log 0 no existeixen, perquè una potència de base positiva mai dona 0 ni negatiu. En canvi, el <b>resultat</b> sí que pot ser negatiu: log 0,1 = −1.','Solo existe el logaritmo de números <b>positivos</b>: log(−5) y log 0 no existen, porque una potencia de base positiva nunca da 0 ni negativo. En cambio, el <b>resultado</b> sí puede ser negativo: log 0,1 = −1.'))}`},
+{h:t('Propietats','Propiedades'),b:`<table class="taula"><tr><th>${t('Propietat','Propiedad')}</th><th>${t('Exemple','Ejemplo')}</th></tr>
+<tr><td>log(x·y) = log x + log y</td><td>log 2 + log 50 = log 100 = 2</td></tr>
+<tr><td>log(x/y) = log x − log y</td><td>log<sub>2</sub> 48 − log<sub>2</sub> 3 = log<sub>2</sub> 16 = 4</td></tr>
+<tr><td>log(xⁿ) = n · log x</td><td>log<sub>2</sub> 8⁵ = 5 · 3 = 15</td></tr>
+<tr><td>log<sub>b</sub> x = ${F('log x','log b')}</td><td>log<sub>2</sub> 10 = ${F(1,'0,301')} ≈ 3,32</td></tr></table>
+${PQ(t('Vénen de les potències: si x = bᵐ i y = bⁿ, llavors x·y = b<sup>m+n</sup>. El logaritme del producte és la suma dels exponents.','Vienen de las potencias: si x = bᵐ e y = bⁿ, entonces x·y = b<sup>m+n</sup>. El logaritmo del producto es la suma de los exponentes.'))}
+${CP(t('log(x + y) ≠ log x + log y. &nbsp; log x · log y ≠ log(x·y). &nbsp; No hi ha cap regla per al logaritme d\'una suma.','log(x + y) ≠ log x + log y. &nbsp; log x · log y ≠ log(x·y). &nbsp; No hay ninguna regla para el logaritmo de una suma.'))}
+${EX(t('Amb log 2 ≈ 0,301 i log 3 ≈ 0,477','Con log 2 ≈ 0,301 y log 3 ≈ 0,477'),`log 12 = log(2²·3) = 2·0,301 + 0,477 = <b>1,079</b><br>log 5 = log(10/2) = 1 − 0,301 = <b>0,699</b><br>log 0,6 = log(6/10) = 0,778 − 1 = <b>−0,222</b>`)}`},
+{h:t('Equacions exponencials','Ecuaciones exponenciales'),b:`<p>${t('La incògnita està a l\'exponent. Dos mètodes:','La incógnita está en el exponente. Dos métodos:')}</p>
+${EX(t('1. Igualar bases','1. Igualar bases'),`3<sup>x−1</sup> = 81<ol class="passos"><li>81 = 3⁴ → 3<sup>x−1</sup> = 3⁴</li><li>${t('Mateixa base → exponents iguals','Misma base → exponentes iguales')}: x − 1 = 4</li><li><b>x = 5</b></li></ol>`)}
+${EX('',`4ˣ = 8 → (2²)ˣ = 2³ → 2<sup>2x</sup> = 2³ → 2x = 3 → <b>x = 3/2</b>`)}
+${EX(t('2. Prendre logaritmes','2. Tomar logaritmos'),`2ˣ = 10<ol class="passos"><li>log(2ˣ) = log 10</li><li>x · log 2 = 1</li><li>x = ${F(1,'log 2')} ≈ ${F(1,'0,301')} ≈ <b>3,32</b></li></ol>`)}
+${PQ(t('Comprova sempre: 2<sup>3,32</sup> ≈ 9,99 ✓. Com que és una potència de 2 entre 2³ = 8 i 2⁴ = 16, té sentit que x estiga entre 3 i 4.','Comprueba siempre: 2<sup>3,32</sup> ≈ 9,99 ✓. Como es una potencia de 2 entre 2³ = 8 y 2⁴ = 16, tiene sentido que x esté entre 3 y 4.'))}`}
+],
+perc:()=>[
+{h:t('Per a què serveix?','¿Para qué sirve?'),b:`<p>${t('Els percentatges són a tot arreu: rebaixes, IVA, interessos del banc, estadístiques de partits («68 % de primers servicis»), pujades de preus, enquestes…','Los porcentajes están en todas partes: rebajas, IVA, intereses del banco, estadísticas de partidos («68 % de primeros saques»), subidas de precios, encuestas…')}</p>
+<p>${t('Un p % vol dir «p de cada 100»: 15 % = 15/100 = 0,15.','Un p % quiere decir «p de cada 100»: 15 % = 15/100 = 0,15.')}</p>
+${PQ(t('Saber calcular percentatges bé et protegeix de trampes: una rebaixa del 30 % i després un altre 20 % <b>no</b> és un 50 % de descompte.','Saber calcular porcentajes bien te protege de trampas: una rebaja del 30 % y luego otro 20 % <b>no</b> es un 50 % de descuento.'))}`},
+{h:t('Índex de variació','Índice de variación'),b:`${RG(t('p % de C = C · p/100<br><b>Pujar</b> un p % → multiplicar per <b>1 + p/100</b><br><b>Baixar</b> un p % → multiplicar per <b>1 − p/100</b>','p % de C = C · p/100<br><b>Subir</b> un p % → multiplicar por <b>1 + p/100</b><br><b>Bajar</b> un p % → multiplicar por <b>1 − p/100</b>'))}
+<p>${t('Aquest número és l\'<b>índex de variació</b>. Si és major que 1, puja; si és menor que 1, baixa.','Este número es el <b>índice de variación</b>. Si es mayor que 1, sube; si es menor que 1, baja.')}</p>
+${EX(t('IVA','IVA'),t('Una raqueta de 80 € + 21 % d\'IVA: 80 · 1,21 = <b>96,80 €</b><br>(és el mateix que 80 + 80·0,21 = 80 + 16,80)','Una raqueta de 80 € + 21 % de IVA: 80 · 1,21 = <b>96,80 €</b><br>(es lo mismo que 80 + 80·0,21 = 80 + 16,80)'))}
+${EX(t('Rebaixa','Rebaja'),t('Unes sabatilles de 60 € amb un 15 % de descompte: 60 · 0,85 = <b>51 €</b>','Unas zapatillas de 60 € con un 15 % de descuento: 60 · 0,85 = <b>51 €</b>'))}
+${CP(t('Pujar un 5 % és ×1,05, no ×1,5 (això seria pujar un 50 %).','Subir un 5 % es ×1,05, no ×1,5 (eso sería subir un 50 %).'))}`},
+{h:t('Encadenats i problemes inversos','Encadenados y problemas inversos'),b:`${RG(t('Variacions encadenades → es <b>multipliquen</b> els índexs<br>Preu inicial = preu final <b>:</b> índex','Variaciones encadenadas → se <b>multiplican</b> los índices<br>Precio inicial = precio final <b>:</b> índice'))}
+${EX(t('Puja un 20 % i després baixa un 20 %','Sube un 20 % y después baja un 20 %'),t('1,20 · 0,80 = 0,96 → el preu final és el 96 % de l\'inicial → ha <b>baixat un 4 %</b> (no s\'ha quedat igual!). Amb 100 €: 100 → 120 → 96.','1,20 · 0,80 = 0,96 → el precio final es el 96 % del inicial → ha <b>bajado un 4 %</b> (¡no se ha quedado igual!). Con 100 €: 100 → 120 → 96.'))}
+${EX(t('Problema invers','Problema inverso'),t('Amb un 25 % de descompte pagues 60 €. Preu inicial · 0,75 = 60 → preu inicial = 60 : 0,75 = <b>80 €</b>','Con un 25 % de descuento pagas 60 €. Precio inicial · 0,75 = 60 → precio inicial = 60 : 0,75 = <b>80 €</b>'))}
+${CP(t('60 · 1,25 = 75 € és un error típic: el 25 % es calculava sobre el preu inicial (80), no sobre el final (60).','60 · 1,25 = 75 € es un error típico: el 25 % se calculaba sobre el precio inicial (80), no sobre el final (60).'))}`},
+{h:t('Quin percentatge? Interés compost','¿Qué porcentaje? Interés compuesto'),b:`${RG(t('Percentatge = (part : total) · 100','Porcentaje = (parte : total) · 100'))}
+${EX('',t('Has encertat 51 de 75 primers servicis: 51 : 75 = 0,68 → <b>68 %</b>','Has acertado 51 de 75 primeros saques: 51 : 75 = 0,68 → <b>68 %</b>'))}
+<h3>${t('Interés compost','Interés compuesto')}</h3>
+${RG(t('C<sub>final</sub> = C · (1 + r/100)<sup>n</sup> &nbsp;&nbsp; (r = % anual, n = anys)','C<sub>final</sub> = C · (1 + r/100)<sup>n</sup> &nbsp;&nbsp; (r = % anual, n = años)'))}
+${EX('',t('1000 € al 3 % durant 2 anys: 1000 · 1,03² = 1000 · 1,0609 = <b>1060,90 €</b><br>Any a any: 1000 → 1030 → 1060,90','1000 € al 3 % durante 2 años: 1000 · 1,03² = 1000 · 1,0609 = <b>1060,90 €</b><br>Año a año: 1000 → 1030 → 1060,90'))}
+${PQ(t('En l\'interés <b>simple</b> cada any guanyes el mateix (30 €, total 1060 €). En el <b>compost</b>, el segon any també guanyes interessos dels interessos (30,90 €). A la llarga la diferència és enorme: és el mateix creixement exponencial de les potències.','En el interés <b>simple</b> cada año ganas lo mismo (30 €, total 1060 €). En el <b>compuesto</b>, el segundo año también ganas intereses de los intereses (30,90 €). A la larga la diferencia es enorme: es el mismo crecimiento exponencial de las potencias.'))}`}
+]};
+TEORIA.reals=(f=>()=>{const p=f();p.push({h:t('Resum','Resumen'),b:RG(t('ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ · 𝕀 = decimals infinits no periòdics<br>[ ] entra ● · ( ) no entra ○ · ∞ sempre amb ( )<br>A ∪ B = en A o en B · A ∩ B = en A i en B<br>|x − a| ≤ r ⟺ [a − r, a + r]<br>Error absolut = |real − aproximat|','ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ · 𝕀 = decimales infinitos no periódicos<br>[ ] entra ● · ( ) no entra ○ · ∞ siempre con ( )<br>A ∪ B = en A o en B · A ∩ B = en A y en B<br>|x − a| ≤ r ⟺ [a − r, a + r]<br>Error absoluto = |real − aproximado|'))});return p})(TEORIA.reals);
+TEORIA.cient=(f=>()=>{const p=f();p.push({h:t('Resum','Resumen'),b:RG(t('a · 10ⁿ amb 1 ≤ a &lt; 10<br>Gran → n positiu · Menut (0,…) → n negatiu<br>× : mantisses ×, exponents + · ÷ : mantisses ÷, exponents −<br>+ / − : primer iguala exponents<br>Al final, ajusta: mantissa més gran → exponent baixa; més menuda → puja','a · 10ⁿ con 1 ≤ a &lt; 10<br>Grande → n positivo · Pequeño (0,…) → n negativo<br>× : mantisas ×, exponentes + · ÷ : mantisas ÷, exponentes −<br>+ / − : primero iguala exponentes<br>Al final, ajusta: mantisa más grande → exponente baja; más pequeña → sube'))});return p})(TEORIA.cient);
+TEORIA.rad=(f=>()=>{const p=f();p.push({h:t('Resum','Resumen'),b:RG('ⁿ√(aᵐ) = a<sup>m/n</sup><br>√(k²·r) = k√r · '+t('introduir','introducir')+': k√r = √(k²·r)<br>a√r + b√r = (a+b)√r · √a·√b = √(ab)<br>'+F('k','√n')+' = '+F('k√n','n')+' · '+t('conjugat de','conjugado de')+' √p + q = √p − q<br>(a+b)(a−b) = a² − b²')});return p})(TEORIA.rad);
+TEORIA.log=(f=>()=>{const p=f();p.push({h:t('Resum','Resumen'),b:RG(t('log<sub>b</sub> x = y ⟺ b<sup>y</sup> = x · només x &gt; 0<br>log 1 = 0 · log<sub>b</sub> b = 1 · log = base 10<br>log(xy) = log x + log y · log(x/y) = log x − log y<br>log xⁿ = n log x · log<sub>b</sub> x = log x / log b<br>bˣ = c → iguala bases o pren logaritmes','log<sub>b</sub> x = y ⟺ b<sup>y</sup> = x · solo x &gt; 0<br>log 1 = 0 · log<sub>b</sub> b = 1 · log = base 10<br>log(xy) = log x + log y · log(x/y) = log x − log y<br>log xⁿ = n log x · log<sub>b</sub> x = log x / log b<br>bˣ = c → iguala bases o toma logaritmos'))});return p})(TEORIA.log);
+TEORIA.perc=(f=>()=>{const p=f();p.push({h:t('Resum','Resumen'),b:RG(t('Pujar p % → ×(1 + p/100) · Baixar p % → ×(1 − p/100)<br>Encadenats → multiplica índexs<br>Inicial = final : índex<br>% = part : total · 100<br>Interés compost: C·(1 + r/100)ⁿ','Subir p % → ×(1 + p/100) · Bajar p % → ×(1 − p/100)<br>Encadenados → multiplica índices<br>Inicial = final : índice<br>% = parte : total · 100<br>Interés compuesto: C·(1 + r/100)ⁿ'))});return p})(TEORIA.perc);
+TEORIA.slam=()=>[{h:t('Gran Slam','Gran Slam'),b:`<p>${t('Totes les pistes barrejades en un <b>super tie-break a 10 punts</b> (cal guanyar de 2). Les preguntes que més falles eixiran més sovint.','Todas las pistas mezcladas en un <b>super tie-break a 10 puntos</b> (hay que ganar de 2). Las preguntas que más fallas saldrán más a menudo.')}</p><p>${t('Si dubtes en alguna, el botó 📖 et porta a la teoria de la pista corresponent i després tornes al punt.','Si dudas en alguna, el botón 📖 te lleva a la teoría de la pista correspondiente y luego vuelves al punto.')}</p>`}];
+</script>
+<script>
+let S={};
+const GB={};BLOCS.forEach(b=>b.gens.forEach(g=>GB[g]=b));
+const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d)}catch(e){return JSON.parse(d)}};
+const LSW=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+function canviaIdioma(){LANG=LANG==='va'?'es':'va';try{localStorage.setItem('no-idioma',LANG)}catch(e){}document.documentElement.lang=LANG==='va'?'ca-valencia':'es';inici()}
+
+function inici(){
+const vt=LS('no-vict','{}');const tot=Object.values(vt).reduce((a,b)=>a+b,0);
+const bt=(b,i)=>`<button class="bloc s-${b.sup}" data-i="${i}"><span class="ic">${b.ic}</span><span><b>${b.nom()}</b><span class="sub">${b.sub()}</span></span><span class="trof"><i class="${vt[b.id]?'on':''}">🏆</i>${vt[b.id]?'×'+vt[b.id]:''}</span></button>`;
+$('#app').innerHTML=`<div class="cap"><div><div class="titol">Números <span>Open</span></div><div class="lema">${t('Mates de 4t d\'ESO · Bloc de nombres','Mates de 4º de ESO · Bloque de números')}</div><div class="vict">🏆 ${t('Tie-breaks guanyats','Tie-breaks ganados')}: <b>${tot}</b></div></div><button class="idioma" id="lg">${LANG==='va'?'es':'va'}</button></div>
+<div class="intro"><p>${t('Cada pista és un tema. Primer fas l\'<b>escalfament</b> (teoria amb exemples resolts) i després jugues un <b>tie-break a 7</b> contra la màquina: cada pregunta és un punt. Si falles, l\'<b>ull de falcó</b> t\'explica pas a pas on estava l\'error.','Cada pista es un tema. Primero haces el <b>calentamiento</b> (teoría con ejemplos resueltos) y después juegas un <b>tie-break a 7</b> contra la máquina: cada pregunta es un punto. Si fallas, el <b>ojo de halcón</b> te explica paso a paso dónde estaba el error.')}</p></div>
+${BLOCS.map(bt).join('')}${bt(SLAM,'s')}
+<p class="peu">${t('Hi ha preguntes de triar, d\'escriure el resultat amb el teclat i de marcar intervals a la recta.','Hay preguntas de elegir, de escribir el resultado con el teclado y de marcar intervalos en la recta.')}</p>`;
+$('#lg').onclick=canviaIdioma;
+document.querySelectorAll('.bloc').forEach(b=>b.onclick=()=>teoria(b.dataset.i==='s'?SLAM:BLOCS[+b.dataset.i],0,false));
+scrollTo(0,0);
+}
+
+function teoria(B,pag,enPartit){
+const P=TEORIA[B.id]();const p=P[pag];
+$('#app').innerHTML=`<div class="barra"><button id="tor">← ${enPartit?t('Al partit','Al partido'):t('Pistes','Pistas')}</button><span>${B.nom()} · ${pag+1}/${P.length}</span>${enPartit?'':`<button id="salt">🎾 ${t('Jugar','Jugar')}</button>`}</div>
+<div class="carta"><h2>${p.h}</h2>${p.b}<div class="punts">${P.map((_,i)=>`<i class="${i===pag?'on':''}"></i>`).join('')}</div></div>
+<div class="fila">${pag>0?`<button class="sec" id="ant">← ${t('Anterior','Anterior')}</button>`:''}${pag<P.length-1?`<button class="gran" id="seg">${t('Següent','Siguiente')} →</button>`:(enPartit?`<button class="gran" id="seg">${t('Tornar al partit','Volver al partido')}</button>`:`<button class="gran" id="seg">🎾 ${B.meta?t('Jugar el super tie-break','Jugar el super tie-break'):t('Jugar el tie-break','Jugar el tie-break')}</button>`)}</div>`;
+$('#tor').onclick=()=>enPartit?pregunta(true):inici();
+if($('#salt'))$('#salt').onclick=()=>partit(B);
+if($('#ant'))$('#ant').onclick=()=>teoria(B,pag-1,enPartit);
+$('#seg').onclick=()=>pag<P.length-1?teoria(B,pag+1,enPartit):(enPartit?pregunta(true):partit(B));
+scrollTo(0,0);
+}
+
+function partit(B){S={B,meta:B.meta||7,pt:[0,0],ult:[],q:null,ok:0,tot:0,ratxa:0,millor:0,mal:{}};nova()}
+function tria(){
+const fl=LS('no-flojos','{}');const gs=S.B.gens.filter(x=>!S.ult.includes(x));let tot=0;const w=gs.map(x=>{const v=1+(fl[x]||0)/2;tot+=v;return v});let u=Math.random()*tot;
+for(let j=0;j<gs.length;j++){u-=w[j];if(u<0)return gs[j]}return gs[gs.length-1]}
+function nova(){
+const g=tria();S.ult.push(g);if(S.ult.length>Math.min(3,S.B.gens.length-2))S.ult.shift();
+const Q=G[g]();Q.gen=g;if(Q.errs)Q.errs=Q.errs.filter(([v])=>Math.abs(v-Q.ans)>Math.max(Q.tol,1e-9));
+if(Q.kind==='op'){const seen=new Set([Q.ok]);const b=[];for(const x of Q.bad){if(!seen.has(x[0])){seen.add(x[0]);b.push({h:x[0],why:x[1]})}if(b.length===3)break}Q.ops=shuffle([{h:Q.ok,ok:true},...b])}
+S.q=Q;S.inp='';S.rs={a:null,b:null,ac:true,bc:true};S.pista=false;pregunta(false);
+}
+function anota(g,ok){const f=LS('no-flojos','{}');f[g]=Math.max(0,Math.min(6,(f[g]||0)+(ok?-1:2)));LSW('no-flojos',f)}
+function marcador(){const srv=(Math.floor((S.pt[0]+S.pt[1]+1)/2))%2===0;
+return`<div class="marcador"><div class="nom">${srv?'🎾 ':''}${t('Tu','Tú')}</div><div class="pts">${S.pt[0]}</div><div class="sep"></div><div class="nom">${srv?'':'🎾 '}${t('La màquina','La máquina')}<small>${t('tie-break a','tie-break a')} ${S.meta}</small></div><div class="pts">${S.pt[1]}</div></div>`}
+function estat(){const [a,b]=S.pt,m=S.meta;if(a>=m-1&&a>b)return'🔥 '+t('Punt de partit per a tu!','¡Punto de partido para ti!');if(b>=m-1&&b>a)return'⚠️ '+t('Punt de partit per a la màquina','Punto de partido para la máquina');if(S.ratxa>=3)return`⚡ ${t('Ratxa','Racha')}: ${S.ratxa}`;return''}
+
+function pregunta(tornant){
+const Q=S.q;let cos='';
+if(Q.kind==='op')cos=`<div class="opcions">${Q.ops.map((o,i)=>`<button class="op" data-i="${i}">${o.h}</button>`).join('')}</div>`;
+else if(Q.kind==='num')cos=`<div class="pant"><div class="cx" id="cx">${S.inp.replace(/-/g,'−')}</div>${Q.ud?`<span class="ud">${Q.ud}</span>`:''}</div>
+<div class="teclat">${['7','8','9','⌫','4','5','6','−','1','2','3','/','0',',','OK'].map(k=>`<button data-k="${k}" class="${k==='OK'?'ok':''}"${k==='OK'?' style="grid-row:span 1;grid-column:span 2"':''}>${k}</button>`).join('')}</div>
+<p class="nota">${Q.ud?t(`Escriu només el número (en ${Q.ud==='€'?'euros':'%'}). `,`Escribe solo el número (en ${Q.ud==='€'?'euros':'%'}). `):''}${t('Usa la coma per als decimals i / per a fraccions (3/4).','Usa la coma para los decimales y / para fracciones (3/4).')}</p>`;
+else cos=`<div id="rl">${rectaSVG()}</div><div class="rtxt" id="rt">${rTxt()}</div><div class="rbots"><button id="minf">← −∞</button><button id="rclr">${t('Esborra','Borra')}</button><button id="pinf">+∞ →</button></div><button class="gran" id="rok" style="margin-top:10px">${t('Comprovar','Comprobar')}</button><p class="nota">${t('Toca un número per posar un extrem; toca\'l una altra vegada per canviar ● (entra) ↔ ○ (no entra).','Toca un número para poner un extremo; tócalo otra vez para cambiar ● (entra) ↔ ○ (no entra).')}</p>`;
+$('#app').innerHTML=`<div class="barra"><button id="ix">✕</button><span>${S.B.nom()}</span><button id="te">📖 ${t('Teoria','Teoría')}</button></div>${marcador()}<div class="ratxa">${estat()}</div>
+<div class="carta" id="cq"><div class="tipus">${Q.tip}</div><div class="enun">${Q.txt}</div>${cos}<div id="pz">${S.pista?`<div class="pistab">💡 ${Q.pista}</div>`:`<button class="ajuda" id="pb">💡 ${t('Pista','Pista')}</button>`}</div></div>`;
+if($('#pb'))$('#pb').onclick=()=>{S.pista=true;$('#pz').innerHTML=`<div class="pistab">💡 ${Q.pista}</div>`};
+$('#ix').onclick=inici;
+$('#te').onclick=()=>teoria(S.B.id==='slam'?GB[Q.gen]:S.B,1,true);
+if(Q.kind==='op')document.querySelectorAll('.op').forEach(b=>b.onclick=()=>respon(+b.dataset.i));
+else if(Q.kind==='num')document.querySelectorAll('.teclat button').forEach(b=>b.onclick=()=>tecla(b.dataset.k));
+else{$('#rl').onclick=e=>{const r=e.target.closest('rect');if(r)toca(+r.dataset.v)};$('#minf').onclick=()=>{const s=S.rs;if(s.a!==null&&s.a!==-Infinity&&s.b===null){s.b=s.a;s.bc=s.ac}s.a=-Infinity;s.ac=false;redib()};$('#pinf').onclick=()=>{const s=S.rs;if(s.b!==null&&s.b!==Infinity&&s.a===null){s.a=s.b;s.ac=s.bc}s.b=Infinity;s.bc=false;if(s.a===null){}redib()};$('#rclr').onclick=()=>{S.rs={a:null,b:null,ac:true,bc:true};redib()};$('#rok').onclick=()=>{const s=S.rs;if(s.a===null||s.b===null){$('#cq').classList.remove('sacseja');void $('#cq').offsetWidth;$('#cq').classList.add('sacseja');return}respon(s)}}
+if(!tornant)scrollTo(0,0);
+}
+function rectaSVG(){const Q=S.q,s=S.rs;const ints=Q.rec.given.slice();if(s.a!==null||s.b!==null){const a=s.a!==null?s.a:s.b,b=s.b!==null?s.b:null;ints.push({a,b:b===null?a:b,ac:s.a!==null?s.ac:s.bc,bc:s.bc,col:'#1d2733'})}return linia(ints,Q.rec.lo,Q.rec.hi,{clic:true})}
+function rTxt(){const s=S.rs;if(s.a===null&&s.b===null)return'<span style="color:#c3c7cd">( , )</span>';if(s.a===null||s.b===null){const v=s.a!==null?s.a:s.b;return`${v===-Infinity?'(−∞':v===Infinity?'+∞':MN(v)} , ?`}return ivTxt(iv(s.a,s.b,s.ac,s.bc))}
+function redib(){$('#rl').innerHTML=rectaSVG();$('#rt').innerHTML=rTxt()}
+function toca(v){const s=S.rs;
+if(s.a===v)s.ac=!s.ac;else if(s.b===v)s.bc=!s.bc;
+else if(s.a===null)s.a=v;else if(s.b===null)s.b=v;
+else if(s.a===-Infinity)s.b=v;else if(s.b===Infinity)s.a=v;
+else{if(Math.abs(v-s.a)<=Math.abs(v-s.b))s.a=v;else s.b=v}
+if(s.a!==null&&s.b!==null&&s.a!==-Infinity&&s.b!==Infinity&&s.a>s.b){[s.a,s.b]=[s.b,s.a];[s.ac,s.bc]=[s.bc,s.ac]}
+redib()}
+function tecla(k){if(k==='OK'){const v=parseNum(S.inp);if(isNaN(v)){$('#cq').classList.remove('sacseja');void $('#cq').offsetWidth;$('#cq').classList.add('sacseja');return}respon(v);return}
+if(k==='⌫')S.inp=S.inp.slice(0,-1);else if(k==='−'){S.inp=S.inp.startsWith('-')?S.inp.slice(1):'-'+S.inp}else if(S.inp.length<12)S.inp+=k;$('#cx').textContent=S.inp.replace(/-/g,'−')}
+document.addEventListener('keydown',e=>{if(!S.q||!$('#cx'))return;const k=e.key;if(/^[0-9]$/.test(k))tecla(k);else if(k===','||k==='.')tecla(',');else if(k==='/')tecla('/');else if(k==='-')tecla('−');else if(k==='Backspace')tecla('⌫');else if(k==='Enter')tecla('OK');else return;e.preventDefault()});
+
+function pilota(cl){const b=document.createElement('div');b.className='pilota '+cl;document.body.appendChild(b);setTimeout(()=>b.remove(),800)}
+function respon(x){
+const Q=S.q;let ok,dada,why=null;
+if(Q.kind==='op'){const o=Q.ops[x];ok=!!o.ok;dada=o.h;why=o.why;document.querySelectorAll('.op').forEach((b,i)=>{b.disabled=true;if(Q.ops[i].ok)b.classList.add('bo');else if(i===x)b.classList.add('mal')})}
+else if(Q.kind==='num'){ok=Math.abs(x-Q.ans)<=Q.tol+1e-12;dada=num(x,6);if(!ok){const e=(Q.errs||[]).find(([v])=>Math.abs(v-x)<=Math.max(Q.tol,1e-9)+1e-12);if(e)why=e[1];else why=Q.gw||null}}
+else{const s=S.rs;const I=iv(s.a,s.b,s.ac,s.bc);ok=ivEq(I,Q.ansI);dada=ivTxt(I);if(!ok){const A=Q.ansI;if(I.a===A.a&&I.b===A.b)why=W_CL();else if((A.a===-Infinity)!==(I.a===-Infinity)||(A.b===Infinity)!==(I.b===Infinity))why=t('Revisa cap a on va l\'interval: «major que» va cap a la dreta (+∞) i «menor que» cap a l\'esquerra (−∞).','Revisa hacia dónde va el intervalo: «mayor que» va hacia la derecha (+∞) y «menor que» hacia la izquierda (−∞).');else why=t('Els extrems no són els correctes.','Los extremos no son los correctos.')}}
+S.tot++;anota(Q.gen,ok);
+if(ok){S.ok++;S.pt[0]++;S.ratxa++;S.millor=Math.max(S.millor,S.ratxa);pilota('tu')}else{S.pt[1]++;S.ratxa=0;S.mal[Q.gen]=(S.mal[Q.gen]||0)+1;pilota('ella')}
+setTimeout(()=>ull(ok,dada,why),Q.kind==='op'?650:250);
+}
+function acabat(){const [a,b]=S.pt;return(a>=S.meta||b>=S.meta)&&Math.abs(a-b)>=2}
+function ull(ok,dada,why){
+const Q=S.q;const fi=acabat();
+const sol=Q.kind==='op'?Q.ok:Q.kind==='num'?Q.fmt:ivTxt(Q.ansI);
+$('#app').innerHTML=`<div class="barra"><button id="ix">✕</button><span>${S.B.nom()}</span><span></span></div>${marcador()}
+<div class="carta ull ${ok?'ok':''}"><div class="etiq">${ok?t('Punt per a tu','Punto para ti'):t('Ull de falcó · punt per a la màquina','Ojo de halcón · punto para la máquina')}</div>
+<h2>${ok?pick([t('Bona bola!','¡Buena bola!'),t('Directa guanyadora!','¡Directa ganadora!'),t('Ace!','¡Ace!'),t('Quin revés!','¡Qué revés!')]):pick([t('Fora per poc!','¡Fuera por poco!'),t('A la xarxa!','¡A la red!'),t('Bola llarga','Bola larga')])}</h2>
+<div class="enun" style="font-size:16px;color:var(--suau)">${Q.txt}</div>
+${ok?'':`<div class="error">${t('Has respost','Has respondido')}: <b>${dada}</b>${why?`<p>${why}</p>`:''}</div>`}
+<div class="bona">${t('Resposta correcta','Respuesta correcta')}: ${sol}</div>
+<h3>${t('Pas a pas','Paso a paso')}</h3><ol class="passos">${Q.expl.map(x=>`<li>${x}</li>`).join('')}</ol></div>
+<button class="gran" id="seg">${fi?t('Veure el resultat','Ver el resultado'):t('Següent punt','Siguiente punto')} →</button>`;
+$('#ix').onclick=inici;$('#seg').onclick=()=>fi?final():nova();scrollTo(0,0);
+}
+function final(){
+const guany=S.pt[0]>S.pt[1];if(guany){const v=LS('no-vict','{}');v[S.B.id]=(v[S.B.id]||0)+1;LSW('no-vict',v)}
+const pitj=Object.entries(S.mal).sort((a,b)=>b[1]-a[1]).slice(0,3);
+$('#app').innerHTML=`<div class="carta final"><div class="gran-ic">${guany?'🏆':'🎾'}</div><h2>${guany?t('Tie-break guanyat!','¡Tie-break ganado!'):t('Aquesta vegada ha guanyat la màquina','Esta vez ha ganado la máquina')}</h2>
+<p style="font-size:28px;font-weight:900">${S.pt[0]} – ${S.pt[1]}</p>
+<p>${t('Encerts','Aciertos')}: <b>${S.ok}/${S.tot}</b> · ${t('Millor ratxa','Mejor racha')}: <b>${S.millor}</b></p>
+${pitj.length?`<div class="compte" style="text-align:left"><span class="etq">${t('Per repassar','Para repasar')}</span>${pitj.map(([g])=>`• ${G[g]().tip} (${GB[g].nom()})`).join('<br>')}<p style="font-size:14px">${t('Aquests tipus eixiran més sovint fins que els domines.','Estos tipos saldrán más a menudo hasta que los domines.')}</p></div>`:''}
+<div class="perque" style="text-align:left"><span class="etq">${t('Sabies que…?','¿Sabías que…?')}</span>${S.B.curio()}</div></div>
+<button class="gran" id="re">🎾 ${t('Revenja','Revancha')}</button><div class="fila"><button class="sec" id="te">📖 ${t('Teoria','Teoría')}</button><button class="sec" id="in">${t('Pistes','Pistas')}</button></div>`;
+$('#re').onclick=()=>partit(S.B);$('#te').onclick=()=>teoria(S.B,0,false);$('#in').onclick=inici;scrollTo(0,0);
+}
+inici();
+</script>
+</body>
+</html>
